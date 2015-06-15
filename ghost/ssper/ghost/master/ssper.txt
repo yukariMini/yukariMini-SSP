@@ -1,8 +1,0 @@
-charset,UTF-8
-dic, ayc\ssper_shiori3.ayc
-dic, ayc\ssper_aprication.ayc
-dic, ayc\ssper_bootend.ayc
-dic, ayc\ssper_etc.ayc
-dic, ayc\ssper_menu.ayc
-dic, ayc\ssper_mouse.ayc
-dic, ayc\ssper_string.ayc

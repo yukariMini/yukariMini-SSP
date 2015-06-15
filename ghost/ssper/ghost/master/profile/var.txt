@@ -1,2 +1,0 @@
-commitmemorysize,237385
-surfacecount,15
