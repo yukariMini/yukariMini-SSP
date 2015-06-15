@@ -1,0 +1,605 @@
+﻿///////////////////////////////////////////
+////////// 音乐播放器 from forjane
+////////// modified by Cster 2015
+///////////////////////////////////////////
+
+OnPlayWithLyric
+{
+	PlayWithLyric(reference0,reference1,reference2);
+}
+
+ReadLrc
+{
+	_file = _argv[0];
+	lrc = IARRAY;
+	lrctime = IARRAY;
+	lrcset = "";
+	_t = IARRAY;
+	_s = "";
+	_offset = 0;
+	_txt = "error";
+
+	if FOPEN(_file,'r') {
+		_charset = TOLOWER(FREAD(_file));
+		FCLOSE(_file);
+		if 'charset:' _in_ _charset {
+			_charset = _charset[1,'charset:'];
+			_charset = _charset[0,']'];
+		}
+		if _charset == 'utf-8' || _charset == 'utf8' {
+			FCHARSET(1);
+		}
+		elseif _argc > 1 {
+			FCHARSET(_argv[1]);
+		}
+		else {
+			FCHARSET(127);
+		}
+	}
+
+	if FOPEN(_file,'r') {
+		_txt = "ok";
+		for _buff = FREAD(_file); _buff != -1; _buff = FREAD(_file) {
+			_cnt = 0;
+			_sing = 0;
+			for _tmp = _buff[_cnt,']']; '[' _in_ _tmp; _tmp = _buff[_cnt,']'] {
+				_tmp = _tmp[1,'['];
+				if 'ti:' _in_ _tmp {
+					lrcset += '\f[bold,1]标题：\f[bold,default]' + _tmp[1,':'] + '\n';
+				}
+				elseif 'ar:' _in_ _tmp {
+					lrcset += '\f[bold,1]歌手：\f[bold,default]' + _tmp[1,':'] + '\n';
+				}
+				elseif 'al:' _in_ _tmp {
+					lrcset += '\f[bold,1]专辑：\f[bold,default]' + _tmp[1,':'] + '\n';
+				}
+				elseif 'offset:' _in_ _tmp {
+					_offset = TOINT(_tmp[1,':']);
+				}
+				elseif ISINTSTR(_tmp[0,':']) {
+					_t[_cnt] = TOINT(_tmp[0,':']) * 60000 + TOINT(TOREAL(_tmp[1,':']) * 1000) + _offset;
+					_sing = 1;
+				}
+				_cnt ++;
+			}
+			_s = CUTSPACE(_buff[_cnt,']']);
+			if _sing {
+				foreach _t; _time {
+					_added = 0;
+					for _i = 0; lrctime[_i] != "";  _i ++ {
+						if _time < lrctime[_i] {
+							lrctime[_i] = (_time,lrctime[_i]);
+							lrc[_i] = (_s,lrc[_i]);
+							_added = 1;
+							break;
+						}
+					}
+					if _added == 0 {
+						lrctime,= _time;
+						lrc,= _s;
+					}
+				}
+				_sing = 0;
+				_t = IARRAY;
+			}
+		}
+	}
+
+	FCLOSE(_file);
+	FCHARSET(1);
+	_txt;
+}
+
+
+ShowLrc
+{
+	_txt = "";
+	_time = 0;
+	if _argc > 0 {
+		_time = _argv[0];
+	}
+
+	_txt += "\_q" + lrcset + " \n \n\_q";
+	for _i = 0; lrctime[_i] != ''; _i ++ {
+		if lrc[_i] == '' {
+			lrc[_i] = ' ';
+		}
+		_tmp = '\__w[' + (lrctime[_i] - _time) + ']';
+		if _time >= lrctime[_i] {
+			_tmp = '\_q' + _tmp + lrc[_i] + '\n\_q';
+		}
+		elseif _i == 0 {
+			_tmp += "\f[color,238,50,95]" + lrc[_i] + "\f[color,default]\n";
+		}
+		else {
+			_tmp += "\_q\c[line,1]" + lrc[_i - 1] + "\n\_q\f[color,238,50,95]" + lrc[_i] + "\f[color,default]\n";
+		}
+		_txt += _tmp;
+	}
+	_txt;
+}
+		
+
+
+/*
+OnBalloonBreak
+{
+	ClearLrcVar;
+}
+*/
+
+
+ClearLrcVar
+{
+	ERASEVAR("lrc");
+	ERASEVAR("lrctime");
+	ERASEVAR("lrcset");
+	ERASEVAR("musicplaystart");
+	ERASEVAR("musicplaytime");
+}
+
+OnPlayCmd
+{
+	"\![sound,%(reference0),%(reference1)]"
+	--
+	_path = SPLITPATH(reference1);
+	_filelrc = _path[0] + _path[1] + _path[2] + '.lrc';
+	if musicplaywithlrc == 1 && reference0 == "play" && ReadLrc(_filelrc) == "ok" {
+		ShowLrc(musicplaytime);
+	}
+}
+
+
+PlayWithLyric
+{
+	_txt = "";
+	_cmd = _argv[0];
+	musicplaywithlrc = 0;
+	if _argv[1] == 1 {
+		musicplaywithlrc = 1;
+	}
+	_filemp3 = _argv[2];
+	if _cmd == "play" || _cmd == "loop" {
+		_txt += "\![sound,stop]\![sound,wait]\![raise,OnPlayCmd,%(_cmd),%(_filemp3)]";
+		musicplaystart = GETTICKCOUNT();
+		musicplaytime = 0;
+		playingmusic = 1;
+		if _cmd == "loop" {
+			musicplaywithlrc = 0;
+		}
+	}
+	elseif _cmd == "pause" {
+		_txt += "\![sound,pause]";
+		musicplaytime += GETTICKCOUNT() - musicplaystart;
+		playingmusic = 2;
+	}
+	elseif _cmd == "resume" {
+		_txt += "\![sound,resume]";
+		musicplaystart = GETTICKCOUNT();
+		playingmusic = 1;
+		if musicplaywithlrc == 1 && lrc != IARRAY {
+			_txt += ShowLrc(musicplaytime);
+		}
+	}
+	elseif _cmd == "stop" {
+		_txt += "\![sound,stop]";
+		playingmusic = 0;
+	}
+	_txt;
+}
+
+MusicHotKey
+{
+	_txt = "";
+	if _argv[0] == "p" && playingmusic == 1 {
+		_txt += "\![sound,pause]";
+		musicplaytime += GETTICKCOUNT() - musicplaystart;
+		playingmusic = 2;
+	}
+	elseif _argv[0] == "p" && playingmusic == 2 {
+		_txt += "\![sound,resume]";
+		musicplaystart = GETTICKCOUNT();
+		playingmusic = 1;
+	}
+	elseif _argv[0] == "s" {
+		_txt += "\![sound,stop]";
+		playingmusic = 0;
+	}
+
+	if musicplaywithlrc == 1 && playingmusic == 1 && lrc != IARRAY {
+		_txt += ShowLrc(musicplaytime);
+	}
+	_txt;
+
+}
+
+
+//=======================================================
+//Mini播放器程式
+//入口：OnMusicPlayer()
+//=======================================================
+
+#define		M3UPATH		"profile\\default.m3u8"
+
+OnMusicPlayer
+{
+	_name = SPLITPATH(musicfile[2]);
+	_txt = "\1\s[12]\_q\f[bold,1]Mini音乐播放器 ----\f[bold,default]\_l[178]\q[◇关闭,OnMusicPlayerClose]\n%(_name[2] + _name[3])";
+	_txt += "\_l[0,39]";
+	_status =('play]\f[color,108,129,182]◇播放','pause]\f[color,229,134,82]◇暂停','resume]\f[color,108,129,182]◇继续')[playingmusic];
+	_txt += "\__q[OnMusicPlayerCmd,%(_status)\f[color,default]\__q";
+	_txt += " \f[color,238,50,95]\q[◇停止,OnMusicPlayerCmd,stop]\f[color,default]       /
+		   \f[color,93,188,91]\q[◇播放列表,OnMusicPlayerList]\f[color,default]";
+//			\f[color,128,66,255]\q[◇音量,OnMusicPlayerVolume]\f[color,default]";
+	_b = "◎,○,○,○,○,◎,○,○,○,○,◎,○,○,○,○,◎";
+	_txt += "\n[100]";
+	_txt += "\q[%(_b[musicplaymode])普通,OnMusicPlayMode,0] \q[%(_b[musicplaymode + 4])单曲循环,OnMusicPlayMode,1] /
+			\q[%(_b[musicplaymode + 8])列表循环,OnMusicPlayMode,2] \q[%(_b[musicplaymode + 12])乱序,OnMusicPlayMode,3]";
+	_txt += "\s[10]\_q\0";
+	_txt;
+}
+
+OnMusicPlayerClose
+{
+}
+
+OnMusicPlayerVolume
+{
+	_file = FUNCTIONEX("saori/advanced_sysinfo","get_special_folder_path",'System') + '\sndvol32.exe';
+	"\![open,file,%(_file)]";
+	--
+	OnMusicPlayer;
+}
+
+OnMusicPlayMode
+{
+	musicplaymode = reference0;
+	OnMusicPlayer;
+}
+
+OnMusicPlayerList
+{
+	_txt = "\0\s[40]\b[2]\![set,autoscoll,false]\![set,choicetimeout,0]\_q\f[bold,1]播放列表 ----\f[bold,default]\_l[178]\q[◇关闭,OnMusicPlayListClose]\n[150]";
+	DialogMusicOpenList;
+	_total = musicfile[0];
+	_now = musicfile[1];
+
+	_txt += "\q[◇添加目录,OnMusicPlayListAdd,folder]  \q[◇添加文件,OnMusicPlayListAdd,file]\n/
+			\q[◇另存列表,OnMusicPlayListAdd,savelist]  \q[◇打开列表,OnMusicPlayListAdd,openlist]  \q[◇清空列表,OnMusicPlayListAdd,clearlist]\n";
+	_txt += "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄\n"
+
+	for _i = 0; _i < _total; _i ++ {
+		_tmp = (_i + 1) + '\_l[14]: \__q[OnSelectMusic,' + _i + ']' + SPLITPATH(musiclist[_i])[2] + '\__q';
+		if _i == _now {
+			_status = ('\f[color,108,129,182]','\f[color,238,50,95]','\f[color,229,134,82]')[playingmusic];
+			_tmp = _status + _tmp;
+		}
+		_tmp += "        \_l[178]\__q[OnMusicPlayListMove,up,%(_i)]\[↑\__q\__q[OnMusicPlayListMove,down,%(_i)]↓\__q\__q[OnMusicPlayListMove,delete,%(_i)]X\]\__q\f[color,default]\n"
+		_txt += _tmp;
+	}
+
+	_txt += "\_q" + OnMusicPlayer;
+	_txt;
+}
+
+
+OnMusicPlayListMove
+{
+	if reference0 == 'up' {
+		if reference1 > 0 {
+			_tmp = musiclist[reference1 - 1];
+			musiclist[reference1 - 1] = musiclist[reference1];
+			musiclist[reference1] = _tmp;
+			if reference1 == musicfile[1] {
+				musicfile[1] --;
+			}
+			elseif reference1 == musicfile[1] + 1 {
+				musicfile[1] ++;
+			}
+		}
+	}
+	elseif reference0 == 'down' {
+		if reference1 < musicfile[0] - 1 {
+			_tmp = musiclist[reference1 + 1];
+			musiclist[reference1 + 1] = musiclist[reference1];
+			musiclist[reference1] = _tmp;
+			if reference1 == musicfile[1] {
+				musicfile[1] ++;
+			}
+			elseif reference1 == musicfile[1] - 1 {
+				musicfile[1] --;
+			}
+		}
+	}
+	else {
+		musiclist[reference1] = IARRAY;
+		musicfile[0] --;
+		if reference1 == musicfile[1] {
+			musicfile[1] = 0;
+			musicfile[2] = musiclist[0];
+		}
+	}
+	DialogMusicSaveList;
+	OnMusicPlayerList;
+}
+
+DialogMusicOpenList
+{
+	_m3u = M3UPATH;
+	if _argc > 0 {
+		_m3u = _argv[0];
+	}
+	_m3upath = SPLITPATH(_m3u);
+	_m3uext = TOLOWER(_m3upath[3]);
+	if _m3uext == ".m3u" || _m3uext == ".m3u8" {
+		if _m3uext == ".m3u" {
+			FCHARSET(127);
+		}
+		elseif _m3uext == ".m3u8" {
+			FCHARSET(1);
+		}		
+		musiclist = IARRAY;
+		_total = 0;
+		if FOPEN(_m3u,'r') == 0 {
+			_t = FOPEN(_m3u,'w');
+			FCLOSE(_m3u);
+		}
+		if FOPEN(_m3u,'r') {
+			while (_buff = FREAD(_m3u)) != -1 {
+				if _buff != '' && '#EXTM3U' !_in_ _buff && '#EXTINF' !_in_ _buff {
+					if SPLITPATH(_buff)[0] == "" {
+						_buff = _m3upath[0] + _m3upath[1] + _buff;
+					}
+					musiclist ,= _buff;
+					_total ++;
+				}
+			}
+		}
+		FCLOSE(_m3u);
+		FCHARSET(1);
+		if ISVAR("musicfile") == 0 {
+			musicfile = IARRAY;
+		}
+		musicfile[0] = _total;
+		if musicfile[1] == "" || musicfile[1] >= _total{
+			musicfile[1] = 0;
+		}
+		_tmp = musicfile[1];
+		musicfile[2] = musiclist[_tmp];
+		if _argc > 0 {
+			DialogMusicSaveList;
+		}
+	}
+}
+
+
+DialogMusicSaveList
+{
+	_m3u = M3UPATH;
+	if _argc > 0 {
+		_m3u = _argv[0];
+	}
+	_m3uext = TOLOWER(SPLITPATH(_m3u)[3]);
+	if _m3uext == ".m3u" || _m3uext == ".m3u8" {
+		if _m3uext == ".m3u" {
+			FCHARSET(127);
+		}
+		elseif _m3uext == ".m3u8" {
+			FCHARSET(1);
+		}		
+		_t = FOPEN(_m3u,'w');
+		_t = FWRITE(_m3u,"#EXTM3U");
+		foreach musiclist; _i {
+			_t = FWRITE(_m3u,_i);
+		}
+		FCLOSE(_m3u);
+		FCHARSET(1);
+	}
+}
+
+OnMusicPlayListClose
+{
+	OnMusicPlayer;
+}
+
+OnSelectMusic
+{
+	
+	musicfile[1] = reference0;
+	musicfile[2] = musiclist[reference0];
+	_txt += OnMusicPlayer + "\s[25]" + PlayWithLyric("play",1,musicfile[2]);
+	_txt;
+}
+
+OnSoundStop
+{
+	_txt = "";
+	if playingmusic && reference0 == musicfile[2] {
+		playingmusic = 0;
+		ClearLrcVar;
+		if musicplaymode == 1 {
+			_txt += PlayWithLyric("play",musicplaywithlrc,musicfile[2]);
+		}
+		elseif musicplaymode == 2 {
+			musicfile[1] = (musicfile[1] + 1) % musicfile[0];
+			_tmp = musicfile[1];
+			musicfile[2] = musiclist[_tmp];
+			_txt += PlayWithLyric("play",musicplaywithlrc,musicfile[2]);
+		}
+		elseif musicplaymode == 3 {
+			musicfile[1] = RAND(musicfile[0]);
+			_tmp = musicfile[1];
+			musicfile[2] = musiclist[_tmp];
+			_txt += PlayWithLyric("play",musicplaywithlrc,musicfile[2]);
+		}
+		_txt;
+	}
+}
+
+OnMusicPlayerCmd
+{
+	_txt = "";
+	if reference0 == 'play' {
+		_txt += "\s[25]" + PlayWithLyric("play",musicplaywithlrc,musicfile[2]);
+	}
+	elseif reference0 == 'pause' {
+		_txt += "\s[0]" + PlayWithLyric("pause",musicplaywithlrc,musicfile[2]);
+	}
+	elseif reference0 == 'resume' {
+		_txt += "\s[25]" + PlayWithLyric("resume",musicplaywithlrc,musicfile[2]);
+	}
+	elseif reference0 == 'stop' {
+		_txt += "\s[0]" + PlayWithLyric("stop",musicplaywithlrc,musicfile[2]);
+	}
+	_txt = OnMusicPlayer + _txt;
+	_txt;
+}
+
+
+OnMusicPlayListAdd
+{
+	if reference0 == 'folder' {
+		"\C\![open,dialog,folder,--id=musicfolder,--title=请选择音乐文件夹]";
+	}
+	elseif reference0 == 'file' {
+		"\C\![open,dialog,open,--id=musicfile,--title=请选择音乐文件,--filter=音乐文件(mid;wav;mp3;au;ogg;wma)|*.mid;*.wav;*.mp3;*.au;*.ogg;*.wma]";
+	}
+	elseif reference0 == 'savelist' {
+		"\C\![open,dialog,save,--id=musicsavelist,--title=请输入要保存的列表文件,--filter=M3U 文件(m3u)|*.m3u|M3U8 文件(m3u8)|*.m3u8,--ext=m3u|m3u8]";
+	}
+	elseif reference0 == 'openlist' {
+		"\C\![open,dialog,open,--id=musicopenlist,--title=请选择列表文件,--filter=M3U 文件(m3u;m3u8)|*.m3u;*.m3u8]";
+	}
+	elseif reference0 == 'clearlist' {
+		_t = FDEL(M3UPATH);
+		--
+		"\C\1\c\0\c"
+		--
+		OnMusicPlayerList;
+	}
+}
+
+
+OnSystemDialog
+{
+	if reference1 == "musicfolder" {
+		DialogMusicFolder(reference2);
+	}
+	elseif reference1 == "musicfile" {
+		DialogMusicFile(reference2);
+	}
+	elseif reference1 == "musicsavelist" {
+		DialogMusicSaveList(reference2);
+		OnMusicPlayerList;
+	}
+	elseif reference1 == "musicopenlist" {
+		DialogMusicOpenList(reference2);
+		OnMusicPlayerList;
+	}
+	elseif reference1 == "notepadcolor" {
+		DialogNotePadColor(reference2);
+	}
+	elseif reference1 == "wallpaper" {
+		DialogWallPaper(reference2);
+	}
+//	elseif reference1 == "alarmfile" {
+//		DialogSetAlarmFile(reference2);
+//	}
+}
+
+DialogMusicFile
+{
+	_file = _argv[0];
+	_fileext = TOLOWER(SPLITPATH(_file)[3]);
+	case _fileext {
+		when ".mid", ".wav", ".mp3", ".au", ".ogg", ".wma" {
+			MusicLoadFile(_file);
+			DialogMusicSaveList;
+			OnMusicPlayerList;
+		}
+		others {
+			"这不是音乐文件!\w9\w9\c";
+			"抱歉，小缘喵打不开这个音乐文件……\w9\w9\c";
+			--
+			OnMusicPlayerList;
+		}
+	}
+}		 	
+
+DialogMusicFolder
+{
+	MusicLoadFolder(_argv[0]);
+	DialogMusicSaveList;
+	OnMusicPlayerList;
+}
+
+MusicLoadFile
+{
+	musiclist ,= REPLACE(_argv[0],'/','\');
+	musicfile[0] ++;
+}
+
+MusicLoadFolder
+{
+	_path = _argv[0];
+	_file = FENUM(_path);
+	foreach _file; _f {
+		_f = _path + _f;
+		_fileext = TOLOWER(SPLITPATH(_f)[3]);
+		case _fileext {
+			when ".mid", ".wav", ".mp3", ".au", ".ogg", ".wma" {
+				musiclist ,= REPLACE(_f,'/','\');
+				musicfile[0] ++;
+			}
+		}
+	}
+}
+
+MusicFileDrop
+{
+	_buff = _argv[0];
+	foreach _buff; _ref {
+		if SUBSTR(_ref,STRLEN(_ref)-1,1) == '\' {
+			MusicLoadFolder(_ref);
+		} 
+		else {
+			_fileext = TOLOWER(SPLITPATH(_ref)[3]);
+			case _fileext {
+				when ".mid", ".wav", ".mp3", ".au", ".ogg", ".wma" {
+					MusicLoadFile(_ref);
+				}
+				when ".m3u", ".m3u8" {
+					DialogMusicOpenList(_ref);
+				}
+			}
+		}
+	}
+	DialogMusicSaveList;
+	OnMusicPlayerList;
+}
+
+OnFileDropEx
+{
+	_file = reference0[0];
+	_fileext = TOLOWER(SPLITPATH(_file)[3]);
+	_filename = SPLITPATH(_file)[2] + _fileext;
+	case _fileext {
+		when ".m3u", ".m3u8", ".mid", ".wav", ".mp3", ".au", ".ogg", ".wma", "" {
+			MusicFileDrop(reference0);
+		}
+		when ".png", ".jpg", ".jpeg", ".bmp"
+		{
+			Wallpaperfile = reference0
+			"\1\s[11]\0\b[2]\s[2]图像文件\n\_q「%(_filename)」\n\n[half]\_q要把这个设定为壁纸吗？\n\n[half]/
+			\![*]\q[居中,OnSetWallpaper,0]\n/
+			\![*]\q[并列,OnSetWallpaper,1]\n/
+			\![*]\q[放大,OnSetWallpaper,2]\n\n[half]/
+			\q[◇Cancel,OnSetWallpaper,cancel]\e"
+		}
+		others
+		{
+			"「%(_filename)」\n未知的文件类型……"
+			"\1\s[11]未知文件\n\_q「%(_filename)」\_q\0\s[3]…这是什么？"
+		}
+	}
+}

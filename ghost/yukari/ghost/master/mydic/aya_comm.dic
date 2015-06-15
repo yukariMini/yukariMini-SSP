@@ -1,0 +1,73 @@
+﻿///////////////////////////////////////////
+////////// 沟通 from ndmh
+////////// modified by Cster 2015
+///////////////////////////////////////////
+
+StartCommunicate
+{
+	//---- 決定对话的对象人格
+	if ghostexcount > 0
+	{
+		// res_reference0 从人格列表中取得对话人格名字
+		res_reference0 = ghostexlist[RAND(ghostexcount)]
+	}
+
+	//---- 对话开始
+	if res_reference0 == "凉璃"
+	{
+		//---- 与凉璃的对话
+		"\0\s[0]凉璃、好吗?\e"
+	}
+	elseif res_reference0 == "さくら"
+	{
+		//---- 与さくら（樱花）的对话
+		"\0\s[0]どもー。\e"
+	}
+	elseif res_reference0 != ""
+	{
+		//---- 与其他人格的对话
+		"\0\s[0]こんにちは、%（res_reference0）。\e"
+	}
+	else
+	{
+		//---- 没有其他人格存在情况进行random对话
+		RandomTalk
+	}
+}
+
+
+
+
+
+//---- 与其他人格对话 -----------------------------------------------------------------------
+
+ReplyToGhost
+{
+	res_reference0 = reference0
+  
+  //回覆凉璃的对话
+	if res_reference0 == "凉璃"
+	{
+		res_reference0 = ""
+		if "好" _in_ reference1
+		{
+      "\0\s[0]好啊，凉璃呢？\e"
+		}
+		elseif "明天见" _in_ reference1
+		{
+      "\0\s[0]\w8嗯嗯，%username和橘花晚安喔~\w8\w8\-\e"
+		}
+		else
+		{
+      "\0\s[0]嗯、是啊。\e"
+		}
+  }
+		//回覆其他人格的对话
+  else
+  {
+    res_reference0 = ""
+    "\0\s[0]嗯、是啊～。\e"
+  }
+}
+
+

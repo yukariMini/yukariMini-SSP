@@ -1,0 +1,71 @@
+﻿///////////////////////////////////////////
+////////// SQL
+////////// modified by Cster 2015
+///////////////////////////////////////////
+
+initializecryptogramndmh : void
+{
+  SQL("UPDATE currency SET A='ndmh' WHERE Q='cryptogramndmh'");
+}
+
+Onamendcryptogramndmh
+{
+  "\0\s[5]那个...%username要把密码改成什么呢?\n\w8要容易记的,不能忘记哦~\w8\1忘记的话会怎么样呢?\0\w8\n......\![open,inputbox,OnPasswordUpdate,-1]\n[300]\![set,choicetimeout,0]\q[◇不改了,overPasswordInput]\e"
+}
+
+OnPasswordUpdate
+{
+  _password = cryptogramndmh;
+	if reference0 == "" || reference0 == _password {
+    "\0\s[20]那个...请输入新密码喔...\![open,inputbox,OnPasswordUpdate,-1]\n[300]\q[◇不改了,overPasswordInput]\e"
+	}
+	elseif "'" _in_ reference0 {
+    "\0\s[21]那个...不可以使用小写『 ' 』哦！请重新输入~\![open,inputbox,OnPasswordUpdate,-1]\n[300]\q[◇不改了,overPasswordInput]\e"
+	}
+	else {
+    _a = cryptogramndmhUpdate(reference0);
+    if _a == 0 {
+      "\0\s[29]新密码:%reference0\n小缘喵已经记下了哦,\w8%username也要记住啊~"
+    }
+    else {
+      "失败了,未知BUG!\e"
+    }
+	} 
+}
+
+cryptogramndmhUpdate
+{
+  SQL("UPDATE currency SET A='%(_argv[0])' WHERE Q='cryptogramndmh'");
+}
+
+cryptogramndmh
+{
+  SQL("SELECT A FROM currency WHERE Q='cryptogramndmh'","-j");
+}
+
+Select.日记
+{
+  "\0\s[40]好的%(username)要看我的胖次啊..\w9\n嗯，那么..\w9\s[40]\w9现在开始确认密码~\w5\![open,inputbox,OnPasswordInput,-1]\e"
+}
+
+OnPasswordInput
+{
+  _password = cryptogramndmh;
+	if reference0 == "" {
+		"\0\s[40]那个..\w4要有密码才能通过的..\w9%(username)特别交代的~\1\s[11]拿着刀.........\0\e"
+	}
+	elseif reference0 == _password {
+		"\0\s[5]密码确认完毕..\w8\真是%(username)哦~\w9那么\w9没什么事了喔~\1\s[11]被耍了....\w9\w9\w9\w9\0\s[33]\n小缘喵开玩笑的啦，看下面啊...\w9\n\n[half]/
+		\q[◇对话管理,dbms]\n/
+		\q[◇修改密码,Onamendcryptogramndmh]\n\n[half]/
+		\q[◇取消,overjp]\e"
+	}
+	else {
+		"\0\s[35]身份确认失败....\w9\w9\1\s[11]...\0\s[32]\n那个....\w4有些事只能和%(username)说哦，外人就不好意思了的说~~\1\s[11]\n为什么....\e"
+	}
+}
+
+Select.overPasswordInput
+{
+  "\0\s[5]密码不用改也可以吗,好的,小缘喵知道了\![close,inputbox,OnPasswordUpdate]\e"
+}

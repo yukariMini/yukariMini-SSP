@@ -1,0 +1,97 @@
+charset,UTF-8
+
+//Error Message
+error.appinit,The error occurred during starting of application.\nIn order to acquire more detailed information, please change the "Use Exception Handler" setting.
+error.apprun,Since the internal error occurred during execution, application is terminated.\nIn order to acquire more detailed information, please change the "Use Exception Handler" setting.
+error.cannotshowusagegraph,Since starting time is insufficient, usage time graph cannot be displayed. Please redo after about 1 minute passes.
+error.invalidipport,The port number cannot be used. Please set between 1024 and 65535.
+error.sstp.cannotlisten,A connection setup by the port number went wrong.\nPlease check whether the value which has not overlapped with the port used with other applications, or was invalid port number.
+error.nofile,Essential file and/or directory cannot found.\nPlease re-install SSP or fix manually.
+
+//Ask / Info
+info.threadbusy,Some commands are now processing.\nPlease wait some minutes and quit once again.\n\nDoes it surely force to terminate?
+info.compatiblemode,This ghost may need legacy specification support.\nShall I switch to old specification support mode?
+info.notinstalled,Not installed.\nShall I open an Distribution URL?
+info.delghost,Are you sure you want to delete this ghost?\nThis command cannot undo.
+info.netconnection,Not connected to network, or connection prohibition time you specified.\nConnect?
+info.sstplog,Please specify maximum size of SSTP log.\nIf log file is bigger than this setting, old file will be deleted.
+info.sstpport,Please specify SSTP port number to listen.(0-65535)
+info.serikowait,SERIKO wait multiplier (Please input percentage of wait time)
+info.charset,Please choose default character encoding.
+info.vanish,Uninstall function disabled.\nPlease enable before execute.
+info.sender,Please input Sender text passed to SHIORI\n(Materia:embryo CROW:crow Default:empty/SSP)
+info.install.overlap,Installing to existing directory.\nWill you want to install other directory?
+info.install.refresh,Deleting All Old Files and Refreshing.\nWill you want to install other directory?
+info.install.invalidsupplement,It seems to be an invalid supplement file.\nInstall anyway?
+info.toomanyselection,You are selecting too many elements.\nDoes it surely execute?
+
+info.errorlog,Error and/or Warning log exists. Click to Show Error Log List.
+
+//Resource
+resource.common.yesno,Yes,No
+resource.common.okcancel,OK,Cancel
+resource.common.addmoddel,Add,Modify,Delete
+resource.common.other,Other
+
+resource.listdialoglabel,Name,Creator,Path,Group,\0Name,\1Name,Install,Update
+resource.listdialogfind,Please input the text you want to find.
+resource.scriptloglabel,Ghost,Type,Script
+
+resource.biff.allaccount,&All Accounts
+resource.browser.select,Web Browser
+resource.mailer.select,Mailer
+resource.sound.select,Sound File
+resource.schedule.date,Schedule:%d.%d.%d
+resource.rateofuse.menu,Call Ghost,Close Ghost,Ghost Not Found,Delete This Data
+
+resource.setting.balloon.command,No Operation,Same As Left-Click,Script Termination,Direction Change
+resource.setting.sstp.boot,Don't Boot,Messenger Only(SSTP/1.5),Boot Ghosts As Many As Possible (IfGhost)
+resource.setting.sstp.close,Close when Balloon-Hide Timing,Leave,Set Close Timer...
+resource.setting.update,Compatible with Other Clients,Strict (SSP Default),Restore Mode(Check All Files)
+resource.aboutghost.select,Ghost Information...,Shell Information...
+resource.explorer.select,Ghost,Shell,Balloon,Headline,Plugin
+
+resource.setting.ghostcloseduration,Time until Ghost Closes
+resource.setting.title,SSP:Configuration
+resource.setting.messengerlabel,User Name,Address,Port,Group
+resource.setting.dirservlabel,Service,Logon,Description
+resource.setting.ipportlabel,Port,Status
+resource.setting.bifflabel,Account,Address,AutoCheck
+
+resource.update.latest,You are using latest version. No need to update.
+resource.update.exist,New version released. Will you want to download it?
+resource.update.error,Can't check SSP version.
+
+resource.schedule.type,Event,Meeting,Appointment,Reservation,Time Limit,Party,A Date,Work,Go Out,TV,Recording,Cd,Game,Video,Book,Release
+
+//Script
+script.biff.check,Checking mail...
+script.updatedata.creating,Creating network update file...
+script.updatedata.created,Network update file created.
+script.nar.creating,Creating NAR...
+script.nar.created,NAR Created.
+
+//Messenger
+messenger.info.deluser,Delete selected recipients. Are you sure?
+
+//POP
+biff.info.delaccount,Delete selected account. Are you sure?
+
+//LOG
+log.definedtwice,Defined Twice.
+log.boundrectempty,Bounding Rectangle Empty.
+log.offset,Offset Error.
+log.notfound,Not Found.
+log.empty,Empty.
+log.noimage,Has No Image.
+log.invalid,Invalid
+log.typo,Invalid
+log.orphan,Not Used.
+log.bracebeginnotfound,"{" Not Found.
+log.braceendnotfound,"}" Not Found.
+log.braceextrachar,Extra Char. After "{" or "}".
+log.newold,New definition, Old version.
+log.oldnew,Old definition, New version.
+log.invalidalias,Invalid Alias.
+log.urlslashadd,URL "/" Added.
+log.deletetxtconflict,is also in delete.txt

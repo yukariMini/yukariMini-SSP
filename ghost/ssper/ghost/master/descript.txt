@@ -1,0 +1,8 @@
+name,SSPER
+type,ghost
+sakura.name,SSPER
+craftman,S.Cha
+craftmanurl,http://kyosuke.billyjr.com/~cha/SSP.html
+sstp.allowunspecifiedsend,1
+icon,ssper.ico
+shiori,ssper.dll

@@ -1,0 +1,42 @@
+﻿
+charset, UTF-8
+charset.extension, default
+
+//---- 书 ---------------------------------------------------------------------
+dic, yaya_config.dic
+dic, yaya_shiori3.dic
+dic, yaya_compatible.dic
+dic, aya_sysex.dic
+dic, aya_string.dic
+
+
+dic, mydic\aya_aitalk.dic
+dic, mydic\playwithlrc.dic
+dic, mydic\aya_bootend.dic
+dic, mydic\aya_mouse.dic
+dic, mydic\aya_etc.dic
+
+dic, mydic\menu.dic
+dic, mydic\hotkey.dic
+dic, mydic\games.dic
+dic, mydic\flower.dic
+dic, mydic\dict.dic
+dic, mydic\rpg.dic
+//dic, mydic\uk.dic
+dic, mydic\Tarro.dic
+dic, mydic\cryptogram.dic
+dic, mydic\comm&user.dic
+dic, mydic\aya_comm.dic
+dic, mydic\aya_game.dic
+dic, mydic\bebe.dic
+dic, mydic\df.dic
+dic, mydic\tetrisgame.dic
+dic, mydic\jumptest.dic
+dic, mydic\rpggame.dic
+dic, mydic\lunar.dic
+dic, mydic\internet.dic
+//dic, mydic\test.dic
+
+//---- 程序 -------------------------------------------------------------------------
+//log, ayame.log。
+//iolog, off

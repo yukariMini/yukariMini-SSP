@@ -1,0 +1,139 @@
+﻿///////////////////////////////////////////
+////////// 右键菜单
+////////// modified by Cster 2015
+///////////////////////////////////////////
+
+//**** 文字 *******************************************************************
+
+//---- 名字 -----------------------------------------------------------------------
+On_username
+{
+	username
+}
+
+//---- 更新URL ----------------------------------------------
+//On_homeurl
+//{
+//	"http://unvollendet.hp.infoseek.co.jp/ukagaka/kousin2/"
+//}
+
+//---- 工具 -----------------------------------------------
+On_portalrootbutton.caption
+{
+	"Bottle"
+}
+
+//---- 网站 -----------------------------------------------------------
+On_sakura.portalsites
+{
+	"/
+	MATERIA%ASC(1)http://usada.sakura.vg/%ASC(2)/
+	SSP%ASC(1)http://ssp.shillest.net%ASC(2)"
+}
+
+//---- 网址 -----------------------------------------
+On_recommendrootbutton.caption
+{
+	"推荐网址"
+}
+
+//---- 友链 -----------------------------------------------------
+On_sakura.recommendsites
+{
+	"/
+	小缘b站空间%ASC(1)http://space.bilibili.com/5055%ASC(2)/
+	小缘a站空间%ASC(1)http://www.acfun.tv/u/67212.aspx#area=post-history%ASC(2)/
+	小缘5sing空间%ASC(1)http://5sing.kugou.com/3611537/default.html%ASC(2)/
+	小缘M站空间%ASC(1)http://www.missevan.cn/23923/sound%ASC(2)"
+}
+
+//---- 推荐 -----------------------------------------
+On_kero.recommendbuttoncaption
+{
+}
+
+//---- 侧面 -----------------------------------------------------
+//On_kero.recommendsites
+//{
+//	""
+//}
+
+//---- 更新 ---------------------------------------------
+On_updatebutton.caption
+{
+	"更新不能"
+}
+
+//---- readme -------------------------------------------------------
+On_readmebutton.caption
+{
+	"read me"
+}
+
+//---- 消灭指示 -----------------------------------------------------
+On_vanishbutton.caption
+{
+	"派发便当"
+}
+
+//---- 消灭指示表示 -------------------------------------------------------
+
+On_vanishbutton.visible
+{
+	vanishbutton.visible
+}
+
+//---- 起动 -------------------------------------------------------
+On_otherghostname
+{
+	// 现在起动中
+	ghostexlist = ""
+	_i = 0
+	while _i >= 0 {
+		_ghostname = NAMETOVALUE("reference%_i")
+		if _ghostname != "" {
+			if _i > 0; ghostexlist += ","
+			ghostexlist += _ghostname[0]
+			_i++
+		}
+		else; _i = -1
+	}
+	ghostexcount = ARRAYSIZE(ghostexlist)
+}
+
+//---- SHIORI 情报 ------------------------------------------------------------------
+On_version
+{
+	GETSETTING(AYAINFO_VERSION)
+}
+
+On_craftman
+{
+	"umeici"
+}
+
+On_craftmanw
+{
+	"梅市"
+}
+
+On_name
+{
+	"AYA"
+}
+
+//---- Owned SSTP 用 uniqueid 取得 ------------------------------------------------------
+On_uniqueid
+{
+	uniqueid = reference0
+}
+
+//---- hwnd 取得 ------------------------------------------------------------------------
+On_hwnd
+{
+	sakurahwnd    = reference0[0]
+	kerohwnd      = reference0[1]
+	sakurablnhwnd = reference1[0]
+	keroblnhwnd   = reference1[1]
+}
+

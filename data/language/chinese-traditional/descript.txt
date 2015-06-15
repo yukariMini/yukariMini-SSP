@@ -1,0 +1,10 @@
+name,Chinese-Traditional
+locale,Chinese-Traditional
+id,1028
+menu.font.name,²Ó©úÅé
+menu.font.height,12
+dllname,resource.dll
+messagename,message.txt
+holidayname,holidays.txt
+craftman,SSP CERS
+craftmanurl,http://kyosuke.billyjr.com/~cha/SSP.html

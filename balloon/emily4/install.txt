@@ -1,0 +1,4 @@
+charset,Shift_JIS
+type,balloon
+name,emily¸Ä
+directory,emily4

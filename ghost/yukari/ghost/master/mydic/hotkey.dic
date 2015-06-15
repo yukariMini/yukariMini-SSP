@@ -1,0 +1,312 @@
+﻿///////////////////////////////////////////
+////////// 热键、记事本
+////////// modified by Cster 2015
+//////////F1 readme
+//////////F2 talk
+//////////F3 music
+//////////F4 最小化
+//////////F5 重新读取ghost
+//////////F6 报时
+//////////F12截屏
+///////////////////////////////////////////
+
+OnKeyPress
+{
+	if reference0 == "f1" {
+		//---- 開啟readme.txt
+		"\![open,readme]"
+	}
+	elseif reference0 == "f2" {
+		//---- 
+		RandomTalk
+	}
+        elseif reference0 == "f3" {
+		//---- 
+		OnMusicPlayer
+	}
+	elseif reference0 == "f4" {
+		//---- 
+		"\![set,windowstate,minimize]"
+	}
+	elseif reference0 == "f5" {
+		//
+		"\0重新讀取ghost……\![reload,ghost]"
+        }
+	
+        elseif reference0 == "f6" {
+    "\![set,trayballoon,--timeout=10,--title=小缘喵报时,--text=%(hour12)点%(minute)分♪]"
+	}
+
+	
+        elseif reference0 == "f10"{
+
+//		"\![open,file,saori\rundll32.exe,CameraDll.dll,CameraSubArea]"
+          
+              
+	}
+   
+        elseif reference0 == "f12" {
+		//截屏功能。感謝Pygmalionさん與Royさん！
+		_result=FUNCTIONEX("saori\screencatch.dll");
+	}
+	
+	elseif (reference0 == "p" || reference0 == "s") && playingmusic {
+		MusicHotKey(reference0);
+	}
+	elseif playingbox {
+		PlayBox;
+	}
+        elseif playingtetris {
+                FormKeyDown
+                
+        }
+	else {
+		//"\0\s[0]你按了%(reference0)。編碼是%(reference1)。目前尚未被設定為熱鍵。"
+	}
+}
+
+OnGetVarValue
+{
+	_var = reference0[0,'='];
+	_var = _var[0,'['];
+	_func = reference0[0,'('];
+	if ISVAR(_var) == 0 && ISFUNC(_func) == 0 {
+		"没有这个变量或函数……";
+	}
+	else {
+		"表达式『%(reference0)』的执行结果为：\n"
+		--
+		TOSTR(EVAL(reference0));
+	}
+}
+
+
+
+//使用密码表
+Onnotebook
+{
+_w=""
+_k=0
+_j=0
+_l=0
+if reference1!=NULL
+_k=TOINT(reference1)
+    if reference0==0 || reference0!=1
+  _w="\0\s[26]\_q\b[2]\n[150]\![*]\q[添加记事,Onaddnotebook]\_l[130,-]\![*]\q[返回,OnOpenMenu,0]\_l[187,-]\![*]\q[删除,Onnotebook,1]\_l[240,-]\![*]\q[退出,Onovernotebook]\n[200]";
+    elseif reference0==1 ||reference0!=0
+_w="\0\s[26]\_q\b[2]\n[150]\![*]\q[添加记事,Onaddnotebook]\_l[130,-]\![*]\q[返回,OnOpenMenu,0]\_l[187,-]\![*]\q[修改,Onnotebook,0]\_l[240,-]\![*]\q[退出,Onovernotebook]\n[200]";
+    
+  _j=SQL("SELECT Q FROM currency WHERE Q LIKE'%#|#%'","-f");
+  if _j==0
+    _w+="\s[3]没有数据呢...\n[110]";
+  else {
+      if _k+20<=_j
+         _l=_k+20
+      else
+         _l=_j  
+    for _i=_k;_i<_l;_i++ {
+      _t=EVAL("valueex" + _i);
+      _t1=_t[0,'#|#'];
+      if STRLEN(_t1)>8 {
+        _t1=SUBSTR(_t1,0,8);
+        _t1+=".."
+      }
+      _s="\__q[Onmenushownote,%(_t)][菜单显示]\__q";
+      if _t[1,'#|#']==1
+        _s="\f[color,110,110,110]\__q[Onmenushownote,%(_t)][取消显示]\__q\f[default]";
+      _t2=SQL("SELECT A FROM currency WHERE Q='%(_t)'","-j");
+           if reference0==0 || reference0!=1
+      _w+="\f[color,255,0,0]%(_i+1).\f[default]\q[%(_t1),Onclicknotebook,%(_t)]/
+      \f[color,110,110,110]\_l[120,-][%(_t2[1,'#|#'])] /
+      \f[color,255,0,0]\__q[Onupdatenotebook,%(_t)][修改]\__q\f[default] %(_s)\n[110]";
+       elseif reference0==1 ||reference0!=0
+      _w+="\f[color,255,0,0]%(_i+1).\f[default]\q[%(_t1),Onclicknotebook,%(_t)]/
+      \f[color,110,110,110]\_l[120,-][%(_t2[1,'#|#'])] /
+      \f[color,255,0,0]\__q[Ondelnotebook,%(_t)][删除]\__q\f[default] %(_s)\n[110]";
+      state="input"
+    }
+  
+}
+--
+    _Page="";
+   if _j<=20
+    _Page="";
+	elseif _k==0 && _j>20
+    _Page="\_l[60,350]\q[下一页>>,Onnotebook,,%(_k+20)]\n[140]";
+  elseif _k>0 && _k+20>_j
+    _Page="\_l[0,350]\q[上一页<<,Onnotebook,,%(_k-20)]\n[140]";
+  else
+    _Page="\_l[0,350]\q[<<上一页,Onnotebook,,%(_k-20)]  \_l[60,350]\q[下一页>>,Onnotebook,,%(_k+20)]\n[140]";  
+  _w+_Page;
+
+}
+
+Onmenushownote
+{
+  _j=SQL("SELECT Q FROM currency WHERE Q='%(reference0)'","-j");
+  if _j[1,'#|#']==1 {
+    _t=_j[0,'#|#']+"#|#0";
+    _temp=SQL("UPDATE currency SET Q='%(_t)' WHERE Q='%(reference0)'");
+  }
+  else {
+    _a=SQL("SELECT Q FROM currency WHERE Q LIKE'%#|#1%'","-j");
+    if _a!=null {
+      _t=_a[0,'#|#']+"#|#0";
+      _temp=SQL("UPDATE currency SET Q='%(_t)' WHERE Q='%(_a)'");
+    }
+    _t=_j[0,'#|#']+"#|#1";
+    _temp=SQL("UPDATE currency SET Q='%(_t)' WHERE Q='%(reference0)'");
+  }
+  Onnotebook;
+}
+
+
+menushownotebook
+{
+  _w="";
+  _t=SQL("SELECT Q FROM currency WHERE Q LIKE'%#|#1%'","-j");
+  _c=SQL("SELECT A FROM currency WHERE Q LIKE'%#|#1%'","-j");
+  if _t!=null {
+      _t1=_t[0,'#|#'];
+      if STRLEN(_t1)>8 {
+        _t1=SUBSTR(_t1,0,8);
+        _t1+="..."
+      }
+    _w="\_l[110,110]\f[bold,true]\q[%(_t1),Onclicknotebook,%(_t)]\f[default]\f[color,110,110,110]\__q[Onmenushownote,%(_t)][取消显示]\__q\f[default]"
+    _c1=_c[0,'#|#'];
+    _n=STRLEN(_c1)/13+1;
+    _l=125;
+    for _i=0;_i<_n && _i<13;_i++ {
+      if _i==12
+        _w+="\_l[110,%(_l)]"+SUBSTR(_c1,_i*13,11)+"......";
+      else
+        _w+="\_l[110,%(_l)]"+SUBSTR(_c1,_i*13,13);
+      _l+=15;
+    }
+  }
+  _w;
+}
+
+Onupdatenotebook
+{
+_txt="\0\s[26]\b[2]\_q\n\n" 
+        //if reference0 && reference1==NULL
+ _t=0
+ _c=0     
+    if  state=="input"
+     {
+       ID=reference0
+       _t=SQL("SELECT Q FROM currency WHERE Q='%(ID)'","-j")
+       _c=SQL("SELECT A FROM currency WHERE Q='%(ID)'","-j")
+       //_t=_t[0,'#|#']
+       //_c=_c[1,'#|#']
+     state=""
+       _txt+="请选择要更改的部分\n\n"
+       _txt+="\__q[Onupdatenotebook,%(_t),Title]标题：%(_t[0,'#|#'])\n[110]"
+       _txt+="\__q[Onupdatenotebook,%(_t),Content]内容：\n%(_c[0,'#|#'])\n[200]"
+       _txt+="\![*]\q[返回,Onnotebook]     \![*]\q[退出,Onovernotebook]\![set,choicetimeout,0]"
+     }
+
+
+    elseif reference1=="Title"
+      {  
+         ID=reference0
+          _t=SQL("SELECT Q FROM currency WHERE Q='%(ID)'","-j")
+        state="update.Title"
+        _txt+="\![open,inputbox,Onupdatenotebook,-1,%(_t[0,'#|#'])]标题：%(_t[0,'#|#'])\n"
+       }
+
+    elseif reference1=="Content"
+     { ID=reference0
+         _c=SQL("SELECT A FROM currency WHERE Q='%(ID)'","-j")
+       state="update.Content"
+      _txt+="\![open,inputbox,Onupdatenotebook,-1,%(_c[0,'#|#'])]内容：%(_c[0,'#|#'])\n"
+       }
+
+    elseif state=="update.Title"
+      {   
+        if STRLEN(reference0)>0
+          {
+           _temp=SQL("UPDATE currency SET Q='%(reference0)#|#0' WHERE Q='%(ID)'");
+            _txt+="更改已完成\n"
+          }
+         else 
+            _txt+="未做更改\n"
+           state="input"
+          
+           _txt+="\![*]\q[返回上一层,Onnotebook,%(ID)]     \![*]\q[退出,Onovernotebook]\![set,choicetimeout,0]"
+
+       }
+
+     elseif state=="update.Content"
+        {
+          _c=SQL("SELECT A FROM currency WHERE Q='%(ID)'","-j")
+          if STRLEN(reference0)>0
+          {
+          _temp=SQL("UPDATE currency SET A='%(reference0)#|#%(year)-%(month)-%(day)' WHERE Q='%(ID)'");
+             _txt+="更改已完成\n"
+          }
+          else
+           _txt+="未做更改\n"
+        state="input"
+         _txt+="\![*]\q[返回上一层,Onnotebook]     \![*]\q[退出,Onovernotebook]\![set,choicetimeout,0]"
+
+         }
+
+//_txt+=\![*]\q[返回,Onnotebook]     \![*]\q[退出,Onovernotebook]\![set,choicetimeout,0]"
+_txt
+}
+
+
+Ondelnotebook
+{
+  _t=SQL("DELETE FROM currency WHERE Q='%(reference0)'");
+  Onnotebook;
+}
+
+Onclicknotebook
+{
+  _t=SQL("SELECT Q FROM currency WHERE Q='%(reference0)'","-j")
+  _c=SQL("SELECT A FROM currency WHERE Q='%(reference0)'","-j")
+  "\0\s[26]\b[2]\_q\f[bold,true]标题：%(_t[0,'#|#'])\n[110]\f[color,110,110,110][%(_c[1,'#|#'])] \f[color,255,0,0]\__q[Ondelnotebook,%(reference0)][删除]\__q\f[default] \__q[Onmenushownote,%(reference0)][菜单显示]\__q\n[160]内容：\n%(_c[0,'#|#'])\n[200]\![*]\q[返回,Onnotebook]     \![*]\q[退出,Onovernotebook]\![set,choicetimeout,0]"
+}
+
+Onaddnotebook
+{
+  if _argv[0]=="Title" {
+    if addnotebook_T!=null
+      "\0\s[26]请输入内容!\![open,inputbox,Onaddnotebook_C,-1]\n[300]\![set,choicetimeout,0]\q[◇退出,Onovernotebook,Onaddnotebook_C]\e"
+    else
+      Onaddnotebook;
+  }
+  elseif _argv[0]=="Content" {
+    if addnotebook_C!=null {
+      _T=addnotebook_T;_C=addnotebook_C;
+      _T+="#|#0";
+      _C+="#|#%(year)-%(month)-%(day)"
+      _temp=SQL("INSERT INTO currency VALUES ('%(_T)','%(_C)')");
+      ERASEVAR("addnotebook_T");
+      ERASEVAR("addnotebook_C");
+      "\0\s[26]小缘已经记下了哦~\w9\x%(Onnotebook)"
+    }
+    else
+      Onaddnotebook("Title");
+  }
+  else {
+    "\0\s[26]请输入标题!\![open,inputbox,Onaddnotebook_T,-1]\n[300]\![set,choicetimeout,0]\q[◇退出,Onovernotebook,Onaddnotebook_T]\e"
+  }
+}
+
+Onaddnotebook_T {
+  addnotebook_T = CUTSPACE(reference0);
+  Onaddnotebook("Title");
+}
+Onaddnotebook_C {
+  addnotebook_C = CUTSPACE(reference0);
+  Onaddnotebook("Content");
+}
+  
+Onovernotebook
+{
+  "\0\s[1]嗯嗯,\![close,inputbox,%(reference0)] 好的哦..."
+}

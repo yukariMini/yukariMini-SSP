@@ -1,0 +1,7 @@
+﻿charset,UTF-8
+type,ghost
+name,yukari
+directory,yukari
+
+balloon.directory,emily4
+balloon.source.directory,balloon

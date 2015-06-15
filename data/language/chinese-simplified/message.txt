@@ -1,0 +1,95 @@
+charset,UTF-8
+
+//Error Message
+error.appinit,在发送请求过程中发生了一个错误.\n为了得到更详细的错误报告,请改变 "使用除错助手" 设置.
+error.apprun,程序在执行过程中发生了一个内在的错误,所以中止运行.\n为了得到更详细的错误报告, 请改变 "使用除错助手" 设置.
+error.cannotshowusagegraph,起始时间不充足, 所使用的时间图表不能显示. 请在一分钟后重试.
+error.invalidipport,不能使用所设置的端口. 请把它设置在 1024 与65535 之间
+error.sstp.cannotlisten,不能连接,网络连接设置因为端口问题发生故障.\n请检查是否该端口与其他应用程序所设置相重叠, 或是一个错误端口.
+error.nofile,相关文件或文件夹丢失.\n请重新安装SSP或手动修正.
+
+//Ask / Info
+info.threadbusy,正在处理一些命令.\n请等几分钟再试一次.\n\n真的要强行中止吗?
+info.compatiblemode,该人格也许需要旧规格的支持.\n我要转变成旧规格支援模式吗?
+info.notinstalled,没有安装.\n我要开一个发送网址吗?
+info.delghost,你确定删除这个人格吗?\n一旦执行不能取消该命令.
+info.netconnection,不能连接到网络, 或者你置了网络禁止连接时间段.\n连接?
+info.sstplog,请设置 SSTP 日志的最大尺寸 .\n如果日志文大小超过该设置, 将会自动删掉旧的文件.
+info.sstpport,请设置 SSTP 端口.(0-65535)
+info.serikowait,SERIKO 等待数 (请输入等待时间的百分数)
+info.charset,请选择将使用的人格语系.
+info.vanish,反安装功能禁止.\n请先切换设定.
+info.sender,请输入SHIORI发送器文本.\n(Materia:embryo CROW:crow Default:empty/SSP)
+info.install.overlap,目标文件夹已存在.\n你想安装到其他目录吗?
+info.install.refresh,将删除所有旧目录和更新。\n你想要安装到其他目录吗?
+info.install.invalidsupplement,目标文件可能存在问题.\n无论如何都要安装吗?
+info.toomanyselection,你所选的选项过多.\n确定要执行吗?
+
+info.errorlog,错误或警告纪录已经存在。请检查错误纪录清单。
+
+//Resource
+resource.common.yesno,是,不
+resource.common.okcancel,确定,取消
+resource.common.addmoddel,加入,修改,删除
+resource.common.other,其他
+
+resource.listdialoglabel,名字,作者,路径,本体名,使魔名
+resource.listdialogfind,请输入你想查询的文字.
+resource.scriptloglabel,路径,类别,语法
+
+resource.biff.allaccount,全部帐户(&A)
+resource.browser.select,网络文件夹
+resource.mailer.select,邮件
+resource.sound.select,声音文件
+resource.schedule.date,记事薄:%d.%d.%d
+
+resource.setting.balloon.command,不设定,与左键一样,中止语法,改变方向
+resource.setting.sstp.boot,不启动,只有消息(SSTP/1.5),尽可能启动人格 (IfGhost)
+resource.setting.sstp.close,当隐藏对话时关闭,留下,设置关闭时间...
+resource.setting.update,标准(和其他系统相容),严格(SSP预设),修复模式(全部检查)
+resource.aboutghost.select,人格信息...,外形信息...
+resource.explorer.select,人格,外形,对话框,在线新闻,外挂
+
+resource.setting.ghostcloseduration,直到人格关闭为止
+resource.setting.title,SSP:内部设定
+resource.setting.messengerlabel,用户名,地址,端口,团体
+resource.setting.dirservlabel,服器器,登陆上网,说明
+resource.setting.ipportlabel,端口,状况
+resource.setting.bifflabel,账户,地址,自动检查
+
+resource.update.latest,你已经正在使用最新版本。不需要更新。
+resource.update.exist,新版本已发布。想要下载并安装吗?
+resource.update.error,无法检查 SSP 版本。
+
+resource.schedule.type,事件,会议,约会,预约,限制时间,晚会,日期,工作,外出,电视节目,唱片,Cd,游戏,录像,书,发布
+
+//Script
+script.biff.check,检查邮件...
+script.updatedata.creating,制作网络更新文件...
+script.updatedata.created,网络更新文件已建立.
+script.nar.creating,制作NAR...
+script.nar.created,NAR制作完毕.
+
+//Messenger
+messenger.info.deluser,你确定要删除选择的收件人吗?
+
+//POP
+biff.info.delaccount,你确定删除所选账户吗?
+
+//LOG
+log.definedtwice,重复定义。
+log.boundrectempty,边框为空。
+log.offset,位置错误。
+log.notfound,找不到。
+log.empty,为空。
+log.noimage,没有影像。
+log.invalid,不合法
+log.typo,误字
+log.bracebeginnotfound,"{" 找不到。
+log.braceendnotfound,"}" 找不到。
+log.braceextrachar,额外字元。在 "{" 或 "}" 前后。
+log.newold,新定义，旧版本。
+log.oldnew,旧定义，新版本。
+log.invalidalias,不合法的别名。
+log.urlslashadd,URL "/" 已加入。
+log.deletetxtconflict,已在 delete.txt 中

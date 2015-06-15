@@ -1,0 +1,523 @@
+﻿///////////////////////////////////////////
+////////// 谈话&教学
+////////// modified by Cster 2015
+///////////////////////////////////////////
+
+Select.dbms
+{
+  "\q[◇谈话数据删除,TalkDelete]\n/
+  \q[◇谈话数据修改,TalkUpdate]\n/
+  \n\n\![*]\q[返回,ReturnMenu]\n\![*]\q[取消,MenuCancel]\e"
+}
+
+//----添加---------------------------
+
+Select.教学
+{
+  temp01="提问";
+  Teach00;
+}
+
+Teach00
+{
+  "\0\s[5]\_q"
+  --
+  if temp01=="小缘喵这时要回答的" {
+    "已设置提问内容：%(formattemp(temp02))\n[150]"
+    }
+  --
+  "请输入“%(temp01)内容”!\n"
+  --
+  if temp01=="提问" {
+    "如果需要设置问题同义词(句),\n请在同义词(句)之间用“|”符号分隔开来!\n如果需要设置多个关键词(句),\n请在各关键词(句)之间用“&”分隔开来!\n【注意:“&”优先度高于“|”】"
+  }
+  else {
+    "如果需要设置多种回答方案,\n请使用“|”符号分隔开来！提问时会随机输出喔~"
+  }
+  --
+  "\n\n\![set,choicetimeout,0]\![*]\q[取消,OnoverTeach,OnTeach0]\![open,inputbox,OnTeach0,-1]\e"
+}
+
+formattemp//输出显示时如有同义词句则把同义词句括起来
+{
+  _a=_argv[0];
+  SETDELIM(_a,"|");
+  _x="";
+  _y=0;
+  while _a[_y+1]!=null {
+    if _y==0 {
+      _x=_a[0]+"（";
+    }
+    else {
+      _x+=_a[_y]+"/";
+    }
+    _y++;
+  }
+  _x+=_a[_y]+"）";
+  if _y==0 {
+  _x=_a[0];
+  }
+  _x;
+}
+
+OnTeach0
+{
+  _a=CUTSPACE(reference0);
+  _a=REPLACE(_a,",","，");
+  _a=REPLACE(_a,"?","？");
+  if _a=="" {
+    Teach00;
+  }
+  else {
+    if temp01=="提问" {
+      temp02=_a;
+      _g=IARRAY;
+      _c=0;
+      _c=SQL("SELECT ID FROM ndmh WHERE 提问='%(_a)' AND scope!=-1","-j");//是否存在完全符合"提问"的记录
+      if _c>0 {
+        _g[0]=_c;//_g=_c;
+      }
+      else {//输入的句子中是否包含有对话库"提问"字段的词语,有的话取出符合的答案,将ID保存在数组_g
+      _g=Talksearch(_a);
+      }
+      if _g[0]==null {
+        temp01="小缘喵这时要回答的";
+        Teach00;
+      }
+      else {
+        _i=0;
+        _m="";
+        while _g[_i]!=null {
+          _b=SQL("SELECT * FROM ndmh WHERE ID='%(_g[_i])' AND scope!=-1","-j");
+          _i++;
+          _b=REPLACE(_b,"\1","兔子：");
+          _x=_b[2];
+          _y=_b[3];
+          _z=_b[0];
+
+          _m +="ID:"+_z+"\n提问: "+formattemp(_x)+"\n回答: "+formattemp(_y)+"\n[200]";
+        }
+        "\0\s[5]\b[2]\![set,choicetimeout,0]已经存在下面的提问哦~继续吗?\n\n/
+        %(_m)"
+        --
+        if _c<=0 {
+        "\![*]\q[继续,继续教学]\n"
+        }
+        --
+        "\![*]\q[重新设置提问,教学]\n/
+        \![*]\q[取消,OnoverTeach]\e"
+      }
+    }
+    elseif temp01=="小缘喵这时要回答的" {
+      temp03=_a;
+      _i=SQL.total("ndmh");
+      _i++;
+      _b=write01(_i);
+      if _b==0
+      "\0\s[5]\b[2]记录完毕,现共有%(SQL.totalNODel('ndmh'))条教学对话...\n这次增加的为:\n[200]提问: %(formattemp(temp02))\n[150]回答: %(formattemp(temp03))\n[200]\![set,choicetimeout,0]\![*]\q[继续教小缘喵对话,教学]\n\![*]\q[暂时就这样了,OnoverTeach]\e"
+      else
+      "\0\s[5]添加失败了!好奇怪啊...\1\s[10]未知的bug吗?"
+    }
+  }  
+}
+
+Select.继续教学
+{
+  temp01="小缘喵这时要回答的";
+  Teach00;
+}
+
+write01
+{ 
+  _a=SQL("SELECT ID FROM ndmh WHERE scope=-1","-r");
+  _b=valueex0;
+  if _a>0 {
+    SQL("UPDATE ndmh SET scope=2,提问='%(temp02)',回答='%(temp03)' WHERE ID=%(_b)");
+  }
+  else {
+    SQL("INSERT INTO ndmh VALUES ('%(_argv[0])','2','%(temp02)','%(temp03)','（空）','（空）')");
+  }
+}
+
+OnoverTeach
+{
+  ERASvalueex;
+  "\![close,inputbox,%(reference0)]"
+  --
+  "\0\s[5]好的。\e"
+	"\0\s[3]啊、\w9好的。\e"
+	"\0\s[3]…\w9是这样啊。\e"
+	"\0\s[9]…\w9…\w9…\e"
+	"\0\s[5]…\w9\s[9]怎么了？\e"
+}
+
+//---- 搜索 ------------------------------------------
+//--------TalkToUser事件延伸-------------------------------------------------------------
+JuhuaTalkToUser
+{
+  _a=CUTSPACE(reference1);//CUTSPACE去掉空白部分;
+  if _a=="" {
+    "\0\s[5]请输入内容~\e"
+    "\0\s[5]%(username)请说话喔~\e"
+    "\0\s[5]%(username)请不要和小缘喵开玩笑哦,请输入内容~\e"
+  }
+  elseif "|" _in_ _a || "&" _in_ _a {
+    "\0\s[5]请不要用＂|＂或＂&＂输入哦,这是系统符号哦~\e"
+  }
+  else {
+    _g=IARRAY;
+    _c=0;
+    _c=SQL("SELECT ID FROM ndmh WHERE 提问='%(_a)' AND scope!=-1","-j");
+    if _c>0 {
+      _g[0]=_c;
+    }
+    else {
+      _g=Talksearchleng(_a);
+    }
+    if _g[0]==null {
+      if SQL("SELECT 回答 FROM ndmh WHERE 提问 LIKE'%%(_a)%' AND scope!=-1","-f")<=0 {
+        "\0\s[5]这个...小缘喵不懂哦"
+        "\0\s[5]这个...小缘喵不明白喔"
+        "\0\s[5]这个...\1\s[10]被问住了啊...\0"
+        --
+        "\n\![*]\q[返回,MenuCancel]\e"
+      }
+      else {//随机取出一句(结果>=2时无法得到第一条记录)
+        _b=SQL("SELECT 回答 FROM ndmh WHERE 提问 LIKE'%%(_a)%' AND scope!=-1","-r");
+        _b=valueex0;
+        SETDELIM(_b,"|");
+        _b=ANY(_b);
+        "\0\s[5]\b[2]%(_b)\0\_q\n\n\n\n\n这是小缘喵试着回答的,如果不恰当,\n请%(username)告诉小缘喵怎么回答哦~\n[150]"
+      }
+    }
+    else {
+      _g=ANY(_g);
+      _b=SQL("SELECT 回答 FROM ndmh WHERE ID='%(_g)'","-j");
+      SETDELIM(_b,"|");
+      _b=ANY(_b);
+
+      "\0%(_b)\e"
+    }
+  }
+}
+
+Talksearch
+{
+  _a=_argv[0];
+  _g=IARRAY;
+  _e=0;
+  _n=0;
+  _i=SQL.total("ndmh");
+  for _d=1;_d<=_i;_d++ {
+    _f=SQL("SELECT 提问 FROM ndmh WHERE ID='%(_d)' AND scope!=-1","-j");
+    SETDELIM(_f,"|");
+    _y=0;
+    while _f[_y]!=null {
+      _m=0;
+      if "&" _in_ _f[_y] {//判断"提问"中有&时,各个关键字是否都存在于_a中
+        _j=_f[_y];
+        SETDELIM(_j,"&");
+        _n=ARRAYSIZE(_j);
+        _k=0;
+        for _l=0,_m=1;_l<_n && _m==1;_l++ {
+          _m=(_j[_l] _in_ _a);
+        } 
+        if _m==1 {
+          _g[_e]=_d;
+          _e++;
+        }
+      }
+      if _f[_y] _in_ _a {
+        _g[_e]=_d;
+        _e++;
+      }
+      _y++;
+    }
+  }
+  _g;
+}
+
+Talksearchleng
+{
+  _a=_argv[0];
+  _g=IARRAY;
+  _e=0;
+  _n=0;
+  _lastm=0;
+  _i=SQL.total("ndmh");
+  for _d=1;_d<=_i;_d++ {
+    _f=SQL("SELECT 提问 FROM ndmh WHERE ID='%(_d)' AND scope!=-1","-j");
+    SETDELIM(_f,"|");
+    _y=0;
+    while _f[_y]!=null {
+      _m=0;
+      if "&" _in_ _f[_y] {
+        _j=_f[_y];
+        SETDELIM(_j,"&");
+        _n=ARRAYSIZE(_j);
+        _k=0;
+        //_m=1;
+        for _l=0,_m=1;_l<_n && _m==1;_l++ {
+          _m=(_j[_l] _in_ _a);
+          _k+=STRLEN(_j[_l]);
+        } 
+        if _m==1 && _k==_e && _lastm==1 {
+          _o=ARRAYSIZE(_g);
+          _g[_o]=_d;
+        }
+        elseif _m==1 && _k>_e {
+          _lastm=1;
+          _e=_k;
+          _g=IARRAY;
+          _g[0]=_d;
+        }
+      }
+
+      if _f[_y] _in_ _a && STRLEN(_f[_y])==_e && _lastm==0 {
+        _o=ARRAYSIZE(_g);
+        _g[_o]=_d;
+      }
+      elseif _f[_y] _in_ _a && STRLEN(_f[_y])>_e {//当上次最大长度匹配＞这次,不管是何种保留都放弃
+        _lastm=0;
+        _e=STRLEN(_f[_y]);
+        _g=IARRAY;
+        _g[0]=_d;
+      }
+      _y++;
+    }
+  }
+  _g;
+}
+
+//---- 删除&修改 -------------------------------------------------------
+Select.TalkDelete
+{
+  "\q[◇按“提问”关键字搜索进行删除,TalkDeletesearch]\n/
+  \q[◇全部列表,TalkAllDel]\n\n/
+  \![*]\q[返回,dbms]\n\![*]\q[取消,MenuCancel]\e"
+}
+
+Select.TalkUpdate
+{
+  "\q[◇按“提问”关键字搜索进行修改,TalkAmendesearch]\n/
+  \q[◇全部列表,TalkAllAmend]\n\n/
+  \![*]\q[返回,dbms]\n\![*]\q[取消,MenuCancel]\e"
+}
+
+Select.TalkDeletesearch
+{
+  temp01="删除该词条";
+  "\0\s[5]\![set,choicetimeout,0]请输入“提问”关键字!\n在这里不会启用正向模糊查询!\n\n\![*]\q[返回,TalkDelete]\n\![*]\q[取消,OnoverTeach,OnTalksearch]\![open,inputbox,OnTalksearch,-1]\e"
+}
+
+Select.TalkAmendesearch
+{
+  temp01="修改该词条";
+  "\0\s[5]\![set,choicetimeout,0]请输入“提问”关键字!\n在这里不会启用正向模糊查询!\n\n\![*]\q[返回,TalkUpdate]\n\![*]\q[取消,OnoverTeach,OnTalksearch]\![open,inputbox,OnTalksearch,-1]\e"
+}
+
+Select.TalkAllDel
+{
+  temp01="删除该词条";
+  UPDateshow("#-1","1");
+}
+
+Select.TalkAllAmend
+{
+  temp01="修改该词条";
+  UPDateshow("#-1","1");
+}
+//------------------------------------------------------------------
+
+OnTalksearch
+{
+  _a=CUTSPACE(reference0);
+  if _a=="" {
+    "\0\s[5]请输入内容喔~\e"
+    "\0\s[5]%(username)请说话喔~\e"
+    "\0\s[5]%(username)怎么不说话,小缘喵不知道怎么做的哦...\e"
+  }
+  else {
+    _g=IARRAY;
+    _c=0;
+    _c=SQL("SELECT ID FROM ndmh WHERE 提问='%(_a)' AND scope!=-1","-j");
+    if _c>0 {
+      _g[0]=_c;
+    }
+    else {
+      _g=Talksearch(_a);
+    }
+    if _g[0]==null {
+        "\0\s[5]\![set,choicetimeout,0]没有符合的记录!\n\n\![*]\q[返回,dbms]           \![*]\q[取消,OnoverTeach]\e"
+    }
+    else {
+      UPDateshow(_g);
+    }
+  }
+}
+
+
+UPDateshow
+{
+  _m="";
+  _pag="";
+  if _argv[0]=="#-1" {
+    _i=TOINT(_argv[1]);
+    _p=(_i+9)/10;
+    _next=TOINT(_argv[1])+10;
+    _front=TOINT(_argv[1])-10;
+    _tola=(TOINT(SQL.total("ndmh"))+9)/10;
+    if _i==1 {
+      _pag="\_l[0,-]<<上一页\_l[65,-]\q[第1页,Onselepag]    共%(_tola)页\_l[165,-]\q[下一页>>,OnPage,%(_next)]"
+    }
+    elseif _next>SQL.total("ndmh") {
+      _pag="\_l[0,-]\q[<<上一页,OnPage,%(_front)]\_l[65,-]\q[第%(_tola)页,Onselepag]    共%(_tola)页\_l[165,-]下一页>>"
+    }
+    else {
+      _pag="\_l[0,-]\q[<<上一页,OnPage,%(_front)]\_l[65,-]\q[第%(_p)页,Onselepag]    共%(_tola)页\_l[165,-]\q[下一页>>,OnPage,%(_next)]"
+    }
+    while _i<_next && _i<=SQL.total("ndmh") {
+      _b=SQL("SELECT * FROM ndmh WHERE ID='%(_i)' AND scope!=-1","-j");
+      _i++;
+      _b=REPLACE(_b,"\1","兔子：");
+      _b=REPLACE(_b,"\w","[等待]");
+      _x=_b[2];
+      _y=_b[3];
+      _z=_b[0];
+      if _b!=null {
+        _m +="ID:"+_z+"\_l[150,-]\![*]\q[%(temp01),OnSQLUPDate,%(_z)]"+"\n提问: "+formattemp(_x)+"\n回答: "+formattemp(_y)+"\n[150]";
+      }
+    }
+  }
+  else {
+    _g=_argv;
+    _i=0;
+    while _g[_i]!=null {
+      _b=SQL("SELECT * FROM ndmh WHERE ID='%(_g[_i])' AND scope!=-1","-j");
+      _i++;
+      _b=REPLACE(_b,"\1","兔子：");
+      _b=REPLACE(_b,"\w","[等待]");
+      _x=_b[2];
+      _y=_b[3];
+      _z=_b[0];
+      _m +="ID:"+_z+"\_l[150,-]\![*]\q[%(temp01),OnSQLUPDate,%(_z)]"+"\n提问: "+formattemp(_x)+"\n回答: "+formattemp(_y)+"\n[150]";
+    }
+  }
+  "\0\s[5]\b[2]\_q\![set,choicetimeout,0]所有符合条件的词条~\n\n%(_m)\n[130]%(_pag)\n[130]/
+  \![*]\q[返回,dbms]\n\![*]\q[取消,OnoverTeach]\e"
+}
+
+OnPage
+{
+  temp01="删除该词条";
+  UPDateshow("#-1",reference0);
+}
+
+Onselepag
+{
+  _a=(TOINT(SQL.total("ndmh"))+9)/10;
+  "\0\s[5]\_q\![set,choicetimeout,20000]请输入页数（半角数字）,共有 %(_a)页!\n[200]\![*]\q[取消,OnoverTeach,Onsp]\![open,inputbox,Onsp,20000]\e"
+}
+
+Onsp//选页
+{
+  _a=CUTSPACE(reference0);
+  _b = RE_REPLACE(_a,"[0123456789]",null);
+  if _b!=null || _a==null {
+    Onselepag;
+  }
+  else {
+    _a=TOINT(_a);
+    if _a>(TOINT(SQL.total("ndmh"))+9)/10
+      "\0\s[5]输入的页数大于总页数,请重新输入~\w8\w8\c%(Onselepag)\e"
+    elseif _a<=0 {
+      Onselepag;
+    }
+    else {
+      _a=_a*10-9;
+      UPDateshow("#-1",_a);
+    }
+  }
+}
+
+OnSQLUPDate
+{
+  _a=1;
+  if temp01=="删除该词条" {
+    _a=SQL("UPDATE ndmh SET scope=-1 WHERE ID=%(reference0)");
+    if _a==0
+    "\0\s[5]删除成功!现共有%(SQL.totalNODel('ndmh'))条教学对话喔~\n[200]\![*]\q[返回,TalkDelete]\n\![*]\q[取消,OnoverTeach]\e"
+    else
+    "\0\s[5]删除失败了呢?未知bug吗?"
+  }
+  elseif temp01=="修改该词条" {
+    temp01=null;
+    _b=SQL("SELECT * FROM ndmh WHERE ID=%(reference0)","-j");
+    _b=REPLACE(_b,"\1","兔子：");
+    _b=REPLACE(_b,"\w","[等待]");
+    _x=_b[2];
+    _y=_b[3];
+    "\0\s[5]\b[2]\_q该词条ID为%(reference0),请问要修改哪一部分?\n[150]/
+    \![*]提问: \__q[OnSQLUPDate,,%(reference0),提问]%(formattemp(_x))\__q\n/
+    \![*]回答: \__q[OnSQLUPDate,,%(reference0),回答]%(formattemp(_y))\__q\n/
+    \n\![*]\q[放弃,OnoverTeach]\n[200]提示:\n如果需要设置问题同义词(句),请在同义词(句)之间\n用“|”符号分隔开来！\x\e"
+  }
+  elseif reference0=="" {
+    temp01=reference1;
+    temp02=reference2;
+      "\0\s[5]\![set,choicetimeout,0]\_q%(username)要把%(reference2)改成?\n[200]\![*]\q[放弃,OnoverTeach,OnSQLUPDate]\n[200]提示:\n如果需要设置问题同义词(句),\n请在同义词(句)之间用“|”符号分隔开来!\n如果需要设置多个关键词(句),\n请在各关键词(句)之间用“&”分隔开来!\n【注意:“&”优先度高于“|”】\![open,inputbox,OnSQLUPDate,-1]\e"
+  }
+  else {
+    reference0=REPLACE(reference0,",","，");
+    reference0=REPLACE(reference0,"?","？");
+    _c=0;
+    _a=0;
+    _m="";
+    _b=temp01;
+    temp01="修改该词条";
+    if temp02=="提问" {
+      _c=SQL("SELECT ID FROM ndmh WHERE 提问='%(reference0)' AND scope!=-1","-j");
+    }
+    if _c==_b {
+      _m="修改后的提问内容为“%(formattemp(reference0))”与修改前一样,不用变更吗？"
+    }
+    elseif _c>0 {
+      _m="已存在提问内容为“%(formattemp(reference0))”的词条了喔,\n不可修改成重复的提问哦~。"
+    }
+    else {
+      _a=SQL("UPDATE ndmh SET %(temp02)='%(reference0)' WHERE ID=%(_b)");
+      _m="任务完成!已把%(temp02)内容改为“%(formattemp(reference0))”。"
+    }
+
+    if _a==0 {
+    "\0\s[5]\b[2]\_q%(_m)\n[150]返回该词条继续修改吗?\n[200]/
+    \![*]\q[返回继续修改,OnSQLUPDate,%(_b)]        \![*]\q[不用了,OnoverTeach]\e"
+    }
+    else {
+      "\0\s[5]失败了...未知bug吗?\e"
+    }
+  }
+}
+
+SQL
+{
+  if !_argv[1]
+    FUNCTIONEX("saori\debeso.dll", "%(_argv[0])");
+	else
+    FUNCTIONEX("saori\debeso.dll", "%(_argv[1])", "%(_argv[0])");
+}
+
+SQL.total
+{
+SQL("SELECT ID FROM %(_argv[0])","-f");
+}
+
+SQL.totalNODel
+{
+SQL("SELECT ID FROM %(_argv[0]) WHERE scope!=-1","-f");
+}
+
+
+
+
+

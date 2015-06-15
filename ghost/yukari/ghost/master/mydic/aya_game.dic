@@ -1,0 +1,1029 @@
+﻿///////////////////////////////////////////
+////////// XXOO、21点
+////////// modified by Cster 2015
+///////////////////////////////////////////
+OnPlayOX
+{
+	arrOX = IARRAY
+	for _i = 0; _i < 9; _i++ {
+		arrOX = (arrOX, 0)
+	}
+	"\0\s[40]来吧(´･ω･`)!\w9！OOXX\w9\w9\c"
+	--
+	PlayOXshow(0)
+}
+
+PlayOXshow
+{
+	_tempstr = ""
+	for _i = 0; _i < 3; _i++ {
+		for _j = 0; _j < 3; _j++ {
+			_temp = _i * 3 + _j
+			if arrOX[_temp] == -1
+				_tempstr = _tempstr + "Ｘ"
+			elseif arrOX[_temp] == 1
+				_tempstr = _tempstr + "○"
+			elseif _argv[0] == 0
+				_tempstr = _tempstr + "\q[　,PlayOXrun("+_temp+")]"
+			else
+				_tempstr = _tempstr + "　"
+			if _j != 2
+				_tempstr = _tempstr + "│"
+		}
+		_tempstr = _tempstr + "\n[90]"
+		if _i != 2
+		{
+			_tempstr = _tempstr + "─┼─┼─"
+		}
+		_tempstr = _tempstr + "\n[90]"
+	}
+	switch _argv[0]
+	{
+		
+		"\_q\0\s[40]请%(username)走棋;\n%(_tempstr)\n\q[◇不想玩了,OnOpenMenu,1]\e"
+		
+		{
+			kikkamoney += 10;
+			"\_q\0\s[34]\n%(_tempstr)\n[half]\_q小缘喵输了。\n\w9\w9\1\s[13]危险的物品收起来\w8%(username)只是在跟你玩而已\w9\w9\0\s[0]\c喔……\w9\w9\n[150]\q[◇再来一盘,OnPlayOX]\n\q[◇游戏结束,OnOpenMenu,1]\e"
+			"\_q\0\s[7]\n%(_tempstr)\n[half]\_q\w9\w9%(username)……该不是作弊了吧……\w8\w8\w8\n[150]\q[◇再来一盘,OnPlayOX]\n\q[◇游戏结束,OnOpenMenu,1]\e"
+			"\_q\0\s[35]\n%(_tempstr)\n[half]\_q\n小缘喵不会气馁的！\w9\w9\s[41]\w9\w9\n[150]\q[◇再来一盘,OnPlayOX]\n\q[◇游戏结束,OnOpenMenu,1]\e"
+		}
+		{
+			
+			"\_q\0\s[6]\n%(_tempstr)\n[half]\_q\w9\w9平手,还玩吗？\n[150]\q[◇再来一盘,OnPlayOX]\n\q[◇游戏结束,OnOpenMenu,1]\e"
+			"\_q\0\s[23]\n%(_tempstr)\n[half]\_q\w9\w9和局,接下来以实力拼胜负吧……\n[150]\q[◇再来一盘,OnPlayOX]\n\q[◇游戏结束,OnOpenMenu,1]\e"
+			"\_q\0\s[3]\n%(_tempstr)\n[half]\_q\w9\w9不相上下呢……%(username)果然赢不了小缘喵。\n[150]\q[◇再来一盘,OnPlayOX]\n\q[◇游戏结束,OnOpenMenu,1]\e"
+		}
+		{
+			"\_q\0\s[5]\n%(_tempstr)\n[half]\_q\w9太好了,小缘喵赢了！博弈论的大胜利呢！\n[150]\q[◇再来一盘,OnPlayOX]\n\q[◇游戏结束,OnOpenMenu,1]\e"
+			"\_q\0\s[8]\n%(_tempstr)\n[half]\_q\w9\w9小缘喵赢了,%(username)的实力只有这样而已吗？\n[150]\q[◇再来一盘,OnPlayOX]\n\q[◇游戏结束,OnOpenMenu,1]\e"
+		}
+	}
+}
+
+Select.PlayOXrun
+{
+	arrOX[_argv[0]] = -1
+	if PlayOXover(_argv[0]) != 1
+	{
+		_tempid = -1
+		_rightmax = -24
+		_tempright = 0
+		for _i = 0; _i < 9; _i++ {
+			if arrOX[_i] == 0
+			{
+				arrOX[_i] = 1
+				if PlayOXover(_i) == 1
+				{
+					arrOX[_i] = 0
+					_tempid = _i
+					break
+				}
+				_rightmin = 24
+				for _j = 0; _j < 9; _j++ {
+					if arrOX[_j] == 0
+					{
+						arrOX[_j] = -1
+						_tempright = 0
+						_temparry = IARRAY
+						_temparry = (_temparry,arrOX[0] + arrOX[1] + arrOX[2])
+						_temparry = (_temparry,arrOX[3] + arrOX[4] + arrOX[5])
+						_temparry = (_temparry,arrOX[6] + arrOX[7] + arrOX[8])
+						_temparry = (_temparry,arrOX[0] + arrOX[3] + arrOX[6])
+						_temparry = (_temparry,arrOX[1] + arrOX[4] + arrOX[7])
+						_temparry = (_temparry,arrOX[2] + arrOX[5] + arrOX[8])
+						_temparry = (_temparry,arrOX[0] + arrOX[4] + arrOX[8])
+						_temparry = (_temparry,arrOX[2] + arrOX[4] + arrOX[6])
+						_oxnum = 0
+						foreach _temparry; _k {
+							_tempright += _k
+							if _k == -3
+								_oxnum = 24
+							if _k == -2
+								_oxnum++
+							if _k == 2
+								_oxnum--
+						}
+						if _oxnum > 1
+							_tempright = -24
+						if _tempright < _rightmin
+						{
+							_rightmin = _tempright
+						}
+						arrOX[_j] = 0
+					}
+				}
+				if _rightmin > _rightmax
+				{
+					_rightmax = _rightmin
+					_tempid = _i
+				}
+				arrOX[_i] = 0
+			}
+		}
+		if _tempid == -1
+			PlayOXshow(2)
+		else
+		{
+			arrOX[_tempid] = 1
+			if PlayOXover(_tempid) == 1
+			{
+				PlayOXshow(3)
+			}
+			else
+			{
+				PlayOXshow(0)
+			}
+		}
+	}
+	else
+		PlayOXshow(1)
+}
+
+PlayOXover
+{
+	_nowrow = _argv[0] / 3
+	_nowcolumn = _argv[0] % 3
+	if arrOX[_nowrow*3] == arrOX[_nowrow*3+1] && arrOX[_nowrow*3+1] == arrOX[_nowrow*3+2] && arrOX[_nowrow*3] != 0 /
+	|| arrOX[_nowcolumn] == arrOX[3+_nowcolumn] && arrOX[3+_nowcolumn] == arrOX[6+_nowcolumn] && arrOX[_nowcolumn] != 0 /
+	|| arrOX[0] == arrOX[4] && arrOX[4] == arrOX[8] && arrOX[8] != 0 /
+	|| arrOX[2] == arrOX[4] && arrOX[4] == arrOX[6] && arrOX[6] != 0
+	{
+		1
+	}
+	else
+		0
+}
+
+
+Select.game_3
+{
+	if player_3 == ""
+		player_3 = (0,0,0,0)
+	game_3 = (1,0,0,0,0,0,0,0,0,0,0,0,0)
+	--
+	"\0\s[0]谁先下呢？\n\n[half]"
+	--
+	"\q[◇%(username),game_3_1]\n\q[◇小缘喵,game_3_2]"
+}
+
+Select.game_3_2
+{
+	game_3[0] = 2
+	game_3_kikka_1
+}
+
+//---- 玩家先攻 ---
+
+OnSetgame_3_1
+{
+//输入
+	if reference0 == "1"
+		game_3[1] = 1
+	elseif reference0 == "2"
+		game_3[2] = 1
+	elseif reference0 == "3"
+		game_3[3] = 1
+	elseif reference0 == "4"
+		game_3[4] = 1
+	elseif reference0 == "5"
+		game_3[5] = 1
+	elseif reference0 == "6"
+		game_3[6] = 1
+	elseif reference0 == "7"
+		game_3[7] = 1
+	elseif reference0 == "8"
+		game_3[8] = 1
+	elseif reference0 == "9"
+		game_3[9] = 1
+	--
+	if game_3[11] == 0
+		game_3[11] = reference0
+	game_3_kikka_1
+}
+
+game_3_kikka_1
+{
+//输入
+	_kikka = ""
+	if game_3[0] == 1
+		_kikka = any_3_1
+	elseif game_3[0] == 2
+		_kikka = any_3_2
+	--
+	if _kikka == "1"
+		game_3[1] = 2
+	elseif _kikka == "2"
+		game_3[2] = 2
+	elseif _kikka == "3"
+		game_3[3] = 2
+	elseif _kikka == "4"
+		game_3[4] = 2
+	elseif _kikka == "5"
+		game_3[5] = 2
+	elseif _kikka == "6"
+		game_3[6] = 2
+	elseif _kikka == "7"
+		game_3[7] = 2
+	elseif _kikka == "8"
+		game_3[8] = 2
+	elseif _kikka == "9"
+		game_3[9] = 2
+	--
+	if game_3[12] == 0
+		game_3[12] = _kikka
+	Select.game_3_1
+}
+
+any_3_2	//小缘喵先攻判定用AI
+{
+	if game_3[12] == 0
+	{
+		"1"
+//		"3"
+//		"7"
+//		"9"
+	}
+	//if 小缘喵下在第一格
+	elseif game_3[12] == 1
+	{
+		if game_3[11] == 2	//if 玩家下在第二格
+		{
+			if game_3[5] == 0
+				"5"
+			elseif game_3[9] == 0
+				"9"
+			elseif game_3[5] == 2 && game_3[7] == 0
+				"7"
+			else
+			{
+				if  game_3[3] <= 0
+					"3"
+				if  game_3[4] <= 0
+					"4"
+			}
+		}
+		elseif game_3[11] == 3	//if 玩家下在第三格
+		{
+			if game_3[9] == 0
+				"9"
+			elseif game_3[5] == 0
+				"5"
+			elseif game_3[7] == 0
+				"7"
+			else
+			{
+				if  game_3[4] <= 0
+					"4"
+				if  game_3[8] <= 0
+					"8"
+			}
+		}
+		elseif game_3[11] == 4	//if 玩家下在第四格
+		{
+			if game_3[5] == 0
+				"5"
+			elseif game_3[9] == 0
+				"9"
+			elseif game_3[2] == 0
+				"2"
+			else
+			{
+				if  game_3[3] <= 0
+					"3"
+				if  game_3[8] <= 0
+					"8"
+			}
+		}
+		elseif game_3[11] == 6	//if 玩家下在第六格
+		{
+			if game_3[5] == 0
+				"5"
+			elseif game_3[9] == 0
+				"9"
+			elseif game_3[3] == 0
+				"3"
+			else
+			{
+				if  game_3[2] <= 0
+					"2"
+				if  game_3[7] <= 0
+					"7"
+			}
+		}
+		elseif game_3[11] == 7	//if 玩家下在第七格
+		{
+			if game_3[9] == 0
+				"9"
+			elseif game_3[5] == 0
+				"5"
+			elseif game_3[3] == 0
+				"3"
+			else
+			{
+				if  game_3[2] <= 0
+					"2"
+				if  game_3[6] <= 0
+					"6"
+			}
+		}
+		elseif game_3[11] == 8	//if 玩家下在第八格
+		{
+			if game_3[5] == 0
+				"5"
+			elseif game_3[9] == 0
+				"9"
+			elseif game_3[7] == 0
+				"7"
+			else
+			{
+				if  game_3[3] <= 0
+					"3"
+				if  game_3[4] <= 0
+					"4"
+			}
+		}
+		elseif game_3[11] == 9	//if 玩家下在第九格
+		{
+			if game_3[7] == 0
+				"7"
+			elseif game_3[4] == 0
+				"4"
+			elseif game_3[3] == 0
+				"3"
+			else
+			{
+				if  game_3[2] <= 0
+					"2"
+				if  game_3[5] <= 0
+					"5"
+			}
+		}
+		else			//if 玩家下在第五格
+		{
+			if game_3[9] == 0
+				"9"
+			elseif game_3[2] == 2 && game_3[3] == 0
+				"3"
+			elseif game_3[6] == 2 && game_3[3] == 0
+				"3"
+			elseif game_3[4] == 2 && game_3[7] == 0
+				"7"
+			elseif game_3[8] == 2 && game_3[7] == 0
+				"7"
+			elseif game_3[7] == 1
+			{
+				if game_3[3] == 0
+					"3"
+				else
+				{
+					if  game_3[2] == 0
+						"2"
+					elseif  game_3[6] == 0
+						"6"
+					else
+						any_3_3
+				}
+			}
+			elseif game_3[3] == 1
+			{
+				if game_3[7] == 0
+					"7"
+				else
+				{
+					if  game_3[4] == 0
+						"4"
+					elseif  game_3[8] == 0
+						"8"
+					else
+						any_3_3
+				}
+			}
+			else
+				any_3_1
+		}
+	}
+
+	elseif game_3[3] == 2
+	{
+		if game_3[7] == 1 && game_3[9] == 0
+			"9"
+		elseif game_3[6] == 1 && game_3[1] == 0
+			"1"
+		elseif game_3[9] == 2 && game_3[1] == 2
+		{
+			if  game_3[2] <= 0
+				"2"
+			if  game_3[5] <= 0
+				"5"
+		}
+		else
+			any_3_3
+	}
+	elseif game_3[7] == 2
+	{
+		if game_3[3] == 1 && game_3[1] == 0
+			"1"
+		elseif game_3[4] == 1 && game_3[9] == 0
+			"9"
+		elseif game_3[1] == 2 && game_3[9] == 2
+		{
+			if  game_3[5] <= 0
+				"5"
+			if  game_3[8] <= 0
+				"8"
+		}
+		else
+			any_3_3
+	}
+	else
+	any_3_3
+}
+
+any_3_3	//小缘喵随机判定用AI
+{
+	if  game_3[1] <= 0
+		"1"
+	if  game_3[2] <= 0
+		"2"
+	if  game_3[3] <= 0
+		"3"
+	if  game_3[4] <= 0
+		"4"
+	if  game_3[5] <= 0
+		"5"
+	if  game_3[6] <= 0
+		"6"
+	if  game_3[7] <= 0
+		"7"
+	if  game_3[8] <= 0
+		"8"
+	if  game_3[9] <= 0
+		"9"
+}
+
+any_3_1	//小缘喵后攻判定用AI
+{
+//假如玩家下在中间
+	if game_3[5] == 1
+	{
+		if game_3[1] == 1 && game_3[9] == 0
+			"9"
+		else
+		{
+			if game_3[2] == 1 && game_3[8] == 0
+				"8"
+			else
+			{
+				if game_3[3] == 1 && game_3[7] == 0
+					"7"
+				else
+				{
+					if game_3[4] == 1 && game_3[6] == 0
+						"6"
+					else
+					{
+						if game_3[6] == 1 && game_3[4] == 0
+							"4"
+						else
+						{
+							if game_3[7] == 1 && game_3[3] == 0
+								"3"
+							else
+							{
+								if game_3[8] == 1 && game_3[2] == 0
+									"2"
+								else
+								{
+									if game_3[9] == 1 && game_3[1] == 0
+										"1"
+									else
+									{
+										if  game_3[1] <= 0
+											"1"
+										if  game_3[3] <= 0
+											"3"
+										if  game_3[7] <= 0
+											"7"
+										if  game_3[9] <= 0
+											"9"
+										else
+										{
+											if  game_3[2] <= 0
+												"2"
+											if  game_3[4] <= 0
+												"4"
+											if  game_3[6] <= 0
+												"6"
+											if  game_3[8] <= 0
+												"8"
+									}}}}}}}}}}
+//假如玩家下在角落
+	elseif game_3[1] == 1 && game_3[5] == 0
+		"5"
+	elseif game_3[3] == 1 && game_3[5] == 0
+		"5"
+	elseif game_3[7] == 1 && game_3[5] == 0
+		"5"
+	elseif game_3[9] == 1 && game_3[5] == 0
+		"5"
+//其他情況
+	else
+		any_3_3
+}
+//---- 画面 ---
+Select.game_3_1
+{
+	_winer = ""
+	_open = ""
+	--
+//玩家胜
+	if game_3[1] == 1 && game_3[2] == 1 && game_3[3] == 1
+		_winer = "user"
+	elseif game_3[4] == 1 && game_3[5] == 1 && game_3[6] == 1
+		_winer = "user"
+	elseif game_3[7] == 1 && game_3[8] == 1 && game_3[9] == 1
+		_winer = "user"
+	elseif game_3[1] == 1 && game_3[4] == 1 && game_3[7] == 1
+		_winer = "user"
+	elseif game_3[2] == 1 && game_3[5] == 1 && game_3[8] == 1
+		_winer = "user"
+	elseif game_3[3] == 1 && game_3[6] == 1 && game_3[9] == 1
+		_winer = "user"
+	elseif game_3[3] == 1 && game_3[5] == 1 && game_3[7] == 1
+		_winer = "user"
+	elseif game_3[1] == 1 && game_3[5] == 1 && game_3[9] == 1
+		_winer = "user"
+//小缘喵胜
+	elseif game_3[1] == 2 && game_3[2] == 2 && game_3[3] == 2
+		_winer = "kikka"
+	elseif game_3[4] == 2 && game_3[5] == 2 && game_3[6] == 2
+		_winer = "kikka"
+	elseif game_3[7] == 2 && game_3[8] == 2 && game_3[9] == 2
+		_winer = "kikka"
+	elseif game_3[1] == 2 && game_3[4] == 2 && game_3[7] == 2
+		_winer = "kikka"
+	elseif game_3[2] == 2 && game_3[5] == 2 && game_3[8] == 2
+		_winer = "kikka"
+	elseif game_3[3] == 2 && game_3[6] == 2 && game_3[9] == 2
+		_winer = "kikka"
+	elseif game_3[3] == 2 && game_3[5] == 2 && game_3[7] == 2
+		_winer = "kikka"
+	elseif game_3[1] == 2 && game_3[5] == 2 && game_3[9] == 2
+		_winer = "kikka"
+//平手
+	else
+	{if game_3[1] >= 1 && game_3[2] >= 1 && game_3[3] >= 1 && game_3[4] >= 1 && game_3[5] >= 1 && game_3[6] >= 1 && game_3[7] >= 1 && game_3[8] >= 1 && game_3[9] >= 1
+		_winer = "0"}
+	--
+//显示
+	if game_3[1] == 1
+		"Ｏ"
+	elseif game_3[1] == 2
+		"Ｘ"
+	elseif _winer == "user"
+		"　"
+	elseif _winer == "kikka"
+		"　"
+	else
+		"\q[　,OnSetgame_3_1,1]"
+	--
+	"\_q│"
+	--
+	if game_3[2] == 1
+		"Ｏ"
+	elseif game_3[2] == 2
+		"Ｘ"
+	elseif _winer == "user"
+		"　"
+	elseif _winer == "kikka"
+		"　"
+	else
+		"\q[　,OnSetgame_3_1,2]"
+	--
+	"│"
+	--
+	if game_3[3] == 1
+		"Ｏ"
+	elseif game_3[3] == 2
+		"Ｘ"
+	elseif _winer == "user"
+		"　"
+	elseif _winer == "kikka"
+		"　"
+	else
+		"\q[　,OnSetgame_3_1,3]"
+	--
+	"\n─┼─┼─\n"
+	--
+	if game_3[4] == 1
+		"Ｏ"
+	elseif game_3[4] == 2
+		"Ｘ"
+	elseif _winer == "user"
+		"　"
+	elseif _winer == "kikka"
+		"　"
+	else
+		"\q[　,OnSetgame_3_1,4]"
+	--
+	"│"
+	--
+	if game_3[5] == 1
+		"Ｏ"
+	elseif game_3[5] == 2
+		"Ｘ"
+	elseif _winer == "user"
+		"　"
+	elseif _winer == "kikka"
+		"　"
+	else
+		"\q[　,OnSetgame_3_1,5]"
+	--
+	"│"
+	--
+	if game_3[6] == 1
+		"Ｏ"
+	elseif game_3[6] == 2
+		"Ｘ"
+	elseif _winer == "user"
+		"　"
+	elseif _winer == "kikka"
+		"　"
+	else
+		"\q[　,OnSetgame_3_1,6]"
+	--
+	"\n─┼─┼─\n"
+	--
+	if game_3[7] == 1
+		"Ｏ"
+	elseif game_3[7] == 2
+		"Ｘ"
+	elseif _winer == "user"
+		"　"
+	elseif _winer == "kikka"
+		"　"
+	else
+		"\q[　,OnSetgame_3_1,7]"
+	--
+	"│"
+	--
+	if game_3[8] == 1
+		"Ｏ"
+	elseif game_3[8] == 2
+		"Ｘ"
+	elseif _winer == "user"
+		"　"
+	elseif _winer == "kikka"
+		"　"
+	else
+		"\q[　,OnSetgame_3_1,8]"
+	--
+	"│\_q"
+	--
+	if game_3[9] == 1
+		"Ｏ"
+	elseif game_3[9] == 2
+		"Ｘ"
+	elseif _winer == "user"
+		"　"
+	elseif _winer == "kikka"
+		"　"
+	else
+		"\q[　,OnSetgame_3_1,9]"
+	--
+	"\n\n[half]"
+	--
+//对话
+	if _winer == "user"
+	{
+		_open = "on"
+		player_3[1]+= 1
+		"\0\s[5]%(username)贏了。"
+	}
+	elseif _winer == "kikka"
+	{
+		_open = "on"
+		player_3[2]+= 1
+		"\0\s[5]我贏了。"
+	}
+	elseif _winer == "0"
+	{
+		_open = "on"
+		player_3[3]+= 1
+		"\0\s[5]平手了。"
+	}
+	--
+	if _open == "on"
+	{
+		player_3[0]+= 1
+		"\n\n[half]\q[◇继续,game_3]\n\q[◇离开,endgame_3]"
+	}
+}
+
+Select.endgame_3
+{
+	ERASEVAR("game_3")
+	Select.game
+}
+
+//21点
+
+Poker.Init
+{
+	poker = IARRAY;
+	_poker0 =("0,黑桃,♠,A","1,黑桃,♠,2","2,黑桃,♠,3","3,黑桃,♠,4","4,黑桃,♠,5","5,黑桃,♠,6","6,黑桃,♠,7","7,黑桃,♠,8","8,黑桃,♠,9","9,黑桃,♠,10","10,黑桃,♠,J","11,黑桃,♠,Q","12,黑桃,♠,K",/
+			"13,红心,♥,A","14,红心,♥,2","15,红心,♥,3","16,红心,♥,4","17,红心,♥,5","18,红心,♥,6","19,红心,♥,7","20,红心,♥,8","21,红心,♥,9","22,红心,♥,10","23,红心,♥,J","24,红心,♥,Q","25,红心,♥,K",/
+			"26,梅花,♣,A","27,梅花,♣,2","28,梅花,♣,3","29,梅花,♣,4","30,梅花,♣,5","31,梅花,♣,6","32,梅花,♣,7","33,梅花,♣,8","34,梅花,♣,9","35,梅花,♣,10","36,梅花,♣,J","37,梅花,♣,Q","38,梅花,♣,K",/
+			"39,方块,♦,A","40,方块,♦,2","41,方块,♦,3","42,方块,♦,4","43,方块,♦,5","44,方块,♦,6","45,方块,♦,7","46,方块,♦,8","47,方块,♦,9","48,方块,♦,10","49,方块,♦,J","50,方块,♦,Q","51,方块,♦,K",/
+			"52,鬼牌,,小王","53,鬼牌,,大王");
+	_begin = 0;
+	_end = 0;
+	case _argv[0] {
+		when "52" {
+			_end = 52;
+		}
+		when "54" {
+			_end = 54;
+		}
+		when "黑桃" {
+			_end = 13;
+		}
+		when "红心" {
+			_begin = 13;
+			_end = 26;
+		}
+		when "梅花" {
+			_begin = 26;
+			_end = 39;
+		}
+		when "方块" {
+			_begin = 39;
+			_end = 52;
+		}
+	}
+	case _argv[1] {
+		when "rand","random" {
+			for _i = 0; _i < _end - _begin; _i ++ {
+				_rand = RAND(_end - _begin - _i) + _begin;
+				poker[_i] = _poker0[_rand];
+				_poker0[_rand] = IARRAY;
+			}
+		}
+		others {
+			for _i = 0; _i < _end - _begin; _i ++ {
+				poker[_i] = _poker0[_i + _begin];
+			}
+		}
+	}
+}
+
+Poker.Show
+{
+	_poker = _argv[0];
+	_mode = _argv[1];
+	_txt = "";
+	case _mode {
+		when 0,1,2,3 {
+			_txt = _poker[_mode];
+		}
+		when "s","cs","sc" {
+			_txt = _poker[2] + " " + _poker[3];
+		}
+		others {
+			_txt = _poker[1] + " " + _poker[3];
+		}
+	}
+	if "c" _in_ _mode {
+		_idx = TOINT(_poker[0]);
+		if _idx / 13 == 1 || _idx / 13 == 3 || _idx == 53 {
+			_txt = "\f[color,238,50,95]" + _txt + "\f[color,default]";
+		}
+		else {
+			_txt = "\f[color,32,32,32]" + _txt + "\f[color,default]";
+		}
+	}
+	_txt;
+}
+
+Poker.Clear
+{
+	ERASEVAR("poker");
+}
+
+OnBlackjack0
+{
+	"每一局￥50元哦\w9拿到BlackJack2倍，顺子3倍喔！\w9"
+	"那么，\w9由小缘喵坐庄，\w9现在开始吧"
+	--
+	"\w9\w9\c"
+	--
+	OnBlackjack;
+}
+
+OnBlackjack
+{
+	Poker.Init("52","random");
+	Blackjack;
+}
+
+OnBlackjackRule
+{
+	_rule = "游戏规则就是一般的21点，\w5A表示1或11点，\w5J、Q和K则表示10点，/ 
+			游戏的目的就是尽量让手中的牌凑到21点，\w5但超过21点就变成多出，\w5\s[5]会直接出局喔。 \n/ 
+			\s[0]一开始先由斗和发一张暗牌给我们，\w5这张暗牌一直到游戏结束前都不会被对方看到。 \w5/ 
+			确认过暗牌后先由%(username)决定是否要继续抽牌，\w5一旦决定不抽牌之后也不能再抽喔！ \n/ 
+			如果我们都决定不抽牌就必须互相翻开暗牌计算彼此的点数，\w5\s[5]当然是点数较高又没多出的人获胜！ \n/ 
+			\s[0]除了多出或不抽牌会结束游戏之外，\w5如果我们其中一人的牌的点数加起来刚好是21点，\w5那就直接获胜了！ \n/ 
+			又或者其中一个人连续抽了五张牌都没有多出，\w5则称为顺子，\w5\s[5]一样是直接获胜喔！";
+	_menu = "\n\n\q[◇新游戏,OnBlackjack,0]\n[150]\q[◇返回上一层,OnOpenMenu,1]\n\q[◇终了,OnBlackjackEnd]";
+	_rule + _menu;
+}
+
+Blackjack
+{
+	kikkascard = (2,1,0,0,0,poker[0],poker[1]);
+	yourcard = (2,0,0,0,0,poker[2],poker[3]);
+	BlackjackCal;
+	BlackjackShow;
+}
+
+BlackjackShow
+{
+	_txt = "\_q";
+	_txt += "小缘喵的牌：(%(kikkascard[3])点)\n";
+	for _i = 0; _i < kikkascard[0]; _i ++ {
+		if kikkascard[1] == 1 && _i == 0 {
+			_txt += "暗牌   ";
+		}
+		else {
+			_txt += "\_l[%(_i * 36)]" + Poker.Show(kikkascard[_i + 5],'cs');
+		}
+	}
+	_txt += "\n[150]你的牌：(%(yourcard[3])点)\n";
+	for _i = 0; _i < yourcard[0]; _i ++ {
+		if yourcard[1] == 1 && _i == 0 {
+			_txt += "暗牌   ";
+		}
+		else {
+			_txt += "\_l[%(_i * 36)]" + Poker.Show(yourcard[_i + 5],'cs');
+		}
+	}
+	_txt += BlackjackJudge;
+	_txt += "\n[150]\q[◇新游戏,OnBlackjack]    \q[◇游戏规则,OnBlackjackRule]\n\q[◇返回上一层,OnOpenMenu,1]\n\q[◇终了,OnBlackjackEnd]";
+	_txt += ShowMoney(120,0);
+	_txt;
+}
+
+BlackjackJudge
+{
+	"\_l[0,77]"
+	--
+	if kikkascard[1] > 0 {
+		if yourcard[2] <= 21 && yourcard[0] == 5 {
+			kikkamoney += 3 * 50;
+			"\0\s[9]顺子！%(username)获胜了。"
+		}
+		elseif yourcard[2] == 21 && yourcard[0] == 2 {
+			kikkamoney += 2 * 50;
+			"\0\s[9]讨厌，%(username)抽到BlackJack获胜了。"
+		}
+		elseif yourcard[2] == 21 && yourcard[4] == 0 || kikkascard[2] == 21 {
+			"\q[◇停手,OnBlackjackStand]"
+		}
+		elseif yourcard[2] > 21 {
+			kikkamoney -= 50;
+			"\0\s[5]%(username)多出了呢！"
+		}
+		else {
+			"\q[◇加牌,OnBlackjackAdd]    \q[◇停手,OnBlackjackStand]"
+		}
+	}
+	else {
+		if kikkascard[2] <= 21 && kikkascard[0] == 5 {
+			kikkamoney -= 3 * 50;
+			"\0\s[40]耶！小缘喵顺子了！！"
+		}
+		elseif kikkascard[2] == 21 && kikkascard[0] == 2 {
+			kikkamoney -= 2 * 50;
+			"\0\s[40]BlackJack！小缘喵获胜了！"
+		}
+		elseif kikkascard[2] > 21 {
+			kikkamoney += 50;
+			"\0\s[3]555……小缘喵多出了。"
+		}
+		elseif kikkascard[2] == yourcard[2] {
+			"\0\s[5]看来我们的点数都一样大呢！"
+		}
+		elseif kikkascard[2] == 21 {
+			kikkamoney -= 50;
+			"\0\s[41]咦？我刚好21点！"
+		}
+		elseif yourcard[2] == 21 {
+			kikkamoney += 50;
+			"\0\s[7]啊！%(username)刚好21点！"
+		}
+		elseif kikkascard[2] > yourcard[2] {
+			kikkamoney -= 50;
+			"\0\s[20]好像是我的点数比较大呢！"
+		}
+		elseif kikkascard[2] < yourcard[2] {
+			kikkamoney += 50;
+			"\0\s[30]%(username)的点数比较大呢……"
+		}
+	}
+}
+
+BlackjackCal
+{
+	kikkascard[2] = 0;
+	yourcard[2] = 0;
+	kikkascard[4] = 0;
+	yourcard[4] = 0;
+	for _i = kikkascard[0] - 1; _i >= 0; _i -- {
+		_card = kikkascard[_i + 5];
+		case _card[3] {
+			when '2','3','4','5','6','7','8','9','10' {
+				kikkascard[2] += TOINT(_card[3]);
+			}
+			when 'J','Q','K' {
+				kikkascard[2] += 10;
+			}
+			when 'A' {
+				kikkascard[4] ++;
+				kikkascard[2] += 11;
+			}
+		}
+		while kikkascard[2] > 21 && kikkascard[4] > 0 {
+			kikkascard[4] --;
+			kikkascard[2] -= 10;
+		}
+		if _i >= kikkascard[1] {
+			kikkascard[3] = kikkascard[2];
+		}
+	}
+	for _i = yourcard[0] - 1; _i >= 0; _i -- {
+		_card = yourcard[_i + 5];
+		case _card[3] {
+			when '2','3','4','5','6','7','8','9','10' {
+				yourcard[2] += TOINT(_card[3]);
+			}
+			when 'J','Q','K' {
+				yourcard[2] += 10;
+			}
+			when 'A' {
+				yourcard[4] ++;
+				yourcard[2] += 11;
+			}
+		}
+		while yourcard[2] > 21 && yourcard[4] > 0 {
+			yourcard[4] --;
+			yourcard[2] -= 10;
+		}
+		if _i >= yourcard[1] {
+			yourcard[3] = yourcard[2];
+		}
+	}
+}
+
+OnBlackjackAdd
+{
+	yourcard[0] ++;
+	_cnt = yourcard[0];
+	yourcard ,= poker[_cnt + 1];
+	BlackjackCal;
+	BlackjackShow;	
+}
+
+OnBlackjackStand
+{
+	kikkascard[1] = 0;
+	BlackjackCal;
+	while kikkascard[2] < 17 {
+		kikkascard[0] ++;
+		_cnt = kikkascard[0];
+		kikkascard ,= poker[_cnt + 4];
+		BlackjackCal;
+	}
+	BlackjackShow;	
+}
+
+ShowMoney
+{
+	_x = _argv[0];
+	_y = _argv[1];
+
+	"\_l[%(_x),%(_y)]"
+	--
+	ColorText("金钱：￥%(kikkamoney)","bold,color=244,190,0");
+	--
+}
+
+OnBlackjackEnd
+{
+	ERASEVAR("poker");
+	ERASEVAR("kikkascard");
+	ERASEVAR("yourcard");
+
+	"\s[26]不玩了吗？"
+}

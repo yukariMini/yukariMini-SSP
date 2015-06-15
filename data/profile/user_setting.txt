@@ -1,0 +1,2 @@
+//setting file for user customize
+//syntax: [name],[value/0(false)/1(true)][CRLF]

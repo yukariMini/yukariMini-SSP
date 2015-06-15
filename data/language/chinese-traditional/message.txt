@@ -1,0 +1,95 @@
+charset,UTF-8
+
+//Error Message
+error.appinit,在發送請求過程中發生了一個錯誤。\n為了得到更詳細的錯誤報告，請改變 "除錯精靈" 設置。
+error.apprun,程序在執行過程中發生了一個內在的錯誤，所以中止運行。\n為了得到更詳細的錯誤報告, 請改變 "除錯精靈" 設置。
+error.cannotshowusagegraph,起始時間不充足，所使用的時間圖表不能顯示。請在一分鐘後重試。
+error.invalidipport,不能使用所設置的連接埠。請把它設置在 1024 和 65535 之間。
+error.sstp.cannotlisten,無法連接，網路連接設置因為連接埠問題發生故障。\n請檢查是否該連接阜與其他應用程序所設置相重疊, 或是個錯誤連接埠。
+error.nofile,相關檔案或資料夾丟失。\n請重新安裝SSP或手動修正。
+
+//Ask / Info
+info.threadbusy,正在處理一些命令。\n請等幾分鐘再試一次。\n\n真的要強行中止嗎?
+info.compatiblemode,該人格也許需要舊規格的支持。\n我要轉變成舊規格支源模式嗎?
+info.notinstalled,沒有安裝。\n我要打開一個發送網址嗎?
+info.delghost,你確定刪除這個人格嗎?\n不能取消該命令。
+info.netconnection,不能連接到網路，或者你設置了網路禁止連接時間段.\n連接?
+info.sstplog,請設置 SSTP 日誌的最大尺寸。\n如果日誌文件大小超過該設置，將會自動刪掉舊的文件.
+info.sstpport,請設置 SSTP 連接阜。(0-65535)
+info.serikowait,SERIKO 等待數 (請輸入等待時間的百分數)
+info.charset,請選擇將使用的人格語系。
+info.vanish,反安裝功能禁止。\n請先切換設定。
+info.sender,請輸入SHIORI發送器文本。\n(Materia:embryo CROW:crow Default:empty/SSP)
+info.install.overlap,目標文件夾已存在。\n你想安裝到其他目錄嗎?
+info.install.refresh,將删除所有舊目錄和更新。\n你想要安裝到其他目錄嗎?
+info.install.invalidsupplement,目標文件可能存在問題。\n無論如何都要安裝嗎?
+info.toomanyselection,你所選的選項過多。\n確定要執行嗎?
+
+info.errorlog,錯誤或警告紀錄已經存在。請檢查錯誤紀錄清單。
+
+//Resource
+resource.common.yesno,是,不
+resource.common.okcancel,確定,取消
+resource.common.addmoddel,加入,修改,刪除
+resource.common.other,其他
+
+resource.listdialoglabel,名字,作者,路徑,群組,本體名,使魔名,安裝日期,最近更新
+resource.listdialogfind,請輸入你想查詢的文字。
+resource.scriptloglabel,路徑,類別,語法
+
+resource.biff.allaccount,全部帳戶(&A)
+resource.browser.select,網路文件夾
+resource.mailer.select,郵件
+resource.sound.select,聲音文件
+resource.schedule.date,%d年%d月%d日的日程
+
+resource.setting.balloon.command,不設定,與左鍵一樣,中止語法,改變方向
+resource.setting.sstp.boot,不啟動,只有消息(SSTP/1.5),盡可能啟動人格 (IfGhost)
+resource.setting.sstp.close,當隱藏對話時關閉,留下,設置關閉時間…
+resource.setting.update,標準(和其他系統相容),嚴格(SSP預設),修復模式(全部檢查)
+resource.aboutghost.select,人格信息…,外表信息…
+resource.explorer.select,人格,外表,對話框,在線新聞,外掛
+
+resource.setting.ghostcloseduration,直到人格關閉為止
+resource.setting.title,SSP:內部設定
+resource.setting.messengerlabel,用戶名,地址,連接阜,團體
+resource.setting.dirservlabel,伺服器,登錄上網,說明
+resource.setting.ipportlabel,連接阜,狀況
+resource.setting.bifflabel,帳戶,地址,自動檢查
+
+resource.update.latest,你已經正在使用最新版本。不需要更新。
+resource.update.exist,新版本已發佈。想要下載並安裝嗎?
+resource.update.error,無法檢查 SSP 版本。
+
+resource.schedule.type,事件,會議,約會,預約,限制時間,晚會,日期,工作,外出,電視節目,唱片,CD,游戲,影像,書,發佈
+
+//Script
+script.biff.check,正在檢查郵件…
+script.updatedata.creating,正在制作網路更新文件…
+script.updatedata.created,網路更新文件已建立。
+script.nar.creating,正在制作NAR…
+script.nar.created,NAR制作完畢。
+
+//Messenger
+messenger.info.deluser,刪除選擇的收件人。你確定嗎?
+
+//POP
+biff.info.delaccount,刪除所選帳戶。你確定嗎?
+
+//LOG
+log.definedtwice,重複定義。
+log.boundrectempty,邊框為空。
+log.offset,位置錯誤。
+log.notfound,找不到。
+log.empty,為空。
+log.noimage,沒有影像。
+log.invalid,不合法
+log.typo,誤字
+log.bracebeginnotfound,"{" 找不到。
+log.braceendnotfound,"}" 找不到。
+log.braceextrachar,額外字元。在 "{" 或 "}" 前後。
+log.newold,新定義，舊版本。
+log.oldnew,舊定義，新版本。
+log.invalidalias,不合法的別名。
+log.urlslashadd,URL "/" 已加入。
+log.deletetxtconflict,已在 delete.txt 中

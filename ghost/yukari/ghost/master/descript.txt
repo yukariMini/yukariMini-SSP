@@ -1,0 +1,14 @@
+﻿charset,UTF-8
+name,小缘喵
+type,ghost
+craftman,Cster
+craftmanw,Cster
+craftmanurl,http://www.cster.icoc.cc/
+sakura.name,小缘喵
+kero.name,兔子
+
+
+sstp.allowunspecifiedsend,1
+icon,xiaoyuanmiao.ico
+shiori,yaya.dll
+;shiori,aya5.dll

@@ -1,0 +1,636 @@
+﻿///////////////////////////////////////////
+////////// 俄罗斯方块
+////////// modified by Cster 2015
+///////////////////////////////////////////
+
+#define		PIC		mydata/Blocks.bmp
+#define		PIC		mydata/tetris.jpg
+
+
+
+OnNewGame  //游戏入口
+{
+_txt = "\C\![quicksession,true]\c\0\s[5]\b[2]\![sound,load,saori/aa.mp3]";
+CleartetrisVar
+  playingtetris=1
+  Started = 1;
+  GameOver=1;
+  GameOver=0;
+  Paused=0
+  Removing = 0;
+  Score = 0;
+  Lines = 0;
+  NumUnits=7
+  NumScores=5
+     btmLeft  = 1
+     btmRight = 2
+     btmDown  = 3
+     btmCW    = 4
+     btmCCW   = 5
+MapXsize = 10; 
+MapYsize = 18;
+ DispBuffer=IARRAY
+ BlockBuffer=IARRAY
+if speed==NULL || speed>9
+speed=9
+if timespeed==NULL
+timespeed=500
+--
+TTetrisUnits
+TBaseTetris
+GenNewUnit
+--
+_txt+PaintBox1
+
+
+}
+
+
+
+OnTimer1Timer    //自动下降。
+{
+_txt="\C\![quicksession,true]\c\b[2]"
+
+
+ if !GameOver && Started && !Paused
+     { 
+        _txt+=Tetris.Move(btmDown);
+        _txt+=CheckGameStatus
+        
+     }
+ 
+
+
+
+_txt+PaintBox1
+
+}
+
+
+FormKeyDown    //键盘输入
+{
+_txt = "\C\![quicksession,true]\c";
+        if reference0 == "n"  {   _txt+=OnNewGame ;}
+        elseif reference0 == "l"  {  _txt+=OnShowHighScores;}
+        elseif reference0 == "e"  {  OntetrisgameOver; break}
+        elseif reference0 == "p"  {   Paused=TOINT(Paused+1)%2;}
+
+
+if !GameOver && Started && !Paused
+  {
+    
+     btm = 0;
+    
+     case reference0
+      {
+            if reference0 =="left" {  btm=btmLeft ;  }
+        elseif reference0 =="right" {  btm=btmRight;}
+        elseif reference0 =="down"  {  btm=btmDown ; }
+        elseif reference0 == "up"    {btm=btmCW;}
+        elseif reference0 == "space"  {  btm=btmCW ;}
+        elseif reference0 == "return"  {  btm=btmCCW ;}
+        
+      }
+     if btm 
+      {
+        _txt+=Tetris.Move(btm);
+        _txt+=CheckGameStatus
+        
+        
+      }
+   }
+ if playingtetris
+_txt+PaintBox1
+else 
+_txt
+
+}
+
+
+
+
+
+TTetrisUnits            //方块数据
+{
+BaseUnits =  /
+( /
+  ((((0,0,0,0),(0,0,0,0),(1,1,1,1),(0,0,0,0)),/
+    ((0,0,1,0),(0,0,1,0),(0,0,1,0),(0,0,1,0)),/
+    ((0,0,0,0),(0,0,0,0),(1,1,1,1),(0,0,0,0)),/
+    ((0,0,1,0),(0,0,1,0),(0,0,1,0),(0,0,1,0)))),/
+  ((((0,0,0,0),(0,0,2,0),(0,2,2,2),(0,0,0,0)),/
+    ((0,0,2,0),(0,0,2,2),(0,0,2,0),(0,0,0,0)),/
+    ((0,0,0,0),(0,2,2,2),(0,0,2,0),(0,0,0,0)),/
+    ((0,0,2,0),(0,2,2,0),(0,0,2,0),(0,0,0,0)))),/
+  ((((0,0,0,0),(0,0,0,3),(0,3,3,3),(0,0,0,0)),/
+    ((0,0,3,0),(0,0,3,0),(0,0,3,3),(0,0,0,0)),/
+    ((0,0,0,0),(0,3,3,3),(0,3,0,0),(0,0,0,0)),/
+    ((0,3,3,0),(0,0,3,0),(0,0,3,0),(0,0,0,0)))),/
+  ((((0,0,0,0),(0,4,0,0),(0,4,4,4),(0,0,0,0)),/
+    ((0,0,4,4),(0,0,4,0),(0,0,4,0),(0,0,0,0)),/
+    ((0,0,0,0),(0,4,4,4),(0,0,0,4),(0,0,0,0)),/
+    ((0,0,4,0),(0,0,4,0),(0,4,4,0),(0,0,0,0)))),/
+  ((((0,0,5,0),(0,5,5,0),(0,5,0,0),(0,0,0,0)),/
+    ((0,0,0,0),(0,5,5,0),(0,0,5,5),(0,0,0,0)),/
+    ((0,0,5,0),(0,5,5,0),(0,5,0,0),(0,0,0,0)),/
+    ((0,0,0,0),(0,5,5,0),(0,0,5,5),(0,0,0,0)))),/
+  ((((0,0,6,0),(0,0,6,6),(0,0,0,6),(0,0,0,0)),/
+    ((0,0,0,0),(0,0,6,6),(0,6,6,0),(0,0,0,0)),/
+    ((0,0,6,0),(0,0,6,6),(0,0,0,6),(0,0,0,0)),/
+    ((0,0,0,0),(0,0,6,6),(0,6,6,0),(0,0,0,0)))),/
+  ((((0,0,0,0),(0,7,7,0),(0,7,7,0),(0,0,0,0)),/
+    ((0,0,0,0),(0,7,7,0),(0,7,7,0),(0,0,0,0)),/
+    ((0,0,0,0),(0,7,7,0),(0,7,7,0),(0,0,0,0)),/
+    ((0,0,0,0),(0,7,7,0),(0,7,7,0),(0,0,0,0)))),/
+ );
+
+
+
+}
+
+
+
+PaintBox1         //图形显示
+{
+
+
+
+ _txt="\C\c\b[2]\![set,choicetimeout,%(timespeed)]"
+_txt+="游戏操作:\十字键: 移动方块。空格键: 旋转方块。回车键:快速下降。P键：暂停\n"
+
+
+//DispBuffer=((0,0,0,0),(0,7,7,0),(0,7,7,0),(0,0,0,0))
+for y=0; y<MapYsize; y++
+{
+   for x=0; x<MapXsize; x++
+    {
+     // if((n=Tetris.DisplayBuffer->TetrisBuffer[y][x])>0)
+       //::BitBlt(pb->Canvas->Handle, x*16,y*16,16,16, TtBmp->Canvas->Handle, (n-1)*16,0, SRCCOPY);
+
+
+       _txt+="\_l[%(10+x*16),%(60+y*16)]\_b[mydata/back.bmp,inline,--option=opaque,--clipping=0 0 16 16]"
+      
+         if DispBuffer[y*MapXsize+x]
+           
+           {
+          n=DispBuffer[y*MapXsize+x]
+        _txt+=Drawtetris(0,n,x,y)
+
+
+
+           
+
+      // _txt+="\_l[%(50+x*16),%(50+y*16)]\_b[PIC,inline,--option=opaque,--clipping=0 0 16 16]"
+           }
+      }   
+  }
+
+
+
+for y=0; y<4; y++
+{
+   for x=0; x<4; x++
+    {
+
+   if IncmUnit[IncmUnit.r*16+y*4+x]>0
+         {
+ n=IncmUnit[IncmUnit.r*16+y*4+x]
+         _txt+=Drawtetris(1,n,x,y)
+
+
+
+
+          }
+       //_txt+="\_l[%(200+x*16),%(200+y*16)]\_b[PIC,inline,--option=opaque,--clipping=0 0 16 16]"
+    }
+
+_x=175
+_txt+="\_l[%(_x),120]L:%(Lines)\n\_l[%(_x),-]S:%(Score)\n\_l[%(_x),-]H:%(Scores[0])"
+
+_txt+="\n\_l[%(_x),-]\q[◇设定,Ontetrisgameoption]\n\_l[%(_x),-]\q[◇新游戏,OnNewGame]\n\_l[%(_x),-]\q[◇终了,OntetrisgameOver]"
+}
+
+_txt
+}
+
+Drawtetris      //绘图
+{
+
+_txt=""
+_x=0
+_y=0
+_sort=_argv[0]
+_type=_argv[1];
+case _sort {
+              if _sort==0 {
+			_x = _argv[2] * 16 + 10;
+			_y = _argv[3] * 16 + 60;
+                      }
+              elseif _sort== 1 {
+			sort=1
+			_x = _argv[2] * 16 + 165;
+			_y = _argv[3] * 16 + 60;
+                      }
+              --
+case _type {
+				 when 1 {
+					 "\_l[%(_x),%(_y)]\_b[PIC,inline,--option=opaque,--clipping=0 0 16 16]"
+				}
+				when 2 {
+					 "\_l[%(_x),%(_y)]\_b[PIC,inline,--option=opaque,--clipping=16 0 32 16]"
+				}
+				when 3 {
+					 "\_l[%(_x),%(_y)]\_b[PIC,inline,--option=opaque,--clipping=32 0 48 16]"
+				}
+				when 4 {
+					 "\_l[%(_x),%(_y)]\_b[PIC,inline,--option=opaque,--clipping=48 0 64 16]"
+				}
+				when 5 {
+					 "\_l[%(_x),%(_y)]\_b[PIC,inline,--option=opaque,--clipping=64 0 80 16]"
+				}
+				when 6 {
+					 "\_l[%(_x),%(_y)]\_b[PIC,inline,--option=opaque,--clipping=80 0 96 16]"
+                                }
+                                when 7 {
+					 "\_l[%(_x),%(_y)]\_b[PIC,inline,--option=opaque,--clipping=96 0 112 16]"
+				}
+			        when 8 {
+					 "\_l[%(_x),%(_y)]\_b[PIC,inline,--option=opaque,--clipping=112 0 128 16]"
+				}
+		        }
+                 
+
+	}
+}
+
+
+TBaseTetris       //定义方块位置
+{
+  Ux0 = MapXsize/2-2;
+  Uy0 = -2;
+
+  GenNewUnit;
+
+}
+
+GenNewUnit   //得到新方块
+{
+NumUnit=RAND(NumUnits)
+  IncmUnit.x = Ux0;
+  IncmUnit.y = Uy0;
+  IncmUnit.r = RAND(4);
+  
+
+  CurrUnit = IncmUnit;
+  CurrUnit.x = IncmUnit.x 
+  CurrUnit.y = IncmUnit.y
+  CurrUnit.r = IncmUnit.r
+
+   for _i=0;_i<64;_i++
+     {
+      IncmUnit[_i]=BaseUnits[NumUnit*64+_i]
+     }
+
+
+  
+}
+
+
+
+DispTetris           //方块处理
+{
+
+
+   //DispBuffer=NULL
+  DispBuffer = BlockBuffer
+  if !Removing
+   {
+
+        for _i=0; _i<4; _i++
+        {
+           for _k=0; _k<4; _k++
+              {
+                  if _i+CurrUnit.y>=0 && CurrUnit[CurrUnit.r*16+_i*4+_k]
+                      {
+                        DispBuffer[(_i+CurrUnit.y)*MapXsize+_k+CurrUnit.x]=CurrUnit[CurrUnit.r*16+_i*4+_k]
+                      }
+              }
+
+         }
+    }
+
+  
+}
+
+
+
+
+Tetris.Move         //方块移动
+{
+iMdir=_argv[0]
+
+  if Started
+   {
+     if Removing
+      {
+       TryToRemove
+        if !Removing
+         {
+          mov_="GenNewUnit"
+           GenNewUnit;
+           if CheckUnit(CurrUnit.x,CurrUnit.y,CurrUnit.r)
+               {
+             GameOver = 1
+               }
+         }
+        
+      
+        DispTetris;
+      }
+     else
+      {
+         x=CurrUnit.x;y=CurrUnit.y; r=CurrUnit.r;
+        case iMdir
+         {
+           if iMdir==btmLeft {x--; }
+            elseif iMdir==btmRight {x++; }
+            elseif iMdir==btmDown { y++;    }
+            elseif iMdir==btmCW   { r++; r=r%4;};
+            elseif iMdir==btmCCW  { 
+                                   
+                                    ck=CheckUnit(x,y-1,r)
+                                    while ck!=2&&ck!=1
+                                     {
+                                        y++
+                                      yy=y
+                                    ck=CheckUnit(x,y,r);
+                                   CurrUnit.x=x; CurrUnit.y=y-1; CurrUnit.r=r
+                                  DispTetris;
+                                     
+                                     } 
+                                     
+                                    }
+         }
+        ck=CheckUnit(x,y,r);
+        if  ck==2
+         {
+           if iMdir==btmDown
+            {
+              BlockBuffer = DispBuffer;
+               TryToRemove;
+            }
+         }
+         
+        if  ck==1 && Mdir!=btmDown
+         {
+           BlockBuffer = DispBuffer;
+          TryToRemove;
+           CurrUnit.x=x;CurrUnit.r=r
+         }
+         if  ck==0
+         {
+           
+          CurrUnit.x=x; CurrUnit.y=y; CurrUnit.r=r;
+        
+         }
+
+       DispTetris;
+      }
+   }
+
+}
+
+
+CheckUnit        //方块判定
+{
+
+x=_argv[0]
+y=_argv[1]
+r=_argv[2]
+x1=_argv[0]
+y1=_argv[1]
+r1=_argv[2]
+   v=0;
+
+  for i=0; i<4; i++
+   {
+     by = i+y;
+     for k=0; k<4; k++
+      {
+        bx = k+x;
+        if TOINT(CurrUnit[r*16+i*4+k])
+         {
+           if bx<0||bx>=MapXsize || by>=MapYsize
+            {
+              v=2;
+              v;
+              
+            }
+         
+           if by>=0
+            {
+              if TOINT(BlockBuffer[by*MapXsize+bx])
+               {
+                 v=2; //illegal move        
+                 v;
+               }
+
+              if by>=MapYsize
+               {              
+                v=1; //dropped
+               }
+              elseif BlockBuffer[by*MapXsize+bx]
+               {
+                v=2; //dropped
+               }
+            }
+         }
+      }
+   }
+  v
+}
+
+
+TryToRemove      //方块消除
+{
+  if Removing
+   {
+          Removing--
+     if !Removing
+      {
+         irmlines = 0;
+        for y=0; y<MapYsize; y++
+         {
+           bOK = 1;
+           for x=0; x<MapXsize; x++
+           { 
+            if TOINT(BlockBuffer[MapXsize*y+x])==0
+             {
+               bOK = 0;
+               break;                        
+             }
+           }
+            if bOK
+             {
+              for m=y; m>0; m--
+               {
+                 for x=0; x<MapXsize; x++
+                  {
+                BlockBuffer[m*MapXsize+x] = BlockBuffer[(m-1)*MapXsize+x];
+                  }
+               }
+              for x=0; x<MapXsize; x++
+                  {
+               BlockBuffer[m*MapXsize+x] = 0;
+                  }
+              irmlines ++;
+             }
+           
+         }
+        AddScore(irmlines);
+      }
+   }
+  else
+   {
+     Removing = 1;
+     for y=0; y<MapYsize; y++
+      {
+        bOK = 1;
+        for x=0; x<MapXsize; x++
+         { 
+         if TOINT(BlockBuffer[y*MapXsize+x])==0
+          {
+            bOK = 0;
+            break;
+            
+          }
+         }
+        if bOK
+         {
+           for x=0; x<MapXsize; x++
+             {
+            BlockBuffer[y*MapXsize+x] = NumUnits+1;
+             }
+           Removing = 2;
+         }
+      }
+     
+   }
+
+  //Removing;
+}
+
+AddScore       //加分
+{
+iRmv=TOINT(_argv[0])
+  case iRmv
+   {
+     if iRmv==0{ Score+=TOINT(speed)}
+     elseif iRmv==1{ Score+=TOINT(speed)*10}
+     elseif iRmv==2{ Score+=TOINT(speed)*30}
+     elseif iRmv==3{ Score+=TOINT(speed)*50}
+     elseif iRmv==4{ Score+=TOINT(speed)*80}
+   }
+  Lines+=iRmv;
+}
+
+
+
+
+CheckGameStatus           //游戏状态
+{
+
+  if GameOver
+   {
+      if Score>0
+    "\c\b[2]获得奖励金钱%(TOINT(2*Score))\x"
+    --
+     kikkamoney+=TOINT(2*Score)
+      iChanged = -1;
+     //LoadParams();
+     for i=0; i<NumScores; i++
+     {
+      if Score>Scores[i]
+      {
+        for m=NumScores-1; m>i; m--
+          {
+          Scores[m] = Scores[m-1];
+          }
+        iChanged = i;
+        break;
+      }
+     }
+     if iChanged>=0
+      {
+        Scores[iChanged] = Score;
+      }
+    // OnShowHighScores;
+   }
+
+}
+
+
+OnShowHighScores           //显示排行榜
+{
+_s="\b[0]"
+for i=0; i<NumScores; i++
+   {
+     if Scores[i]
+          {
+       _s+="第%(i+1)名: %(Scores[i])分\n"
+          }
+     else
+         {
+       break;
+       PaintBox1
+         }
+   }
+  if _s==""
+     {
+    _s = "没有记录";
+     }
+_s+="\x"
+_s
+
+}
+
+
+OntetrisgameOver        //游戏结束
+{
+"\![sound,stop,saori/aa.mp3]"
+
+playingtetris=0;
+CleartetrisVar
+
+--
+"\e"
+
+
+
+}
+
+
+CleartetrisVar         //消除变量
+{
+
+        ERASEVAR("DispBuffer");
+        ERASEVAR("BlockBuffer");
+	ERASEVAR("BaseUnits");
+	ERASEVAR("IncmUnit");
+	ERASEVAR("CurrUnit");
+	ERASEVAR("iMdir");
+}
+Ontetrisgameoption
+{
+_txt="\_q\b[2]\![set,choicetimeout,0]"
+_txt+="游戏速度：当前为%(speed)\n\q[1,Ontetrisgameoption,1,610] \q[2,Ontetrisgameoption,2,305] \q[3,Ontetrisgameoption,3,270] \q[4,Ontetrisgameoption,4,135] \q[5,Ontetrisgameoption,5,90] \q[6,Ontetrisgameoption,6,45] \q[7,Ontetrisgameoption,7,30] \q[8,Ontetrisgameoption,8,15] \q[9,Ontetrisgameoption,9,10]"
+
+if reference0!=NULL
+speed=reference0
+if reference1!=NULL
+timespeed=reference1
+_txt+="\n\n\q[◇返回,OnTimer1Timer]\n\q[◇终了,OntetrisgameOver]"
+
+
+_txt
+}

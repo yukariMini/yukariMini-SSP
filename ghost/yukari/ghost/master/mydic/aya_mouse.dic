@@ -1,0 +1,526 @@
+﻿///////////////////////////////////////////
+////////// MOVE and CLICK
+////////// modified by Cster 2015
+///////////////////////////////////////////
+
+//**** 抚摸 *************************************************************************
+
+//---- OnMouseMove --------------------------------------------------------------
+OnMouseMove
+{
+	if mode == "1"
+	{
+		OnMouseMove1
+	}
+	else
+	{
+		OnMouseMove0
+	}
+}
+
+OnMouseMove0
+{
+	//---- reference3
+	if reference3 == 0
+	{
+		if reference4 != ""
+		{
+			stroke++
+			if stroke >= 12
+			{
+				if reference4 == "Head"
+				{
+					headpatflag = 1
+					headpattime = 0
+					_talk = "TalkSakuraHeadPat.%(GetPhase).%(headpatcount)"
+					if ISFUNC(_talk) == 1
+					{
+						EVAL(_talk)
+						headpatcount++
+					}
+					else
+					{
+						EVAL("TalkSakuraHeadPat.%(GetPhase)")
+					}
+				}
+				elseif reference4 == "Face"
+				{
+					_talk = "TalkSakuraFacePat.%(GetPhase)"
+					if ISFUNC(_talk) == 1
+					{
+						EVAL(_talk)
+					}
+					else
+					{
+						TalkSakuraFacePat
+					}
+				}
+				elseif reference4 == "Bust"
+				{
+					bustpatflag = 1
+					bustpattime = 0
+					_talk = "TalkSakuraBustPat.%(GetPhase).%(bustpatcount)"
+					if ISFUNC(_talk) == 1
+					{
+						EVAL(_talk)
+						bustpatcount++
+					}
+					else
+					{
+						EVAL("TalkSakuraBustPat.%(GetPhase)")
+					}
+				}
+				elseif reference4 == "Hand"
+				{
+					_talk = "TalkSakuraHandPat.%(GetPhase)"
+					if ISFUNC(_talk) == 1
+					{
+						EVAL(_talk)
+					}
+					else
+					{
+						TalkSakuraHandPat
+					}
+				}
+				stroke = 0
+			}
+		}
+		else
+		{
+			stroke = 0
+		}
+	}
+	else
+	{
+		stroke++
+		if stroke >= 12
+		{
+			if reference4 == "Head"
+			{
+				TalkKeroHeadPat
+			}
+			elseif reference4 == "Tail"
+			{
+				TalkKeroTailPat
+			}
+			else
+			{
+				TalkKeroPat
+			}
+			stroke = 0
+		}
+	}
+}
+
+//---- 摸脸 ---------------------------------------------------------------------------------------------------------
+
+TalkSakuraFacePat.0
+{
+	"\0\![sound,play,saori/se_15.mp3]\t\s[3]啊…\w9你要干什么\w9…\e"
+	"\0\![sound,play,saori/se_16.mp3]\t\s[6]唔啊…\e"
+	"\0\![sound,play,saori/se_18.mp3]\t\s[6]啊…\w9\w9不要乱碰人家啦…\e"
+	"\0\![sound,play,saori/se_32.mp3]\t\s[3]讨厌…\e"
+	"\0\![sound,play,saori/se_29.mp3]\t\s[6]唔。\w9\w9\s[0]\n怎么了？\e"
+}
+
+TalkSakuraFacePat
+{
+	"\0\![sound,play,saori/se_15.mp3]\t\s[3]啊…\w9你要干什么\w9…\e"
+	"\0\![sound,play,saori/se_16.mp3]\t\s[6]唔啊…\e"
+	"\0\![sound,play,saori/se_18.mp3]\t\s[6]啊…\w9\w9不要乱碰人家啦…\e"
+	"\0\![sound,play,saori/se_32.mp3]\t\s[3]讨厌…\e"
+	"\0\![sound,play,saori/se_29.mp3]\t\s[6]唔。\w9\w9\s[0]\n怎么了？\e"
+}
+
+//---- 摸胸 ---------------------------------------------------------------------------------------------------------
+
+TalkSakuraBustPat.0
+{
+	intimacy -= 1
+	"\0\![sound,play,saori/se_17.mp3]\t\s[1]啊…\w9不要这样\w9…\e"
+	"\0\![sound,play,saori/se_19.mp3]\t\s[0]啊…\w9\w9\w9\s[1]不、\w9不可以的…\e"
+	"\0\![sound,play,saori/se_20.mp3]\t\s[1]呜…\w9H…\e"
+
+	"\0\![sound,play,saori/se_32.mp3]\t\s[1]讨厌…\e"
+
+}
+
+
+TalkSakuraBustPat.1.0
+{
+	intimacy -= 1
+	"\0\![sound,play,saori/se_17.mp3]\t\s[1]啊…\w9不要这样\w9…\e"
+	"\0\![sound,play,saori/se_19.mp3]\t\s[0]啊…\w9\w9\w9\s[1]不、\w9不可以的…\e"
+	"\0\![sound,play,saori/se_20.mp3]\t\s[1]呜…\w9H…\e"
+
+	"\0\![sound,play,saori/se_32.mp3]\t\s[1]讨厌…\e"
+
+}
+TalkSakuraBustPat.1
+{
+	intimacy -= 2
+	"\0\![sound,play,saori/se_17.mp3]\t\s[21]啊…\w9不要这样\w9…\e"
+	"\0\![sound,play,saori/se_19.mp3]\t\s[1]啊…\w9\w9\w9不、\w9不可以的…\e"
+	"\0\![sound,play,saori/se_20.mp3]\t\s[1]呜…\w9H…\e"
+
+	"\0\![sound,play,saori/se_32.mp3]\t\s[1]讨厌…\e"
+
+}
+
+TalkSakuraBustPat.2.0
+{
+	intimacy -= 3
+	"\0\![sound,play,saori/se_17.mp3]\t\s[21]啊…\w9不要这样\w9…\e"
+	"\0\![sound,play,saori/se_19.mp3]\t\s[1]啊…\w9\w9\w9不、\w9不可以的…\e"
+	"\0\![sound,play,saori/se_20.mp3]\t\s[1]呜…\w9H…\e"
+	"\0\![sound,play,saori/se_27.mp3]\t\s[100]啊……\w9\w9\n这里么(๑•́ ₃ •̀๑)\e"
+	"\0\![sound,play,saori/se_32.mp3]\t\s[1]讨厌…\e"
+
+}
+TalkSakuraBustPat.2
+{
+	intimacy -= 1
+	"\0\![sound,play,saori/se_17.mp3]\t\s[21]啊…\w9不要这样\w9…\e"
+	"\0\![sound,play,saori/se_19.mp3]\t\s[1]啊…\w9\w9\w9不、\w9不可以的…\e"
+	"\0\![sound,play,saori/se_20.mp3]\t\s[1]呜…\w9H…\e"
+	"\0\![sound,play,saori/se_27.mp3]\t\s[0]啊……\w9\w9\n这里么(๑•́ ₃ •̀๑)\e"
+	"\0\![sound,play,saori/se_32.mp3]\t\s[1]讨厌…\e"
+
+}
+
+//---- 裙子 ---------------------------------------------------------------------------------------------------------
+
+TalkSakuraHandPat.0
+{
+	"\0\![sound,play,saori/se_14.mp3]\t\s[6]呜哇…\w9…\w9…不要…\w9…\w9…\e"
+	"\0\![sound,play,saori/se_18.mp3]\t\s[7]啊…\w9\w9不要乱碰人家啦…\e"
+	"\0\![sound,play,saori/se_22.mp3]\t\s[3]哇…\w9\w9\n不要碰我的裙子…\e"
+	"\0\![sound,play,saori/se_81.mp3]\t\s[4]…雅蠛蝶\e"
+	"\0\![sound,play,saori/se_31.mp3]\t\s[3]唔…\w9\w9\e"
+
+}
+
+TalkSakuraHandPat
+{
+	"\0\![sound,play,saori/se_14.mp3]\t\s[6]呜哇…\w9…\w9…不要…\w9…\w9…\e"
+	"\0\![sound,play,saori/se_18.mp3]\t\s[7]啊…\w9\w9不要乱碰人家啦…\e"
+	"\0\![sound,play,saori/se_22.mp3]\t\s[3]哇…\w9\w9\n不要碰我的裙子…\e"
+	"\0\![sound,play,saori/se_81.mp3]\t\s[4]…雅蠛蝶\e"
+	"\0\![sound,play,saori/se_31.mp3]\t\s[3]唔…\w9\w9\e"
+
+}
+
+//---- 摸兔 ---------------------------------------------------------------------------------------------------------
+
+//TalkKeroHeadPat
+//{
+//	"\1\s[12]…\w9…\w9…\w9\s[10]\e"
+//	"\1\s[10]呣…\e"
+//}
+
+//TalkKeroTailPat
+//{
+//	"\1\s[10]啊啊啊…\w9\s[12]\n给我停下来！\e"
+//	"\1\s[10]呜～。\e"
+//	"\1\s[12]咕嘎啊啊～！\w9\w9\n不准碰！\e"
+//}
+
+//TalkKeroPat
+//{
+//	"\1\s[12]…\w9…\w9…\w9\s[10]\e"
+//}
+
+
+//**** 反应 *********************************************************************
+
+//---- OnMouseDoubleClickイベント -------------------------------------------------------
+
+OnMouseDoubleClick
+{
+	if mode == "1"
+	{
+		OnMouseDoubleClick1
+	}
+	else
+	{
+		OnMouseDoubleClick0
+	}
+}
+
+
+
+OnMouseDoubleClick0
+{
+	if reference3 == 0
+	{
+		if reference4 == "Head"
+		{
+			_talk = "TalkSakuraHeadClick.%(GetPhase)"
+			if ISFUNC(_talk) == 1
+			{
+				EVAL(_talk)
+			}
+			else
+			{
+				TalkSakuraHeadClick
+			}
+		}
+		elseif reference4 == "Face"
+		{
+			_talk = "TalkSakuraFaceClick.%(GetPhase)"
+			if ISFUNC(_talk) == 1
+			{
+				EVAL(_talk)
+			}
+			else
+			{
+				TalkSakuraFaceClick
+			}
+		}
+			if reference4 == "Bust"
+			{
+				bustclickflag = 1
+				bustclicktime = 0
+				_talk = "TalkSakuraBustClick.%(GetPhase).%(bustclickcount)"
+				if ISFUNC(_talk) == 1
+				{
+					EVAL(_talk)
+					bustclickcount++
+				}
+				else
+				{
+					EVAL("TalkSakuraBustClick.%(GetPhase)")
+				}
+			}
+		elseif reference4 == "Hand"
+		{
+			_talk = "TalkSakuraHandClick.%(GetPhase)"
+			if ISFUNC(_talk) == 1
+			{
+				EVAL(_talk)
+			}
+			else
+			{
+				TalkSakuraHandClick
+			}
+		}
+		else
+		{
+			OpenMenu
+		}
+	}
+	else
+	{
+		if reference4 == "Head"
+		{
+			TalkKeroHeadClick
+		}
+		elseif reference4 == "Tail"
+		{
+			TalkKeroTailClick
+		}
+		else
+		{
+			OnMusicPlayer;
+		}
+	}
+}
+
+//**** 推倒 *******************************************************************************************************
+
+//---- 推倒 ---------------------------------------------------------------------------------------------------------
+
+TalkSakuraHeadClick.0
+{
+	"\0\![sound,play,saori/se_21.mp3]\t\s[4]这是干什么…\w9讨厌…\e"
+	"\0\![sound,play,saori/se_25.mp3]\t\s[6]纳尼哟…\w9\e"
+	"\0\![sound,play,saori/se_32.mp3]\t\s[6]讨厌…\e"
+	"\0\![sound,play,saori/se_31.mp3]\t\s[3]唔…\w9\w9\e"
+}
+
+TalkSakuraHeadClick.1
+{
+	"\0\![sound,play,saori/se_21.mp3]\t\s[4]这是干什么…\w9讨厌…\e"
+	"\0\![sound,play,saori/se_25.mp3]\t\s[6]纳尼哟…\w9\e"
+	"\0\![sound,play,saori/se_32.mp3]\t\s[6]讨厌…\e"
+	"\0\![sound,play,saori/se_31.mp3]\t\s[3]唔…\w9\w9\e"
+}
+
+TalkSakuraHeadClick.2
+{
+	"\0\![sound,play,saori/se_21.mp3]\t\s[4]这是干什么…\w9讨厌…\e"
+	"\0\![sound,play,saori/se_25.mp3]\t\s[6]纳尼哟…\w9\e"
+	"\0\![sound,play,saori/se_32.mp3]\t\s[6]讨厌…\e"
+	"\0\![sound,play,saori/se_31.mp3]\t\s[3]唔…\w9\w9\e"
+}
+
+//---- 亲脸 ---------------------------------------------------------------------------------------------------------
+
+TalkSakuraFaceClick.0
+{
+	"\0\![sound,play,saori/se_15.mp3]\t\s[100]啊…\w9你要干什么\w9…\e"
+	"\0\![sound,play,saori/se_16.mp3]\t\s[3]唔啊…\e"
+	"\0\![sound,play,saori/se_18.mp3]\t\s[7]啊…\w9\w9不要乱碰人家啦…\e"
+	"\0\![sound,play,saori/se_32.mp3]\t\s[6]讨厌…\e"
+	"\0\![sound,play,saori/se_29.mp3]\t\s[100]唔。\w9\w9\n怎么了？\e"
+}
+
+TalkSakuraFaceClick.1
+{
+	"\0\![sound,play,saori/se_15.mp3]\t\s[100]啊…\w9你要干什么\w9…\e"
+	"\0\![sound,play,saori/se_16.mp3]\t\s[3]唔啊…\e"
+	"\0\![sound,play,saori/se_18.mp3]\t\s[7]啊…\w9\w9不要乱碰人家啦…\e"
+	"\0\![sound,play,saori/se_32.mp3]\t\s[6]讨厌…\e"
+	"\0\![sound,play,saori/se_29.mp3]\t\s[100]唔。\w9\w9\n怎么了？\e"
+}
+
+TalkSakuraFaceClick.2
+{
+	"\0\![sound,play,saori/se_15.mp3]\t\s[100]啊…\w9你要干什么\w9…\e"
+	"\0\![sound,play,saori/se_16.mp3]\t\s[3]唔啊…\e"
+	"\0\![sound,play,saori/se_18.mp3]\t\s[7]啊…\w9\w9不要乱碰人家啦…\e"
+	"\0\![sound,play,saori/se_32.mp3]\t\s[6]讨厌…\e"
+	"\0\![sound,play,saori/se_29.mp3]\t\s[100]唔。\w9\w9\n怎么了？\e"
+}
+
+
+//---- 抓胸 ---------------------------------------------------------------------------------------------------------
+
+TalkSakuraBustClick.0
+{
+	intimacy -= 1
+	"\0\![sound,play,saori/se_17.mp3]\t\s[21]啊…\w9不要这样\w9…\e"
+	"\0\![sound,play,saori/se_19.mp3]\t\s[1]啊…\w9\w9\w9不、\w9不可以的…\e"
+	"\0\![sound,play,saori/se_20.mp3]\t\s[1]呜…\w9H…\e"
+	"\0\![sound,play,saori/se_27.mp3]\t\s[100]啊……\w9\w9\n这里么(๑•́ ₃ •̀๑)\e"
+	"\0\![sound,play,saori/se_32.mp3]\t\s[1]讨厌…\e"
+	"\0\![sound,play,saori/se_81.mp3]\t\s[1]...雅蠛蝶\e"
+}
+
+TalkSakuraBustClick.1.0
+{
+	intimacy -= 1
+	"\0\![sound,play,saori/se_17.mp3]\t\s[21]啊…\w9不要这样\w9…\e"
+	"\0\![sound,play,saori/se_19.mp3]\t\s[1]啊…\w9\w9\w9不、\w9不可以的…\e"
+	"\0\![sound,play,saori/se_20.mp3]\t\s[1]呜…\w9H…\e"
+
+
+}
+TalkSakuraBustClick.1.1
+{
+	intimacy -= 2
+	"\0\![sound,play,saori/se_17.mp3]\t\s[21]啊…\w9不要这样\w9…\e"
+	"\0\![sound,play,saori/se_19.mp3]\t\s[1]啊…\w9\w9\w9不、\w9不可以的…\e"
+	"\0\![sound,play,saori/se_20.mp3]\t\s[1]呜…\w9H…\e"
+
+
+}
+TalkSakuraBustClick.1
+{
+	intimacy -= 3
+	"\0\![sound,play,saori/se_17.mp3]\t\s[21]啊…\w9不要这样\w9…\e"
+	"\0\![sound,play,saori/se_19.mp3]\t\s[1]啊…\w9\w9\w9不、\w9不可以的…\e"
+	"\0\![sound,play,saori/se_20.mp3]\t\s[1]呜…\w9H…\e"
+
+
+	"\0\![sound,play,saori/se_81.mp3]\t\s[1]...雅蠛蝶\e"
+}
+
+TalkSakuraBustClick.2.0
+{
+	intimacy -= 2
+	"\0\![sound,play,saori/se_17.mp3]\t\s[21]啊…\w9不要这样\w9…\e"
+	"\0\![sound,play,saori/se_19.mp3]\t\s[1]啊…\w9\w9\w9不、\w9不可以的…\e"
+	"\0\![sound,play,saori/se_20.mp3]\t\s[1]呜…\w9H…\e"
+
+
+	"\0\![sound,play,saori/se_81.mp3]\t\s[1]...雅蠛蝶\e"
+}
+TalkSakuraBustClick.2.1
+{
+	intimacy -= 1
+	"\0\![sound,play,saori/se_17.mp3]\t\s[21]啊…\w9不要这样\w9…\e"
+	"\0\![sound,play,saori/se_19.mp3]\t\s[1]啊…\w9\w9\w9不、\w9不可以的…\e"
+	"\0\![sound,play,saori/se_20.mp3]\t\s[1]呜…\w9H…\e"
+	"\0\![sound,play,saori/se_27.mp3]\t\s[100]啊……\w9\w9\n这里么(๑•́ ₃ •̀๑)\e"
+	"\0\![sound,play,saori/se_32.mp3]\t\s[1]讨厌…\e"
+	"\0\![sound,play,saori/se_81.mp3]\t\s[1]…雅蠛蝶……\w9\w9\e"
+	"\0\![sound,play,saori/se_14.mp3]\t\s[6]呜哇…\w9…\w9…不要…\w9…\w9…\e"
+}
+TalkSakuraBustClick.2
+{
+	intimacy -= 1
+	"\0\![sound,play,saori/se_17.mp3]\t\s[21]啊…\w9不要这样\w9…\e"
+	"\0\![sound,play,saori/se_19.mp3]\t\s[1]啊…\w9\w9\w9不、\w9不可以的…\e"
+	"\0\![sound,play,saori/se_20.mp3]\t\s[1]呜…\w9H…\e"
+	"\0\![sound,play,saori/se_27.mp3]\t\s[100]啊……\w9\w9\n这里么(๑•́ ₃ •̀๑)\e"
+
+	"\0\![sound,play,saori/se_81.mp3]\t\s[1]...雅蠛蝶\e"
+	"\0\![sound,play,saori/se_14.mp3]\t\s[6]呜哇…\w9…\w9…不要…\w9…\w9…\e"
+}
+
+//---- 抓裙 ---------------------------------------------------------------------------------------------------------
+
+TalkSakuraHandClick.0
+{
+	"\0\![sound,play,saori/se_14.mp3]\t\s[6]呜哇…\w9…\w9…不要…\w9…\w9…\e"
+
+	"\0\![sound,play,saori/se_22.mp3]\t\s[3]哇…\w9\w9\n不要碰我的裙子…\e"
+	"\0\![sound,play,saori/se_81.mp3]\t\s[4]…雅蠛蝶\e"
+	"\0\![sound,play,saori/se_31.mp3]\t\s[3]唔…\w9\w9\n…\w9…\w9…\e"
+
+}
+
+TalkSakuraHandClick.1
+{
+	"\0\![sound,play,saori/se_14.mp3]\t\s[6]呜哇…\w9…\w9…不要…\w9…\w9…\e"
+	"\0\![sound,play,saori/se_18.mp3]\t\s[7]啊…\w9\w9不要乱碰人家啦…\e"
+	"\0\![sound,play,saori/se_22.mp3]\t\s[3]哇…\w9\w9\n不要碰我的裙子…\e"
+	"\0\![sound,play,saori/se_81.mp3]\t\s[4]…雅蠛蝶\e"
+	"\0\![sound,play,saori/se_31.mp3]\t\s[3]唔…\w9\w9\n…\w9…\w9…\e"
+
+}
+
+
+TalkSakuraHandClick.2
+{
+	"\0\![sound,play,saori/se_14.mp3]\t\s[6]呜哇…\w9…\w9…不要…\w9…\w9…\e"
+
+	"\0\![sound,play,saori/se_22.mp3]\t\s[3]哇…\w9\w9\n不要碰我的裙子…\e"
+	"\0\![sound,play,saori/se_81.mp3]\t\s[4]…雅蠛蝶\e"
+	"\0\![sound,play,saori/se_31.mp3]\t\s[3]唔…\w9\w9\n…\w9…\w9…\e"
+	"\0\![sound,play,saori/se_90.mp3]\t\s[7]把我的胖次\w9…\w9…还给我...\s[4]\e"
+}
+
+
+
+//---- 抓兔 ---------------------------------------------------------------------------------------------------------
+
+//TalkKeroHeadClick
+//{
+//	"\1\s[12]动物保护团体的那些家伙会生气喔。\e"
+//	"\1\s[10]非常不愉快。\w9\w9\0\s[8]咦？\w9\w9\1\s[13]\n\n[half]抱歉、\w9当我什么都没说。\e"
+//	"\1\s[12]…\w9干麻啦？\e"
+//	"\1\s[12]…\w9…\w9…\w9\s[10]\e"
+//	{
+//		"\1\s[10]…\w9很有胆量嘛。\w9\w9\n等一下\w5作好被围殴的觉悟吧。\w9\w9\w9\s[12]\n\n[half]给我准备好"
+//		--
+//		"かるかん"
+//		"もんぷち"
+//		"ふりすきー"
+//		"しーば"
+//		--
+//		"等着！！\e"
+//	}
+//}
+//
+//TalkKeroTailClick
+//{
+//	"\1\s[12]…\w9…\w9…\w9\s[10]\e"
+//	"\1\s[12]动物保护团体的那些家伙会生气喔。\e"
+//}
+
+//TalkKeroClick
+//{
+//	"\1\s[12]…\w9…\w9…\w9\s[10]\e"
+//}

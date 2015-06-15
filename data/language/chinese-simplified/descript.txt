@@ -1,0 +1,10 @@
+name,Chinese-Simplified
+locale,Chinese-Simplified
+id,2052
+menu.font.name,ËÎÌו
+menu.font.height,12
+dllname,resource.dll
+messagename,message.txt
+holidayname,holidays.txt
+craftman,SSP CERS
+craftmanurl,http://kyosuke.billyjr.com/~cha/SSP.html
