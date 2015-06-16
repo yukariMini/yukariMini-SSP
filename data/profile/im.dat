@@ -1,6 +1,4 @@
 Charset,UTF-8
 IPMessenger.Broadcast.0,255.255.255.255
-username,番茄花园
-imdlg.x,448
-imdlg.y,89
-IPMessenger.Broadcast.Num,1
+IPMessenger.Broadcast.1,ff02::1
+IPMessenger.Broadcast.Num,2
