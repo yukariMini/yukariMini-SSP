@@ -17,3 +17,21 @@ SHIORI/3.0 204 No Content
 Charset: UTF-8
 
 
+=====send=====
+GET SHIORI/3.0
+Charset: UTF-8
+Sender: SSP
+SecurityLevel: local
+ID: OnSecondChange
+Reference0: 65
+Reference1: 1
+Reference2: 0
+Reference3: 1
+Reference4: 0
+
+
+=====response=====
+SHIORI/3.0 204 No Content
+Charset: UTF-8
+
+

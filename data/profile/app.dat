@@ -1,5 +1,6 @@
 Charset,UTF-8
-SelfUpdate.LastExec,492275205
+DeveloperPalette.pos.iscenter,0
+SelfUpdate.LastExec,492423785
 path.headline.status,1
 path.balloon.0,.\balloon\
 path.plugin.0,.\plugin\
@@ -8,10 +9,13 @@ path.plugin.status,1
 path.headline.Num,1
 path.plugin.Num,1
 path.balloon.Num,1
+ScriptLog.pos.iscenter,0
+DeveloperPalette.pos,425.322.568.578
 Ghost.0,.\ghost\yukari\
+ScriptLog.pos,120.26.1028.709
 path.ghost.0,.\ghost\
 path.ghost.Num,1
-sntp.lastexec,487797021
+sntp.lastexec,492424205
 Ghost.Num,1
 path.balloon.status,1
 path.headline.0,.\headline\
