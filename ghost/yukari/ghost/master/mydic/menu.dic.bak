@@ -73,7 +73,7 @@ SubMenu
 			\q[◇塔罗占卜,OnTarroTest]          \q[◇剪刀石头布,OnHandGame]\n/
                         \q[◇花语,OnFlowers]                \q[◇21点游戏,OnBlackjack0]\n/
                         \q[◇俄罗斯方块,OnNewGame]       \q[◇拼图,OnPuzzleList]\n/
-                        \q[◇RPG1.05,OnRpgGame]\f[color,238,50,95]new\f[default]    \q[◇五十音学习,piano]\n"
+                        \q[◇RPG1.04,OnRpgGame]\f[color,238,50,95]new\f[default]    \q[◇五十音学习,piano]\n"
 		}
 		when 2 {
 			"\q[◇系统环境,System]\n/

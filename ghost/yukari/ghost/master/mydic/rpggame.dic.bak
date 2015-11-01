@@ -6778,7 +6778,7 @@ OpenRpgGameMenu(5)
 
 Onesc
 {
-"\0\s[40]确定退出rpg1.05吗？\n/
+"\0\s[40]确定退出rpg1.04吗？\n/
 \q[是,yseesc]\n/
 \q[否,noesc]"
 }

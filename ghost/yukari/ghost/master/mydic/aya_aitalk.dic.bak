@@ -216,7 +216,7 @@ ONE
 //**** TWO *************************************************
 TWO
 {
-  if reference1=="爱" || reference1=="爱你" || reference1=="我爱你"
+  if reference1=="爱" || reference1=="爱你"
 	{
 		_phase = GetPhase
 		if scope == "0"

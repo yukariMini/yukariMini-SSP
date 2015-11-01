@@ -229,8 +229,8 @@ OnMusicPlayer
 	_status =('play]\f[color,108,129,182]◇播放','pause]\f[color,229,134,82]◇暂停','resume]\f[color,108,129,182]◇继续')[playingmusic];
 	_txt += "\__q[OnMusicPlayerCmd,%(_status)\f[color,default]\__q";
 	_txt += " \f[color,238,50,95]\q[◇停止,OnMusicPlayerCmd,stop]\f[color,default]       /
-		   \f[color,93,188,91]\q[◇播放列表,OnMusicPlayerList]\f[color,default] ";
-//		   \f[color,128,66,255]\q[◇音量,OnMusicPlayerVolume]\f[color,default]";
+		   \f[color,93,188,91]\q[◇播放列表,OnMusicPlayerList]\f[color,default] /
+		   \f[color,128,66,255]\q[◇音量,OnMusicPlayerVolume]\f[color,default]";
 	_b = "◎,○,○,○,○,◎,○,○,○,○,◎,○,○,○,○,◎";
 	_txt += "\n[100]";
 	_txt += "\q[%(_b[musicplaymode])普通,OnMusicPlayMode,0] \q[%(_b[musicplaymode + 4])单曲循环,OnMusicPlayMode,1] /

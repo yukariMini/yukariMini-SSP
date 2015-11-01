@@ -1,7 +1,9 @@
 Charset,UTF-8
-communicate.top,402
-communicate.left,619
-Char0.center,1284
+communicate.top,42
+Window.AlwaysOnTop,1
+communicate.left,987
+Char0.center,1315
 FirstBoot,booted
 Char1.center,871
 shiori.log,0
+DeveloperPalette.visible,1

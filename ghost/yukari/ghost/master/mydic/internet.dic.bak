@@ -167,7 +167,7 @@ OnIpEnd
 OnCheckWeather
 {
 	if ISVAR("city") {
-		"\b[1]要查询『\_a[OnChangeCity]%(city)\_a』的天气吗？/
+		"\b[1]『要查询\_a[OnChangeCity]%(city)\_a』的天气吗？/
 		\n[150]\_q\__q[OnDownLoadWeather]◇新浪天气查询\__q\n/
 		（未来3-5天天气状况，可查询国外城市）\n/
 		\_a[OnUrl,http://weather.news.sina.com.cn/]http://weather.news.sina.com.cn/\_a\n[150]";

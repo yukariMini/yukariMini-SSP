@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 <!--<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />-->
-<title>北京天气_天气预报_新闻中心_新浪网</title>
-<meta name="keywords" content="北京天气预报,北京天气,北京天气预报查询一周,机场天气,北京气候">
+<title>东京天气_天气预报_新闻中心_新浪网</title>
+<meta name="keywords" content="东京天气预报,东京天气,东京天气预报查询一周,机场天气,东京气候">
 <meta name="description" content="为您提供中国及全球10000个城市天气预报、历史气候查询">
 <link rel="stylesheet" type="text/css" href="http://php.weather.sina.com.cn/css/weather_yc.css?_=20101224" media="all" />
 <script type="text/javascript" src="http://php.weather.sina.com.cn/js/weather_common.js?t=20101115"></script>
@@ -353,7 +353,35 @@ function form_validate(form){
 				</div>
 				<!-- lxl.1 begin -->
 				<div class="relate_city2">
-										                    <!-- tips: cityWarning 和 weatherAssit 都是有数据则显示，无数据则连div都不要显示, 默认都要加上on cssClass! -->
+										                    <div id="weatherAssit" class="weather-assit on" style="display:none;">
+                    	<div style="position:relative; zoom:1;">  <!-- lxl.2 -->
+                            <a><img src="images/assit.png" widht="259" height="117" /></a>
+                            <script type="text/javascript" charset="utf-8">
+								(function(){
+								  var _w = 106 , _h = 24;
+								  var param = {
+								    url:top.location.href,
+								    type:'5',
+								    count:'', /**是否显示分享数，1显示(可选)*/
+								    appkey:'', /**您申请的应用appkey,显示分享来源(可选)*/
+								    title:'北京：5日比2日要低9℃，降温十分剧烈；5日比4日降温5℃哦。', /**分享的文字内容(可选，默认为所在页面的title)*/
+								    pic:'http://php.weather.sina.com.cn/images/assit.png', /**分享图片的路径(可选)*/
+								    ralateUid:'1664971205', /**关联用户的UID，分享微博会@该用户(可选)*/
+									language:'zh_cn', /**设置语言，zh_cn|zh_tw(可选)*/
+								    rnd:new Date().valueOf()
+								  }
+								  var temp = [];
+								  for( var p in param ){
+								    temp.push(p + '=' + encodeURIComponent( param[p] || '' ) )
+								  }
+								  document.write('<iframe style="position:absolute; right:34px; bottom:4px; z-index:2;" allowTransparency="true" frameborder="0" scrolling="no" src="http://hits.sinajs.cn/A1/weiboshare.html?' + temp.join('&') + '" width="'+ _w+'" height="'+_h+'"></iframe>')
+								})()
+							</script>
+                        </div>
+
+                        <p>5日比明天要低9℃，降温十分剧烈；<br />5日比4日降温5℃哦。</p>
+                    </div>
+					                    <!-- tips: cityWarning 和 weatherAssit 都是有数据则显示，无数据则连div都不要显示, 默认都要加上on cssClass! -->
 
 					<div id="cityWeatherInfo">
                             <div class="slide_item on" id="zjgz">
@@ -371,44 +399,44 @@ function form_validate(form){
                                     <ul class="list_02">
 		                            											<li>
 											<a href="http://php.weather.sina.com.cn/search.php?f=1&c=1&city=%CC%EC%BD%F2&dpc=1" target="_top" title="">
-												<span class="city" title="天津">天津</span> <span class="tpte"> 33℃～25℃</span>
-												<span class="icon_box">		<span class="icon_weather_small icon_weather_qing_0" title="晴转多云"></span><span class="icon_weather_small icon_weather_duoyun_1" title="晴转多云"></span></span>
+												<span class="city" title="天津">天津</span> <span class="tpte"> 18℃～7℃</span>
+												<span class="icon_box">		<span class="icon_weather_small icon_weather_yin_0" title="阴转晴"></span><span class="icon_weather_small icon_weather_qing_1" title="阴转晴"></span></span>
 											</a>
 										</li>
 		                                										<li>
 											<a href="http://php.weather.sina.com.cn/search.php?f=1&c=1&city=%CA%AF%BC%D2%D7%AF&dpc=1" target="_top" title="">
-												<span class="city" title="石家庄">石家庄</span> <span class="tpte"> 32℃～24℃</span>
-												<span class="icon_box">		<span class="icon_weather_small icon_weather_duoyun_0" title="多云"></span><span class="icon_weather_small icon_weather_duoyun_1" title="多云"></span></span>
+												<span class="city" title="石家庄">石家庄</span> <span class="tpte"> 18℃～6℃</span>
+												<span class="icon_box">		<span class="icon_weather_small icon_weather_qing_0" title="晴"></span><span class="icon_weather_small icon_weather_qing_1" title="晴"></span></span>
 											</a>
 										</li>
 		                                										<li>
 											<a href="http://php.weather.sina.com.cn/search.php?f=1&c=1&city=%B1%A3%B6%A8&dpc=1" target="_top" title="">
-												<span class="city" title="保定">保定</span> <span class="tpte"> 32℃～22℃</span>
-												<span class="icon_box">		<span class="icon_weather_small icon_weather_duoyun_0" title="多云"></span><span class="icon_weather_small icon_weather_duoyun_1" title="多云"></span></span>
+												<span class="city" title="保定">保定</span> <span class="tpte"> 17℃～1℃</span>
+												<span class="icon_box">		<span class="icon_weather_small icon_weather_qing_0" title="晴"></span><span class="icon_weather_small icon_weather_qing_1" title="晴"></span></span>
 											</a>
 										</li>
 		                                										<li>
 											<a href="http://php.weather.sina.com.cn/search.php?f=1&c=1&city=%CC%C6%C9%BD&dpc=1" target="_top" title="">
-												<span class="city" title="唐山">唐山</span> <span class="tpte"> 32℃～21℃</span>
-												<span class="icon_box">		<span class="icon_weather_small icon_weather_duoyun_0" title="多云转晴"></span><span class="icon_weather_small icon_weather_qing_1" title="多云转晴"></span></span>
+												<span class="city" title="唐山">唐山</span> <span class="tpte"> 16℃～1℃</span>
+												<span class="icon_box">		<span class="icon_weather_small icon_weather_qing_0" title="晴"></span><span class="icon_weather_small icon_weather_qing_1" title="晴"></span></span>
 											</a>
 										</li>
 		                                										<li>
 											<a href="http://php.weather.sina.com.cn/search.php?f=1&c=1&city=%C7%D8%BB%CA%B5%BA&dpc=1" target="_top" title="">
-												<span class="city" title="秦皇岛">秦皇岛</span> <span class="tpte"> 31℃～22℃</span>
+												<span class="city" title="秦皇岛">秦皇岛</span> <span class="tpte"> 15℃～2℃</span>
 												<span class="icon_box">		<span class="icon_weather_small icon_weather_duoyun_0" title="多云转晴"></span><span class="icon_weather_small icon_weather_qing_1" title="多云转晴"></span></span>
 											</a>
 										</li>
 		                                										<li>
 											<a href="http://php.weather.sina.com.cn/search.php?f=1&c=1&city=%C0%C8%B7%BB&dpc=1" target="_top" title="">
-												<span class="city" title="廊坊">廊坊</span> <span class="tpte"> 33℃～22℃</span>
-												<span class="icon_box">		<span class="icon_weather_small icon_weather_qing_0" title="晴转多云"></span><span class="icon_weather_small icon_weather_duoyun_1" title="晴转多云"></span></span>
+												<span class="city" title="廊坊">廊坊</span> <span class="tpte"> 17℃～3℃</span>
+												<span class="icon_box">		<span class="icon_weather_small icon_weather_qing_0" title="晴"></span><span class="icon_weather_small icon_weather_qing_1" title="晴"></span></span>
 											</a>
 										</li>
 		                                										<li>
 											<a href="http://php.weather.sina.com.cn/search.php?f=1&c=1&city=%CC%C1%B9%C1&dpc=1" target="_top" title="">
-												<span class="city" title="塘沽">塘沽</span> <span class="tpte"> 33℃～25℃</span>
-												<span class="icon_box">		<span class="icon_weather_small icon_weather_qing_0" title="晴转多云"></span><span class="icon_weather_small icon_weather_duoyun_1" title="晴转多云"></span></span>
+												<span class="city" title="塘沽">塘沽</span> <span class="tpte"> 18℃～6℃</span>
+												<span class="icon_box">		<span class="icon_weather_small icon_weather_yin_0" title="阴转晴"></span><span class="icon_weather_small icon_weather_qing_1" title="阴转晴"></span></span>
 											</a>
 										</li>
 		                                									</ul>
@@ -590,7 +618,7 @@ function form_validate(form){
                 <div class="tab_ctn" id="tab_01_ctn1">
 
 					<div class="tab_hd clearfix">
-                    						<h3>北京 今天 <span style="font-size:12px;">2015-08-09 周日</span> <span style="font-size:12px;">(北京时间08月09日08:40更新)</span></h3>
+                    						<h3>北京 今天 <span style="font-size:12px;">2015-11-01 周日</span> <span style="font-size:12px;">(北京时间11月01日17:20更新)</span></h3>
                     						<div class="temp_opt">
 							<span class="temp_c temp_on" onclick="temperature.setType('C')">℃</span> | <span class="temp_f"  onclick="temperature.setType('F')">℉</span>
 						</div>
@@ -605,7 +633,7 @@ function form_validate(form){
 									<div title='晴' class="icon_weather" style="background: url(http://php.weather.sina.com.cn/images/yb3/180_180/qing_0.png) 0 0  no-repeat;_background:none;_FILTER: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://php.weather.sina.com.cn/images/yb3/180_180/qing_0.png', sizingMethod='crop')"></div>
 
 									<ul class="detail">
-										<li><span class="fs_30 tpte">33℃</span> <span class="fs_14">体感</span> <span class="fs_24 tpte">29℃</span></li>
+										<li><span class="fs_30 tpte">17℃</span> <span class="fs_14">体感</span> <span class="fs_24 tpte">18℃</span></li>
 										<li>晴</li>
 										<li>无持续风向 ≤3级</li>
 									</ul>
@@ -613,10 +641,10 @@ function form_validate(form){
 								<div class="night">
 									<h5>今天夜间</h5>
 
-									<div title='多云' class="icon_weather" style="background: url(http://php.weather.sina.com.cn/images/yb3/180_180/duoyun_1.png) 0 0  no-repeat;_background:none;_FILTER: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://php.weather.sina.com.cn/images/yb3/180_180/duoyun_1.png', sizingMethod='crop')"></div>
+									<div title='晴' class="icon_weather" style="background: url(http://php.weather.sina.com.cn/images/yb3/180_180/qing_1.png) 0 0  no-repeat;_background:none;_FILTER: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://php.weather.sina.com.cn/images/yb3/180_180/qing_1.png', sizingMethod='crop')"></div>
 									<ul class="detail">
-										<li><span class="fs_30 tpte">23℃</span></li>
-										<li>多云</li>
+										<li><span class="fs_30 tpte">3℃</span></li>
+										<li>晴</li>
 										<li>无持续风向 ≤3级</li>
 									</ul>
 								</div>
@@ -635,10 +663,10 @@ function form_validate(form){
 				                      <td><p>轻度污染</p></td>
 				                    </tr>
 				                    <tr>
-				                      <td><p>空气质量指数 ：141</p></td>
+				                      <td><p>空气质量指数 ：102</p></td>
 				                    </tr>
 				                    <tr>
-				                      <td><p>(08月09日 15:00)</p></td>
+				                      <td><p>(11月01日 18:00)</p></td>
 				                    </tr>
 				                  </table>
 				                </li>
@@ -648,13 +676,13 @@ function form_validate(form){
 									<h4><span class="icon_sun"></span>日出日落时间</h4>
                                     <table class="tb_sun">
 										<tr>
-											<td>今天 日出 05:20  日落 19:19</td>
+											<td>今天 日出 06:42  日落 17:13</td>
 										</tr>
 										<tr>
-											<td>明天 日出 05:21  日落 19:18</td>
+											<td>明天 日出 06:43  日落 17:12</td>
 										</tr>
 										<tr>
-											<td>后天 日出 05:21  日落 19:17</td>
+											<td>后天 日出 06:45  日落 17:10</td>
 										</tr>
 									</table>
 								</li>
@@ -664,9 +692,9 @@ function form_validate(form){
                             	<li class="slide_box" id="slide_box_airport">
 									<div class="slide_wrap" id="slide_wrap_airport">
                                                                             <h4 style="white-space:nowrap; *white-space:normal; text-overflow:ellipsis; -o-text-overflow:ellipsis; overflow:hidden;"><span class="icon_jichang"></span><a href="http://php.weather.sina.com.cn/airport/weather.php?airport=%B1%B1%BE%A9&dpc=1" title="">北京首都国际机场</a></h4>
-                                        <p>晴天 <span class="tpte">35℃</span>  北风 2级 <br />
+                                        <p>晴天 <span class="tpte">13℃</span>  西南风 2级 <br />
                                             能见度：10公里以上 <br />
-                                        (今日 16:00更新)</p>
+                                        (今日 19:30更新)</p>
                                      									</div>
 								</li>
                                 <!-- 机场天气 end -->
@@ -675,7 +703,7 @@ function form_validate(form){
 								 -->
 								<!-- <li class="li_04">
 									<h4><span class="icon_microblog"></span>
-									<a href="javascript:sent_to_vb('北京','北京今日（2015年08月09日）天气：晴转多云，33℃～23℃，风力：≤3级，风向：无持续风向');" title="">转发到微博</a>
+									<a href="javascript:sent_to_vb('北京','北京今日（2015年11月01日）天气：晴，17℃～3℃，风力：≤3级，风向：无持续风向');" title="">转发到微博</a>
 									</h4>
 								</li>
 								 -->
@@ -704,7 +732,7 @@ function form_validate(form){
 						    title: '',
 						    summary: {
 								toString : function(){
-									var pageTitle = '北京今日（2015年08月09日）天气：晴转多云，33℃～23℃，风力：≤3级，风向：无持续风向';
+									var pageTitle = '北京今日（2015年11月01日）天气：晴，17℃～3℃，风力：≤3级，风向：无持续风向';
 									return pageTitle;
 								}
 							},
@@ -724,36 +752,36 @@ function form_validate(form){
 						<div class="weather_list clearfix">
 
 														<div class="mod_02">
-								<h4>明天周一(08月10日)</h4>
+								<h4>明天周一(11月02日)</h4>
 								<div class="mod_03">
 									<h5>白天</h5>
                                     <div title='晴' class="icon_mid_weather" style="background: url(http://php.weather.sina.com.cn/images/yb3/78_78/qing_0.png) 0 0  no-repeat;_background:none;_FILTER: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://php.weather.sina.com.cn/images/yb3/78_78/qing_0.png', sizingMethod='crop')"></div>
 									<ul>
 										<li>晴</li>
-										<li class="tpte">33℃</li>
+										<li class="tpte">19℃</li>
 										<li>无持续风向</li>
 										<li>≤3级</li>
 									</ul>
 								</div>
 								<div class="mod_03">
 									<h5>夜间</h5>
-									<div title='多云' class="icon_mid_weather" style="background: url(http://php.weather.sina.com.cn/images/yb3/78_78/duoyun_1.png) 0 0  no-repeat;_background:none;_FILTER: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://php.weather.sina.com.cn/images/yb3/78_78/duoyun_1.png', sizingMethod='crop')"></div>
+									<div title='晴' class="icon_mid_weather" style="background: url(http://php.weather.sina.com.cn/images/yb3/78_78/qing_1.png) 0 0  no-repeat;_background:none;_FILTER: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://php.weather.sina.com.cn/images/yb3/78_78/qing_1.png', sizingMethod='crop')"></div>
 									<ul>
-										<li>多云</li>
-										<li class="tpte">24℃</li>
+										<li>晴</li>
+										<li class="tpte">5℃</li>
 										<li>无持续风向</li>
 										<li>≤3级</li>
 									</ul>
 								</div>
 							</div>
                            							<div class="mod_02">
-								<h4>后天周二(08月11日)</h4>
+								<h4>后天周二(11月03日)</h4>
 								<div class="mod_03">
 									<h5>白天</h5>
                                     <div title='多云' class="icon_mid_weather" style="background: url(http://php.weather.sina.com.cn/images/yb3/78_78/duoyun_0.png) 0 0  no-repeat;_background:none;_FILTER: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://php.weather.sina.com.cn/images/yb3/78_78/duoyun_0.png', sizingMethod='crop')"></div>
 									<ul>
 										<li>多云</li>
-										<li class="tpte">31℃</li>
+										<li class="tpte">17℃</li>
 										<li>无持续风向</li>
 										<li>≤3级</li>
 									</ul>
@@ -763,55 +791,55 @@ function form_validate(form){
 									<div title='多云' class="icon_mid_weather" style="background: url(http://php.weather.sina.com.cn/images/yb3/78_78/duoyun_1.png) 0 0  no-repeat;_background:none;_FILTER: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://php.weather.sina.com.cn/images/yb3/78_78/duoyun_1.png', sizingMethod='crop')"></div>
 									<ul>
 										<li>多云</li>
-										<li class="tpte">23℃</li>
+										<li class="tpte">6℃</li>
 										<li>无持续风向</li>
 										<li>≤3级</li>
 									</ul>
 								</div>
 							</div>
                            							<div class="mod_02">
-								<h4>周三(08月12日)</h4>
-								<div class="mod_03">
-									<h5>白天</h5>
-                                    <div title='多云' class="icon_mid_weather" style="background: url(http://php.weather.sina.com.cn/images/yb3/78_78/duoyun_0.png) 0 0  no-repeat;_background:none;_FILTER: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://php.weather.sina.com.cn/images/yb3/78_78/duoyun_0.png', sizingMethod='crop')"></div>
-									<ul>
-										<li>多云</li>
-										<li class="tpte">32℃</li>
-										<li>无持续风向</li>
-										<li>≤3级</li>
-									</ul>
-								</div>
-								<div class="mod_03">
-									<h5>夜间</h5>
-									<div title='多云' class="icon_mid_weather" style="background: url(http://php.weather.sina.com.cn/images/yb3/78_78/duoyun_1.png) 0 0  no-repeat;_background:none;_FILTER: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://php.weather.sina.com.cn/images/yb3/78_78/duoyun_1.png', sizingMethod='crop')"></div>
-									<ul>
-										<li>多云</li>
-										<li class="tpte">23℃</li>
-										<li>无持续风向</li>
-										<li>≤3级</li>
-									</ul>
-								</div>
-							</div>
-                           							<div class="mod_02">
-								<h4>周四(08月13日)</h4>
+								<h4>周三(11月04日)</h4>
 								<div class="mod_03">
 									<h5>白天</h5>
                                     <div title='阴' class="icon_mid_weather" style="background: url(http://php.weather.sina.com.cn/images/yb3/78_78/yin_0.png) 0 0  no-repeat;_background:none;_FILTER: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://php.weather.sina.com.cn/images/yb3/78_78/yin_0.png', sizingMethod='crop')"></div>
 									<ul>
 										<li>阴</li>
-										<li class="tpte">33℃</li>
+										<li class="tpte">15℃</li>
 										<li>无持续风向</li>
 										<li>≤3级</li>
 									</ul>
 								</div>
 								<div class="mod_03">
 									<h5>夜间</h5>
-									<div class="icon_mid_weather"></div>
+									<div title='阴' class="icon_mid_weather" style="background: url(http://php.weather.sina.com.cn/images/yb3/78_78/yin_1.png) 0 0  no-repeat;_background:none;_FILTER: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://php.weather.sina.com.cn/images/yb3/78_78/yin_1.png', sizingMethod='crop')"></div>
 									<ul>
-										<li>暂无</li>
-										<li class="tpte"></li>
-										<li></li>
-										<li></li>
+										<li>阴</li>
+										<li class="tpte">8℃</li>
+										<li>无持续风向</li>
+										<li>≤3级</li>
+									</ul>
+								</div>
+							</div>
+                           							<div class="mod_02">
+								<h4>周四(11月05日)</h4>
+								<div class="mod_03">
+									<h5>白天</h5>
+                                    <div title='小雨' class="icon_mid_weather" style="background: url(http://php.weather.sina.com.cn/images/yb3/78_78/xiaoyu_0.png) 0 0  no-repeat;_background:none;_FILTER: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://php.weather.sina.com.cn/images/yb3/78_78/xiaoyu_0.png', sizingMethod='crop')"></div>
+									<ul>
+										<li>小雨</li>
+										<li class="tpte">10℃</li>
+										<li>无持续风向</li>
+										<li>≤3级</li>
+									</ul>
+								</div>
+								<div class="mod_03">
+									<h5>夜间</h5>
+									<div title='小雨' class="icon_mid_weather" style="background: url(http://php.weather.sina.com.cn/images/yb3/78_78/xiaoyu_1.png) 0 0  no-repeat;_background:none;_FILTER: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://php.weather.sina.com.cn/images/yb3/78_78/xiaoyu_1.png', sizingMethod='crop')"></div>
+									<ul>
+										<li>小雨</li>
+										<li class="tpte">6℃</li>
+										<li>无持续风向</li>
+										<li>≤3级</li>
 									</ul>
 								</div>
 							</div>
@@ -1207,27 +1235,27 @@ flashData.onload = function(){
                                     <th width="52">旅游指数</th>
 								</tr>
 								                                <tr >
-                                    <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%CE%E4%D2%C4%C9%BD&dpc=1" title="武夷山">武夷山</a></td>
-                                    <td title="暴雨转大雨">暴雨转大..</td>
-                                    <td><span class="tpte">27℃</span>~<span class="tpte">23℃</span></td>
-									<td>较不宜</td>
-								</tr>
-                                                                <tr >
-                                    <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%B6%EB%C3%BC%C9%BD&dpc=1" title="峨眉山">峨眉山</a></td>
-                                    <td title="小雨">小雨</td>
-                                    <td><span class="tpte">12℃</span>~<span class="tpte">8℃</span></td>
+                                    <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%C7%E0%B5%BA&dpc=1" title="青岛">青岛</a></td>
+                                    <td title="阴转多云">阴转多云</td>
+                                    <td><span class="tpte">15℃</span>~<span class="tpte">10℃</span></td>
 									<td>适宜</td>
 								</tr>
                                                                 <tr >
-                                    <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%C4%CF%D4%C0&dpc=1" title="南岳">南岳</a></td>
-                                    <td title="阵雨转中雨">阵雨转中..</td>
-                                    <td><span class="tpte">21℃</span>~<span class="tpte">16℃</span></td>
+                                    <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%B9%F0%C1%D6&dpc=1" title="桂林">桂林</a></td>
+                                    <td title="多云">多云</td>
+                                    <td><span class="tpte">17℃</span>~<span class="tpte">12℃</span></td>
+									<td>适宜</td>
+								</tr>
+                                                                <tr >
+                                    <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%D5%C5%BC%D2%BD%E7&dpc=1" title="张家界">张家界</a></td>
+                                    <td title="多云转晴">多云转晴</td>
+                                    <td><span class="tpte">20℃</span>~<span class="tpte">10℃</span></td>
 									<td>适宜</td>
 								</tr>
                                                                 <tr  class="nobdr" >
-                                    <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%CE%E5%CC%A8%C9%BD&dpc=1" title="五台山">五台山</a></td>
-                                    <td title="多云">多云</td>
-                                    <td><span class="tpte">18℃</span>~<span class="tpte">11℃</span></td>
+                                    <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%B4%F3%C0%ED&dpc=1" title="大理">大理</a></td>
+                                    <td title="中雨转小雨">中雨转小..</td>
+                                    <td><span class="tpte">17℃</span>~<span class="tpte">7℃</span></td>
 									<td>适宜</td>
 								</tr>
                                 							</table>
@@ -1278,33 +1306,33 @@ flashData.onload = function(){
 							<tbody>
                                                         <tr >
                                 <td><span class="icon_num">1</span></td>
-                                <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%CD%FB%BD%AD&dpc=1" title="望江">望江</a></td>
-                                <td><a href="http://php.weather.sina.com.cn/search_sheng.php?c=1&f=1&sheng=%B0%B2%BB%D5&dpc=1">安徽</a></td>
-                                <td>39℃</td>
+                                <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%CB%AB%BA%FE&dpc=1" title="双湖">双湖</a></td>
+                                <td><a href="http://php.weather.sina.com.cn/search_sheng.php?c=1&f=1&sheng=%CE%F7%B2%D8&dpc=1">西藏</a></td>
+                                <td>-16℃</td>
                             </tr>
                                                         <tr >
                                 <td><span class="icon_num">2</span></td>
-                                <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%CC%FA%B8%C9%C0%EF%BF%CB&dpc=1" title="铁干里克">铁干里克</a></td>
-                                <td><a href="http://php.weather.sina.com.cn/search_sheng.php?c=1&f=1&sheng=%D0%C2%BD%AE&dpc=1">新疆</a></td>
-                                <td>38℃</td>
+                                <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%C4%F4%C8%D9&dpc=1" title="聂荣">聂荣</a></td>
+                                <td><a href="http://php.weather.sina.com.cn/search_sheng.php?c=1&f=1&sheng=%CE%F7%B2%D8&dpc=1">西藏</a></td>
+                                <td>-16℃</td>
                             </tr>
                                                         <tr >
                                 <td><span class="icon_num">3</span></td>
-                                <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%B9%FE%C3%DC&dpc=1" title="哈密">哈密</a></td>
-                                <td><a href="http://php.weather.sina.com.cn/search_sheng.php?c=1&f=1&sheng=%D0%C2%BD%AE&dpc=1">新疆</a></td>
-                                <td>38℃</td>
+                                <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%B8%F9%BA%D3&dpc=1" title="根河">根河</a></td>
+                                <td><a href="http://php.weather.sina.com.cn/search_sheng.php?c=1&f=1&sheng=%C4%DA%C3%C9%B9%C5&dpc=1">内蒙古</a></td>
+                                <td>-16℃</td>
                             </tr>
                                                         <tr >
                                 <td><span class="icon_num">4</span></td>
-                                <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%B7%EE%BD%DA&dpc=1" title="奉节">奉节</a></td>
-                                <td><a href="http://php.weather.sina.com.cn/search_sheng.php?c=1&f=1&sheng=%D6%D8%C7%EC&dpc=1">重庆</a></td>
-                                <td>37℃</td>
+                                <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%D0%C2%C1%D6&dpc=1" title="新林">新林</a></td>
+                                <td><a href="http://php.weather.sina.com.cn/search_sheng.php?c=1&f=1&sheng=%BA%DA%C1%FA%BD%AD&dpc=1">黑龙江</a></td>
+                                <td>-16℃</td>
                             </tr>
                                                         <tr  class="nobdr" >
                                 <td><span class="icon_num">5</span></td>
-                                <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%B6%F7%C6%BD&dpc=1" title="恩平">恩平</a></td>
-                                <td><a href="http://php.weather.sina.com.cn/search_sheng.php?c=1&f=1&sheng=%B9%E3%B6%AB&dpc=1">广东</a></td>
-                                <td>37℃</td>
+                                <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%CD%BC%C0%EF%BA%D3&dpc=1" title="图里河">图里河</a></td>
+                                <td><a href="http://php.weather.sina.com.cn/search_sheng.php?c=1&f=1&sheng=%C4%DA%C3%C9%B9%C5&dpc=1">内蒙古</a></td>
+                                <td>-19℃</td>
                             </tr>
                             							</tbody>
 							</table>
@@ -1322,33 +1350,33 @@ flashData.onload = function(){
 							<tbody>
                                                         <tr >
                                 <td><span class="icon_num">1</span></td>
-                                <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%E8%CF%C8%D9&dpc=1" title="柘荣">柘荣</a></td>
-                                <td><a href="http://php.weather.sina.com.cn/search_sheng.php?c=1&f=1&sheng=%B8%A3%BD%A8&dpc=1">福建</a></td>
-                                <td>369.8mm</td>
+                                <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%C2%CC%B4%BA&dpc=1" title="绿春">绿春</a></td>
+                                <td><a href="http://php.weather.sina.com.cn/search_sheng.php?c=1&f=1&sheng=%D4%C6%C4%CF&dpc=1">云南</a></td>
+                                <td>62.1mm</td>
                             </tr>
                                                         <tr >
                                 <td><span class="icon_num">2</span></td>
-                                <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%C2%DE%D4%B4&dpc=1" title="罗源">罗源</a></td>
-                                <td><a href="http://php.weather.sina.com.cn/search_sheng.php?c=1&f=1&sheng=%B8%A3%BD%A8&dpc=1">福建</a></td>
-                                <td>357.4mm</td>
+                                <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%C0%BD%B2%D7&dpc=1" title="澜沧">澜沧</a></td>
+                                <td><a href="http://php.weather.sina.com.cn/search_sheng.php?c=1&f=1&sheng=%D4%C6%C4%CF&dpc=1">云南</a></td>
+                                <td>48.8mm</td>
                             </tr>
                                                         <tr >
                                 <td><span class="icon_num">3</span></td>
-                                <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%D6%DC%C4%FE&dpc=1" title="周宁">周宁</a></td>
-                                <td><a href="http://php.weather.sina.com.cn/search_sheng.php?c=1&f=1&sheng=%B8%A3%BD%A8&dpc=1">福建</a></td>
-                                <td>352.6mm</td>
+                                <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%D4%AA%D1%F4&dpc=1" title="元阳">元阳</a></td>
+                                <td><a href="http://php.weather.sina.com.cn/search_sheng.php?c=1&f=1&sheng=%D4%C6%C4%CF&dpc=1">云南</a></td>
+                                <td>39.9mm</td>
                             </tr>
                                                         <tr >
                                 <td><span class="icon_num">4</span></td>
-                                <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%C4%FE%B5%C2&dpc=1" title="宁德">宁德</a></td>
-                                <td><a href="http://php.weather.sina.com.cn/search_sheng.php?c=1&f=1&sheng=%B8%A3%BD%A8&dpc=1">福建</a></td>
-                                <td>285.4mm</td>
+                                <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%BA%A3%BF%DA&dpc=1" title="海口">海口</a></td>
+                                <td><a href="http://php.weather.sina.com.cn/search_sheng.php?c=1&f=1&sheng=%BA%A3%C4%CF&dpc=1">海南</a></td>
+                                <td>39.2mm</td>
                             </tr>
                                                         <tr  class="nobdr" >
                                 <td><span class="icon_num">5</span></td>
-                                <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%CE%C4%B3%C9&dpc=1" title="文成">文成</a></td>
-                                <td><a href="http://php.weather.sina.com.cn/search_sheng.php?c=1&f=1&sheng=%D5%E3%BD%AD&dpc=1">浙江</a></td>
-                                <td>263.6mm</td>
+                                <td><a href="http://php.weather.sina.com.cn/search.php?c=1&city=%B3%CE%BD%AD&dpc=1" title="澄江">澄江</a></td>
+                                <td><a href="http://php.weather.sina.com.cn/search_sheng.php?c=1&f=1&sheng=%D4%C6%C4%CF&dpc=1">云南</a></td>
+                                <td>39.1mm</td>
                             </tr>
                             							</tbody>
 							</table>
@@ -1888,4 +1916,4 @@ vjTrack("");
 
 </body>
 </html>
-<!--0|2015-08-09 16:30:50 -->
+<!--0|2015-11-01 20:07:58 -->
