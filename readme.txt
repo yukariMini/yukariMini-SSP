@@ -1,1 +1,1 @@
-yukariMini ³õÊ¼»¯
+yukariMini init
