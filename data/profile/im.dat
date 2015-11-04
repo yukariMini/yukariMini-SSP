@@ -1,4 +1,5 @@
 Charset,UTF-8
 IPMessenger.Broadcast.0,255.255.255.255
 IPMessenger.Broadcast.1,ff02::1
+username,Windows User
 IPMessenger.Broadcast.Num,2
