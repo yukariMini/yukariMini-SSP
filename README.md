@@ -1,14 +1,14 @@
 # yukariMini-SSP
-»ùÓÚ Sakura Script Player µÄ AYAÓï·¨ Î±´º²Ë£¨ºÎ¤«£©
+åŸºäº Sakura Script Player çš„ AYAè¯­æ³• ä¼ªæ˜¥èœï¼ˆä½•ã‹ï¼‰
 
-yaya-shiori £º </br>
+yaya-shiori ï¼š </br>
 https://github.com/ponapalt/yaya-shiori </br>
 
 ##Usages
-ÔËĞĞSSP.exe </br>
+è¿è¡ŒSSP.exe </br>
 
 ##Screen shots
-
+![1](https://github.com/CsterKuroi/yukariMini-SSP/tree/master/pht/1.png "")
 
 
 ####License
