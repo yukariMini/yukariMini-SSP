@@ -8,16 +8,16 @@ https://github.com/ponapalt/yaya-shiori </br>
 运行SSP.exe </br>
 
 ##Screen shots
-![0](https://github.com/CsterKuroi/yukariMini-SSP/tree/master/pht/0.jpg "")
-![1](https://github.com/CsterKuroi/yukariMini-SSP/tree/master/pht/1.jpg "")
+![0](https://github.com/CsterKuroi/yukariMini-SSP/raw/master/pht/0.jpg "")
+![1](https://github.com/CsterKuroi/yukariMini-SSP/raw/master/pht/1.jpg "")
 
-![2](https://github.com/CsterKuroi/yukariMini-SSP/tree/master/pht/2.jpg "")
+![2](https://github.com/CsterKuroi/yukariMini-SSP/raw/master/pht/2.jpg "")
 
-![3](https://github.com/CsterKuroi/yukariMini-SSP/tree/master/pht/3.jpg "")
+![3](https://github.com/CsterKuroi/yukariMini-SSP/raw/master/pht/3.jpg "")
 
-![4](https://github.com/CsterKuroi/yukariMini-SSP/tree/master/pht/4.jpg "")
+![4](https://github.com/CsterKuroi/yukariMini-SSP/raw/master/pht/4.jpg "")
 
-![5](https://github.com/CsterKuroi/yukariMini-SSP/tree/master/pht/5.jpg "")
+![5](https://github.com/CsterKuroi/yukariMini-SSP/raw/master/pht/5.jpg "")
 
 
 ####License
