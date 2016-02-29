@@ -1,4 +1,4 @@
-# yukariMini-SSP
+﻿# yukariMini-SSP
 基于 Sakura Script Player 的 AYA语法 伪春菜（何か）
 
 yaya-shiori ： </br>
@@ -8,7 +8,16 @@ https://github.com/ponapalt/yaya-shiori </br>
 运行SSP.exe </br>
 
 ##Screen shots
-![1](https://github.com/CsterKuroi/yukariMini-SSP/tree/master/pht/1.png "")
+![0](https://github.com/CsterKuroi/yukariMini-SSP/tree/master/pht/0.jpg "")
+![1](https://github.com/CsterKuroi/yukariMini-SSP/tree/master/pht/1.jpg "")
+
+![2](https://github.com/CsterKuroi/yukariMini-SSP/tree/master/pht/2.jpg "")
+
+![3](https://github.com/CsterKuroi/yukariMini-SSP/tree/master/pht/3.jpg "")
+
+![4](https://github.com/CsterKuroi/yukariMini-SSP/tree/master/pht/4.jpg "")
+
+![5](https://github.com/CsterKuroi/yukariMini-SSP/tree/master/pht/5.jpg "")
 
 
 ####License
