@@ -6,7 +6,6 @@ path.headline.status,1
 path.balloon.0,.\balloon\
 path.plugin.0,.\plugin\
 path.ghost.status,1
-executing,1
 path.plugin.status,1
 Nar.TargetFolder,!!ask!!
 path.headline.Num,1
@@ -15,7 +14,7 @@ path.plugin.Num,1
 SurfaceTest.pos,677.66.964.303
 path.balloon.Num,1
 ScriptLog.pos.iscenter,0
-DeveloperPalette.pos,988.302.1131.558
+DeveloperPalette.pos,1033.48.1176.304
 Ghost.0,.\ghost\yukari\
 ScriptLog.pos,-86.28.1292.293
 path.ghost.0,.\ghost\
