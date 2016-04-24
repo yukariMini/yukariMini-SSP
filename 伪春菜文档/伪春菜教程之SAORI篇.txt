@@ -1,0 +1,262 @@
+套件使用 
+人格套件(SAORI)是专门为了扩充人格机能而制作的一种外挂插件(plugin)，以实作诸如音乐播放、萤幕特效、字串处理、系统资讯等等伪AI所没有提供的功能。基本上如果能善用这些套件的话，可以做出一般人格所做不到的事。
+由于标准化的缘故，现今大多数的伪AI都支援在人格内呼叫人格套件的功能。如果你觉得一般的事件写作已经无法满足你的创作欲望的话，欢迎你加入这个大坑～。
+
+在Ghost中呼叫人格套件 
+不同的伪AI呼叫套件的方式都不一样，但基本上大同小异。主要需要下列资讯：
+伪AI呼叫套件的函式名称
+套件所在路径
+套件的事件指令
+引数1、引数2、引数3、……
+首先，你必须知道套件的规格与事件种类，这些通常都写在随套件附带的readme 文件，在使用前务必读熟其内容。接下来，我们决定好要使用的事件指令后，就要根据事件的需求来输入引数(argument)。
+以播放音乐套件mciaudior.dll 为例，它本身内建了"load" 、 "play" 、 "loop" 、 "stop" 四种事件指令，其功能分别为"载入音乐" 、 "播放" 、 "重复播放" 、 "停止" 。其中"load" 这个指令需要使用者提供音乐的路径，其余三者则不需要任何额外的引数。于是当我们要透过mciaudior.dll 来播放音乐的时候，我们要这么写：
+美坂的呼叫方式
+{$saori("mciaudior.dll","load","C:\music\op.mp3")}
+{$saori("mciaudior.dll","play")}
+文的呼叫方式
+FUNCTIONEX("mciaudior.dll","load","C:\music\op.mp3");
+FUNCTIONEX("mciaudior.dll","play");
+华和梨的呼叫方式
+$(callsaori mciaudio.dll load C:\music\op.mp3)
+$(callsaori mciaudio.dll play)
+第一行指令先载入音乐的路径，然后第二行则执行播放音乐的工作。这里的路径可以是相对路径或绝对路径，相对路径会以人格ghost\master 所在的资料夹为基准。
+
+套件实作 
+人格套件分为universal 与BASIC 两种型式， universal其实就是标准的DLL文件，而BASIC 则是Win32 Console Application ，也就是一般初学者在学C语言时最常使用的那种DOS风格的EXE程式，经由proxy.dll 这个人格套件的传换后，会把印出来的文字传送到人格里面。
+
+基本范例 
+Universal
+请参考下面实例。
+BASIC
+void main(int argc, char* argv[])
+{
+　　printf("Hello, world.");
+}
+
+制作教学 
+首先请到csaori - Google Code下载CSaori的原始码，这是日本方面预先写好的Saori原型，里面已经帮你做好除了你要写的功能以外的所有事情。
+下载好后，请开启任意的C++ IDE开发工具(如Visual C++)，建立一个空专案，将这两个档案加入专案之中。接下来，再新增一个cpp档，并实作以下三个函式：
+void CSAORI::exec(const CSAORIInput& in,CSAORIOutput& out)
+bool CSAORI::load()
+bool CSAORI::unload()
+load()与unload()主要是处理记忆体配置的工作，如果你没有做这些事情的需求，那么直接回传true即可。exec()就是实际实作功能的地方了，你主要要记住的事情有二：
+伪春菜呼叫Saori时所传入的引数都在in.args中。
+你的输出要放在out.value中。
+最后再将专案的组态型别改成动态函式库(.dll)即可。
+现在，让我们来实作一个简单的例子。首先，我们要制作一个talk.dll，它的功能是当伪春菜呼叫此Saori并传入「talk」字眼时，便回传「喵。」。在这例子中我们定义第一个引数是决定是谁讲话，第二个引数是决定要讲什么。例如当使用者呼叫
+FUNCTIONEX('talk.dll', 'kero', 'cattalk');
+时，我们便要在value[0]中回传「\1喵。」。
+那么，我们首先在专案中加入一个talk.cpp，并将以下程式码加入其中：
+#include "csaori.h"
+
+void CSAORI::exec(const CSAORIInput& in,CSAORIOutput& out)
+{
+     string_t s = L"";
+     if (in.args[0] == L"sakura")
+         s += L"\\0";
+     else if (in.args[0] == L"kero")
+         s += L"\\1";
+     else
+         return;
+
+     if (in.args[1] == L"cattalk")
+         s += L"喵。";
+     else if (in.args[1] == L"dogtalk")
+         s += L"汪。";
+     else
+         return;
+
+     out.values.push_back(s);
+}
+
+bool CSAORI::load()
+{
+     return true;
+}
+
+bool CSAORI::unload()
+{
+     return true;
+}
+注意因为我们使用宽字串来运作，所以所有的字串的双引号前面得加上「L」来告知编译器这是个宽字元字串。接下来我们首先判断第一引数是sakura 或是kero，然后决定要加入\0或\1到字串里，如果都不相同的话则直接return什么都不输出，第二引数也是相同的道理。
+再来便是输出了，由于CSaori在这里使用C++的vector容器，因此要增加元素的话就要用push_back这个成员函数来新增。之后CSaori的内部函式会把你加到out.value中的字串做成核心程式看得懂的格式回传给伪春菜。
+(注意：如果你看不懂我这边在写什么，那么建议你去买本C++的书来看看会比较好。)
+接下来就是编译了，记得把你的专案组态换成.dll型式。编译好后将产生出来的dll档复制到ghost资料夹底下，就可以运作了。
+一个简单的AYA版呼叫例子：
+FUNCTIONEX('talk.dll', 'kero', 'cattalk');
+"%(valueex0)\n";
+有没有发现使魔叫了声「喵。」呢？XD
+
+加注 
+由于美坂在语系支援上的缺陷，此专案产生的SAORI在美坂下会显示乱码。
+除了用Saori Value[n]多值返回格式之外，也可用Saori return result格式，做法是将
+out.values.push_back(s);
+改成
+out.result = s;
+此时的呼叫范例如下：
+_ret = FUNCTIONEX('talk.dll', 'kero', 'cattalk');
+"%(_ret)\n";
+
+相关资料(日文) 
+SAORI - universal (DLL形式)
+さおリ
+SAORI - basic (EXE形式)
+さおりちゃんと游ぼう
+
+讨论区 
+如果想讨论SAORI开发相关的问题，可以到这里一起参与讨论：
+http://cuc2.idv.tw/viewthread.php?tid=1426&extra=page%3D1
+
+
+伪春菜教程之SAORI篇2——人格套件列表
+简述 
+本章主要讲述现在既有的SAORI 人格套件之简介。
+点击套件名称的连结可查看此套件的功能、规格、应用技巧及实例。如果没有连结的话……代表还在制作中。XD
+开发者若要寻找制作套件的方法请至人格套件页面。
+附注：此列表中的人格套件有挑选过，删去部份使用不易、功能类似或已停止配布的套件。完整列表请参见SAORI COLLECTION及さおりん。
+
+分类 
+画面效果 
+scribble
+作者：栉ヶ浜やぎ
+配布：电気で动くうにゅう?廃屋の夏能够在桌面上绘制图型、印字，或是涂色、贴图等各种画面效果。
+trayicon
+作者：菖蒲
+配布：あやめ堂能在桌面工具列上产生对话框，不过SSP 2.00.07以后版本已具备相同功能，目前已不推荐使用。
+effect.dll
+作者：SatisKia
+配布：SatisFactory提供斩开画面、摇动画面一类的特效。
+sprite.dll
+作者：SatisKia
+配布：SatisFactory在桌面上显示sprite。
+
+音乐与音效 
+mciaudior
+作者：umeici
+配布：http://umeici.hp.infoseek.co.jp/能播放音乐，支援的格式有MIDI/WAV/MP3/WMA/AU 。
+
+字串、文字资料 
+textcopy.dll
+作者：桥本孔明
+配布：ClearBrain Systems能将字串贴到剪贴簿内。
+txtpaste.dll
+作者：桥本孔明
+配布：ClearBrain Systems能够抽取剪贴簿中的资料。
+nadecopy
+作者：ふるごむ
+配布：(作者网站消失中)(其他取得方式)将取得的SakuraScript字串加工成一般的文章格式后贴到剪贴簿内。
+debeso
+作者：ふるごむ
+配布：(作者网站消失中)(其他取得方式)可创制简单的资料库，由SQLite 2.1 构成。
+THE_TOWER.dll
+作者：大仁ゆうき
+配布：霞ヶ房文字编码变换，对应编码：UTF-8/ANSI/EUC-JP/ISO-2022-JP/JIS/SHIFT_JIS。
+tail.exe (SAORI BASIC)
+作者：叶沼
+配布：ナニカラボ在指定文件档的尾端追加文字。
+
+时间处理 
+ctime
+作者：SDN
+配布：なーせく可取得Windows开启至今的时间、现在的epoch值，或是根据epoch值来换算日期时间。epoch值即自1970/01/01 00:00:00 至今经过的秒数。
+
+系统情报 
+saori_cpuid.dll
+作者：七瀬いーうぃ
+配布：ひまわりカンパニー(备用)能取得OS、CPU及记忆体的版本与状态。
+cpuusage.dll
+作者：りゅう
+配布：StarLight Stream能取得目前CPU的使用率。
+放置器
+作者：りゅう
+配布：StarLight Stream当使用者没有在使用电脑时，回传此事件给人格。
+findwin.dll
+作者：りゅう
+配布：StarLight Stream可侦测是否存在特定的视窗页面。
+process.dll
+作者：りゅう
+配布：StarLight Stream可回传系统执行中程式的总数，侦测某些程式的存在与否或停止它的运行。
+TBHide.dll
+作者：和风きのこ
+配布：L-Side (有IP限制)可以显示/隐藏桌面工具列。
+cheese.exe (SAORI BASIC)
+作者：栉ヶ浜やぎ
+配布：电気で动くうにゅう?廃屋の夏可以操弄滑鼠的动作。
+guidgen.exe (SAORI BASIC)
+作者：栉ヶ浜やぎ
+配布：电気で动くうにゅう?廃屋の夏产生GUID ，一个独特的128位元编码ID，用来辨识物件的唯一性。
+set_wall_paper (SAORI BASIC)
+作者：栉ヶ浜やぎ
+配布：电気で动くうにゅう?廃屋の夏变更桌布。
+enumwindows.exe (SAORI BASIC)
+作者：栉ヶ浜やぎ
+配布：电気で动くうにゅう?廃屋の夏(备用连结)能列举工作列上所有视窗的标题。
+
+网路相关 
+httpc
+作者：栉ヶ浜やぎ
+配布：电気で动くうにゅう?廃屋の夏取得网址内的文字内容，或是下载该档案。
+geturl.dll
+作者：りゅう
+配布：StarLight Stream取得使用者使用中的浏览器上的网址。(限IE?)
+おぶ
+作者：栉ヶ浜やぎ
+配布：电気で动くうにゅう?廃屋の夏浏览器网址移动时回传其事件，或是在某网址上滞留一定时间时发生事件。另外，也能取得使用者浏览中的网址。
+
+功能扩充 
+HandUtil.dll
+作者：浮子屋
+配布：浮子屋本铺读取FMO、执行SAKURA API、Collision位置取得、DirectSSTP机能。
+Weirds.dll
+作者：SDN
+配布：なーせく可自制选单。
+easyballoon
+作者：umeici
+配布：http://umeici.hp.infoseek.co.jp/可产生额外的对话框，作出动态效果。
+さ
+作者：umeici
+配布：http://umeici.hp.infoseek.co.jp/让SHIORI 也能使用SAKURA API 。
+TextBox.dll
+作者：菖蒲
+配布：あやめ堂能做出类似CommunicateBox 风格的输入框。
+
+Proxy(BASIC) 
+Proxy DLL
+作者：桥本孔明
+配布：ClearBrain Systems使用SAORI "Basic" 规格时不可或缺的套件，同时也会撷取程式执行中标准输出(如printf)的文字，并回传给人格。
+
+其他 
+OPTION.DLL
+作者：桥本孔明
+配布：ClearBrain Systems可制作一个简易的参数设定视窗。
+gomi.dll
+作者：ふるごむ
+配布：(作者网站消失中)(其他取得方式)清空垃圾箱。
+maho.dll
+作者：ふるごむ
+配布：(作者网站消失中)(其他取得方式)取得档案之副档名。
+minieco.dll
+作者：ふるごむ
+配布：(作者网站消失中)(其他取得方式)调查压缩档内所包含的档案。
+カイ (KI.dll)
+作者：长山
+配布：长山「中心」でＧＯ!!取得MP3标签内容，仅支援v1.0 格式。利用SHFileOperation API 进行档案操作。调查使用中的OS系统情报。列举安装中的Ghost、Shell、Balloon清单。可执行关机、重新启动、登入登出、待机等指令。桌面捷径的记忆与复原。
+ssu.dll
+作者：栉ヶ浜やぎ
+配布：电気で动くうにゅう?廃屋の夏提供条件判断、字串处理、数值计算等机能。「里々」的基本配备之一。
+joystick.dll
+作者：SatisKia
+配布：SatisFactory检查游戏手把的输入。
+URLencode (SAORI BASIC)
+作者：LR
+配布：术师の隠れ里转换字串为可用的URL格式。
+
+SAORI整理 
+ClearBrain Systems
+SatisFactory
+StarLight Stream
+umeici
+あやめ堂
+术师の隠れ里
+电気で动くうにゅう?廃屋の夏
+浮子屋本铺

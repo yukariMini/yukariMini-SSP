@@ -1,0 +1,253 @@
+档案配置 ?
+在 Ghost_NameShellmaster 目录之下，主要由下列三种档案所组成：
+
+．descript.txt
+．surface.txt
+．*.png (图档集合)
+这三种档案的意义如下：
+
+↑
+descript.txt ?
+作用：负责设定shell的名称、图片选单的底图。如果您的shell名称为中文，那么记得在最顶端加入charset的设定，建议使用UTF-8。这个档案各AI系统是通用的。
+
+//↓此Shell的名称以及制作人charset,UTF-8name,NeiNeitype,shellcraftman,Manid,NeiNei//↓指定对话框出现的电脑荧幕座标sakura.balloon.offsetx,20sakura.balloon.offsety,60kero.balloon.offsetx,20kero.balloon.offsety,50//↓指定图片选单档案menu.background.bitmap.filename,menu_background.pngmenu.foreground.bitmap.filename,menu_foreground.pngmenu.sidebar.bitmap.filename,menu_sidebar.png↑
+Surface.txt： ?
+作用：表情图片指定以及效果。
+
+接下来先从最基本的指定静态表情图片谈起吧，在此我们假定您已经绘制好一定数量的surface图片。要注意的是，这些图片必须为.png格式，大 部分的绘图软体如PhotoShop、PhotoImpact、以及Macromedia Fireworks等都有支援。另外背景颜色(要透明的区域)尽量设定为纯三原色(红、蓝、绿) 较不容易出问题。
+
+．如何取得图像区域(如头部、脸、胸部)的座标?
+在里々网站里有提供一个好用的小程式 Coordin ，下载后将其直接解压缩到一个目录下即可。
+
+使用方法：
+
+1.直接执行coordin.exe，之后你会发现有个空白的视窗出现。
+2.用拖曳的方式，将你想设定座标的shell图片拖放进去该空白视窗，但仅限png图片档。
+3.之后该图片即会出现在视窗当中，这时运用你的滑鼠指标在图片上拖曳出你想要设定的四方形方框区域范围：
+
+ P.S理梦最高，萌え~  
+
+
+4.确定之后按下组合键Ctrl+C，即可复制该四方形方框的区域范围座标。
+5.在记事本或者其他文件编辑程式选择贴上，即会出现一组座标值，像是这样：
+51,47,268,119这即是你所需要的座标值，将其纪录下来，我们等下会用到。
+
+↑
+*.png ?
+这些便是Shell底下的基本构成图片，根据使用上的不同分为静态图片与动态图片两种。
+
+静态图片通常是一张完整的人格图片，来表达一特定的动作或表情。而动态图片则是一张张特定区块的小图片，是为了产生动画效果而制作的。
+
+↑
+
+
+
+
+
+surface.txt的编排 ?
+首先必须注意的是各种伪AI之间的设定上有小部分的不同，以下提出华和梨与美坂二个伪AI来解说：
+
+↑
+华和梨 ?
+1.看你有多少张shell图片，以surfaceX.png为命名方式，X代表从0开始的任意数字，到100或200也没关系，范围主要看你要如何去设定。在此以surface0.png为范例。
+1.用记事本开启surface.txt，以下是文件设定的内容：
+surface0{collision0,51,47,268,119,head    //→设定头部座标范围collision1,94,124,229,209,face   //→设定脸庞座标范围collision2,105,218,196,287,bust //→设定胸部座标范围}surface1{collision0,51,47,268,119,headcollision1,94,124,229,209,facecollision2,105,218,196,287,bust}...以此类推，每张图片都要对应一个surface描述语言，如果无指定的话系统会使用surfaceX.png中的X号码为该张图片的内定值，但只有静态显示，对任何点选都不会有反应。
+
+你会注意到每个设定上都有四个为一组的座标值，这些座标值依照第一部分的说明，运用coordin程式即可方便的取得。要注意的是座标值范围不可重叠，否则Ghost就没办法作出适当的反应了。
+
+一般来说：
+
+．头部 → Shell 中有头发的大部分
+．脸颊 → Shell 中头发以下，包含眼睛、嘴部、跟脸形的范围
+．胸部 → (消音)~
+
+基本上是不会重叠的，除非设定错误。
+
+↑
+美坂 ?
+所有的设定同上，但请注意这边的不同处：
+
+sakura.surface.alias{1,[0]2,[0]4,[0]5,[0]6,[0]7,[0]8,[0]}kero.surface.alias{11,[10]}surface0{collision0,51,47,268,119,Headcollision1,94,124,229,209,Facecollision2,105,218,196,287,Bust}首先美坂有多前导设定值。可以设定那个表情要配合哪个编号的surface png档。另外注意到了吗?surface描述语言的设定里， "Head" 是大写开头，而华和梨是 "head" ，小写开头。造成这种差异的原因在于程式码的写法差异，倒反过来也是可以，但是这样一来你就要一一修改原始码中所有与Mouse事件有关的函式，所以建议 是照着默认的方式去写就好了。
+
+以下是另一种比较整齐的美坂shell的写法：
+
+surface0{element0,base,surface0.png,0,0collision0,51,47,268,119,Headcollision1,94,124,229,209,Facecollision2,105,218,196,287,Bust}以下类推，直到需要用到的表情指定完毕为止。
+
+注意"element0,base,surface0.png,0,0"这一行，它可以让你值定surface0要用哪一张图片来对应，也就是说图片不一定要按照编号来取档名，直接在surface.txt里面再指定也是可以的。
+
+如你要使用surface200.png来代表surface0表情，那么要这样写：
+
+element0,base,surface200.png,0,0P.S除了档名的部分之外，其余的语法不建议变更。以下的部分都将会采用这个写法。
+
+↑
+文 ?
+设定方式大致上与华和梨无异，Surface的区块名称建议为字首大写。
+
+↑
+surfaceX.png的公定编号 ?
+尽管玩家们可以任意指定自己想要的编号，不过还是有个不成文的协定标准，如下表所示：
+
+
+ Sakura端 
+ kero端 
+00 正常 10 正常 
+01 害羞 
+ 
+ 
+02 惊讶 11 惊讶 
+03 不安 
+ 
+ 
+04 失望 
+ 
+ 
+05 微笑 
+ 
+ 
+06 闭眼 
+ 
+ 
+07 生气 
+ 
+ 
+08 冷笑(汗) 
+ 
+ 
+09 生气(面红耳赤样) 
+ 
+ 
+25 唱歌 19 唱歌 
+
+基本上如果您没有特别指定表情的档案编号，那么系统就会使用如上表的预设值作为各表情对应的图片档案。使用公定表情的好处是当Shell去任意搭配 其他的标准的Ghost时，不用再特别的去修改编号即可展现出大致正确的表情。另外一般有添加表情设定的歌词卡也会依照这个公定的编号以便适合每个 Ghost而不至于有不符合的表情出现。
+
+当然如果您坚持要自订专属的编号也是可以的。
+
+↑
+动画制作 ?
+最后来谈谈动画效果吧。什么是动画效果呢?相信您应该有注意到有些Ghost会有如ACG动画般的眨眼、流汗动作，或者闪烁的表情符号效果等，甚至是嘴巴会动的效果，都是在这范围里面。
+
+↑
+眨眼 ?
+接下来的部分教大家如何让你的Ghost眨眼睛。
+
+这里以妮妮为范例，首先请看这段surface.txt设定:
+
+surface0{element0,base,surface0.png,0,0collision0,91,47,290,120,Headcollision1,128,126,236,202,Facecollision2,132,242,218,285,Bust0interval,sometimes0pattern0,1000,0,overlayfast,132,1080pattern1,1001,0,overlayfast,132,1080pattern2,1000,9,overlayfast,132,1080pattern3,-1,10,overlay,132,108}有没有注意到?比第一部分多出了一些代码：
+
+0interval,sometimes0pattern0,1000,0,overlayfast,132,1080pattern1,1001,0,overlayfast,132,1080pattern2,1000,9,overlayfast,132,1080pattern3,-1,10,overlay,132,108这即是眨眼睛的关键设定，此段设定主要是让伺か在执行的时候，以置换图片的方式将shell的某区域在一定时间内更换为另一个图片，最后再切回来。当置换的区域是眼睛区域的时候，就产生眨眼的动作(事先需自行准备好切换时的图片)。
+
+由于更换的时间相当的短，如范例上是9ms，即产生这个事件的时候，会有约1/100秒的时间该区域是另一个图片，(milli-second,千 分之一秒的意思,一般来说~~人眼最快的辨认速度是二十分之一秒,也就是50 ms.)，而这超过了人眼可以接受的移动速度，因此会产生视觉暂留现象，让使用者有眨眼睛的感觉，其实只是图片置换罢了。
+
+在此以：
+
+  半闭眼 
+  完全闭眼 
+
+二张图片，图片只需要二双眼睛部分的大小即可，配合以下图片：
+
+  surface0.png
+
+完整的shell图片
+
+表情为normal
+
+(妮妮) 
+
+来作解说。
+
+以下是程式码详细设定方式：
+
+开始置换图片，发生时间设定为sometimes
+
+0interval,sometimes第一个置换图片，格式：
+
+．0pattern0,图档编号,置换时间,overlayfast,x座标,y座标
+pattern编号为0，代表第0阶段。
+
+0pattern0,1000,0,overlayfast,132,108同上pattern编号变1，代表第1阶段，第二个要置换的图片。
+
+0pattern1,1001,0,overlayfast,132,108同上，切换回来第一个要置换的图片，如此完成一个眨眼的动作。
+pattern编号为2，代表第2阶段。
+
+0pattern2,1000,9,overlayfast,132,108同上，-1代表将该区域切换回原本的surface0.png的内容，一次的眨眼动作完成。
+pattern编号为3，代表第3阶段。
+
+0pattern3,-1,10,overlay,132,108其中，(x座标,y座标)为将眨眼图片置换到原本surface0.png眼睛区域的起始座标，在此即是你当初撷取眼睛部位图片时的起始座标。主要是要让眨眼的图片完全契合要取代的眼睛区域。
+
+这些座标值可以很容易的利用绘图软体来取得，也就是说你在制作眨眼图片部分的过程需要特别纪录一下撷取时的起始(x,y)座标值，如此在置换某区域图片时即能看起来完全的融入原本的surface0.png里面。
+
+以上是最简单的眨眼做法，仅使用二张眼睛图片，实际上你可以视你的需求增加图片，并配合增加pattern的编号即可，可以从0~你所需要的步骤数字。
+
+同样的，每个要有眨眼睛效果的表情，都必须设定眨眼描述才行。例如我们希望0~3号表情都会眨眼睛，那么surface0~surface3的描述区块都需要写入眨眼效果的程式码。
+
+要诀：可以不用太去在意这些程式码的实际意涵，只需要复制上述的程式码，并随着Shell的设计，填入对应的图片档名编号以及反应时间、起始座标、步骤编号即可：
+
+0interval,sometimes0pattern0,1000,0,overlayfast,132,1080pattern1,1001,0,overlayfast,132,108..(类推).0pattern3,-1,10,overlay,132,108 →最后的-1代表整个置换程序结束。 基本上所有伪AI的设定方式都与上面相同，不过要注意华和梨的区域部位为英文字母小写。
+
+华和梨部份范例：
+
+surface0{element0,base,surface0.png,0,0collision0,91,47,290,120,headcollision1,128,126,236,202,facecollision2,132,242,218,285,bust0interval,sometimes0pattern0,1000,0,overlayfast,132,1080pattern1,1001,0,overlayfast,132,1080pattern2,1000,9,overlayfast,132,1080pattern3,-1,10,overlay,132,108}↑
+流汗效果 ?
+先来看看美坂surface.txt的程式码：
+
+surface8{element0,base,surface8.png,0,0collision0,91,47,290,120,Headcollision1,128,126,236,202,Facecollision2,132,242,218,285,Bust1interval,runonce1option,exclusive1pattern0,2220,5,overlay,207,581pattern1,2220,5,overlay,207,611pattern2,2220,5,overlay,207,641pattern3,2220,5,overlay,207,671pattern4,2220,5,overlay,207,701pattern5,2220,5,overlay,207,731pattern6,2220,5,overlay,207,761pattern7,2220,5,overlay,207,791pattern8,2220,5,overlay,207,811pattern9,2220,5,overlay,207,84}这次多出的是这段程式码：
+
+1interval,runonce1option,exclusive1pattern0,2220,5,overlay,207,581pattern1,2220,5,overlay,207,611pattern2,2220,5,overlay,207,641pattern3,2220,5,overlay,207,671pattern4,2220,5,overlay,207,701pattern5,2220,5,overlay,207,731pattern6,2220,5,overlay,207,761pattern7,2220,5,overlay,207,791pattern8,2220,5,overlay,207,811pattern9,2220,5,overlay,207,84虽然同样是置换图档的效果，这边与之前眨眼不同的地方在于图档置换事件结束之后就不会在产生任何变化了，而眨眼则是以sometimes的方式持续的进行置换，所以你会看到Ghost不停的在眨眼睛。
+
+同样的，我们不去深究这些程式码的原意，注意以下格式：
+
+．1pattern0,2220,5,overlay,207,58
+．1patternX,动画图档编号,反应时间,overlay,x座标,y座标
+其中X代表变化的步骤编号，从0~动画终点。
+
+在这边我们希望当表情8号出现的时候，搭配有流汗的效果，所以先准备好以下的图档： |#img(http://cuc2.idv.tw/cucold/images/surface2220.png)|动画图档：surface2220.png
+流汗效果用 |#img(http://cuc2.idv.tw/cucold/images/surface8.png)|8号表情：surface8.png
+
+然后在surface8描述区块里面加入这段程式码即可：
+
+1interval,runonce1option,exclusive1pattern0,2220,5,overlay,207,581pattern1,2220,5,overlay,207,611pattern2,2220,5,overlay,207,641pattern3,2220,5,overlay,207,671pattern4,2220,5,overlay,207,701pattern5,2220,5,overlay,207,731pattern6,2220,5,overlay,207,761pattern7,2220,5,overlay,207,791pattern8,2220,5,overlay,207,811pattern9,2220,5,overlay,207,84如此当表情8出现的时候，surface2220.png图档就会重叠在surface8.png上面，并且以5ms的方式按照0~9的步骤，在座标(207,58)~(207,84)之间重复出现(同样是置换图档的原理)，看起来就像是有汗滴在移动。
+
+如果希望让汗低在最后消失的话，只要加上以下这段即可：
+
+1pattern9,-1,5,overlay,207,84注意到了吗?又是-1，由此可知，当-1编号出现的时候，即是代表消除重叠在图档之上的效果图片，恢复为原本图档的画面。
+
+↑
+闪烁效果 ?
+由上可知，我们可以利用-1这个编号来让图档产生闪烁的效果，事实上在程式码内是这样的设定：出现→消失→出现→消失。因为置换的速度相当的快，所以能有闪烁的效果，如下段的程式码：
+
+1interval,runonce 1option,exclusive 1pattern0,2250,9,overlay,0,56 1pattern1,-1,9,overlay,0,56 1pattern2,2250,9,overlay,0,56 1pattern3,-1,9,overlay,0,56 1pattern4,2250,9,overlay,0,56 1pattern5,-1,9,overlay,0,56
+
+这边的可让surface2250.png图档在(0,56)开始的位置覆盖原本的图档部位，并闪烁三次，最后消失恢复原本的静态表情图档。
+
+↑
+动嘴效果 ?
+首先我们必须先知道，动嘴效果也是图片置换的原理，那么采用上述的指令不就好了吗?为何要特别有这段指令呢?
+
+这跟事件产生的时机有关，因为上述的指令，只能让Ghost持续或者进行部份的置换，但没办法依照事件(如唱歌或说话)去启动或停止。如此会造成嘴巴动个不停或者只动作一次之后就不会有变化了。
+
+先来看看这段美坂的surface程式码：
+
+surface25{element0,base,surface25.png,0,0collision0,91,47,290,120,Headcollision1,128,126,236,202,Facecollision2,132,242,218,285,Bust40interval,talk,440pattern0,0,0,alternativestart,[41.42.43.44]41interval,never41pattern0,3310,10,overlay,158,15941pattern1,-1,10,overlay,0,042interval,never42pattern0,3320,10,overlay,158,15942pattern1,-1,10,overlay,0,043interval,never43pattern0,3310,10,overlay,158,15943pattern1,-1,10,overlay,0,044interval,never44pattern0,3320,10,overlay,158,15944pattern1,-1,10,overlay,0,0}重点程式码：
+
+40interval,talk,440pattern0,0,0,alternativestart,[41.42.43.44]41interval,never41pattern0,3310,10,overlay,158,15941pattern1,-1,10,overlay,0,042interval,never42pattern0,3320,10,overlay,158,15942pattern1,-1,10,overlay,0,043interval,never43pattern0,3310,10,overlay,158,15943pattern1,-1,10,overlay,0,044interval,never44pattern0,3320,10,overlay,158,15944pattern1,-1,10,overlay,0,0这边我们可以马上的理解到，3320代表surface3320.png，(158,159)代表图片置换的起始座标。这边能让编号25的图档，在 Talk事件出现的时候(即对话框每个文字出现的时候)，都会依照41,42,43,44的步骤来置换图片。在此除了粗体字部分之外，不建议去更改其他部 分的程式码。
+
+以下是用到的图片：
+
+  闭口状态：surface3310.png 
+  开口状态：surface3320.png 
+  唱歌的表情：surface25.png
+(这是研发中的妮妮图档，华和梨测试版本的妮妮并未包含这表情，不过您可以试着自己加入这图档，并搭配上述效果看看) 
+
+↑
+总结 ?
+综合以上，只要多配合些巧思，即可搭配出各种炫目的变换效果喔
+
+
+在这边强调：千万不要拘泥于其原本的应用。
+
+这些事实上都只是图片置换的原理，上述只是配合各指令功能的一种应用罢了。实际上您可以用任何的图档来搭配任何的指令功能，例如理梦持续不停上下浮动的Materia魔石即是眨眼效果的另一个应用。
+
+另外，美坂跟华和梨的surface.txt编写区别，只在于区域部位的大小写(head,bust,face)，只要遵循华和梨小写，美坂大写的原则即可，其余surface设定值以及指令码都可通用。
+
+以上说明的概念满抽象的，例如图片置换的动作，因此建议能配合实际的例子来参考，如理梦D2R版本(美坂)的shell设定，华和梨版可以参考妮 妮，会更容易明白。另外各位也可以将旧版橘花(美坂)与新版橘花(AYA)拿来比较一下，应该能很快就理解到两种伪AI的差异之处。
+

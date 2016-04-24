@@ -6,6 +6,7 @@
 
 //**** 初回起动 *******************************************************************************************************
 
+
 OnFirstBoot
 {
 	mode = "0"
@@ -23,7 +24,7 @@ OnFirstBoot
 	mikireflag = 0
 	mikireswitch = "1"
 	kasanariswitch = "1"
-	initializecryptogram; 
+	initializecryptogram;
 	OnKikkaReset;
 	"\0\![sound,play,saori/se_26.mp3]\s[100]初次见面，我是小缘，终于见到你了呢~\s[0]\w9\w9\w9\n\n[half](ﾟДﾟ*)ﾉ\w9\w9\w9\s[100]\n\n[half]那个、\w9\n该怎么称呼好呢？\![open,inputbox,OnTeachUsernameFirst,-1]\e"
 }
@@ -65,7 +66,7 @@ GetTimeSlot
 		"Earlymorning"
 	}
 	elseif hour >= 7 && hour <= 10
-	{	
+	{
 		"Morning"
 	}
 	elseif hour >= 11 && hour <= 13
@@ -971,4 +972,3 @@ OnShellChanged
 	"\0\s[0]…嗯、\w9\w9\s[5]这样子如何呢？\e"
 	"\0\![sound,play,saori/se_30.mp3]\s[100]嗯...有什么事吗。\e"
 }
-

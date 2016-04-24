@@ -1,0 +1,461 @@
+前言 ?
+原文：http://lovelove.rabi-en-rose.net/misaka/specification.html
+
+撰文与翻译：rexboy
+
+美坂官方：http://lovelove.rabi-en-rose.net/index_misaka.php
+
+这篇文章，是参照美坂本家规格书的架构跟原文，再加入一些补充的东西写成的。
+
+不过，毕竟这儿只是介绍美坂的基本语法，没有整体提到Ghost的具体架构。所以各位可以搭配美坂所附的Ghost范本，会更容易上手些。
+
+↑
+基本定义档 ?
+misaka.ini是美坂的重要设定档。内容大概长得像这个样子：
+
+dictionaries{misaka.txthoge.txtdatamisaka.txt}debug,0debugsaori,0error,0propertyhandler,0dictionarie之下的括弧内，必须举出Ghost会使用到的辞书档。 辞书档里面，就是我们要费心撰写的Ghost资料了。包含人物的对话，选单，发生事件时该有的反应..等等，都是写在辞书档里的。 只要把该有的对话，事件都做出来了，Ghost就可以正常运作。内容可以全部挤在同一个辞书档内，也可以分成很多个。看个人的习惯而定。
+
+debug决定是否要建立除错纪录档。以bool值指定(0=否，1=是)。除错档名为misaka_debug.txt，位在 misaka.dll的同一个目录下。美坂会把动作期间所有执行的步骤输出到这个档案里面。所以当美坂突然结束或是当掉的时候，可以从这个档案里找出问题 所在。档案本身膨胀相当快，请小心使用。预设值为0。
+
+debugsaori决定是否要建立saori的除错纪录档。以bool值指定。关于Saori这里先暂时略过。除错档名为 misaka_debugsaori.txt，位于misaka主要DLL的同一个目录下。纪录对saori提出的request和接收到的 response内容。预设值为0。
+
+美坂在读入的时候，有所谓的前置处理阶段。error决定是否要在此时扫瞄一遍辞书档的语法错误，并且将错误的部分整行输出成misaka_error.txt。也是供除错使用。以bool值指定，位于misaka主要DLL的同一个目录下。预设值为0。
+
+↑
+单纯变数 ?
+美坂可以在任何时候使用新的变数，变数的型态由使用时决定。
+
+关于变数有一些注意点：
+
+  1. 某些情形下，文字可以直接被当成数值处理。不过当其以数值处理，却又无法正确转换时，会被当成0来看待。  2. bool值可以用true跟false保留字来处理。  3. 美坂只能处理正负整数，无法处理小数。  4. 字串必须以双引号括起来。 变数值的代入可以使用下面的语法。代入时如果变数不存在，则产生新的变数。
+
+↑
+单纯代入 ?
+单纯代入使用=运算子连结。例如：
+
+{$z=128}{$nyo="喵~"}记得字串的前后一定要用双引号括起来。
+
+↑
+演算代入 ?
+我们也可以把计算结果代入变数。例如：
+
+{$z=(1+1)*4}在这里就可以看出双引号的重要性了。像下面的写法，美坂就不会计算右边式子的结果，而只把它当成普通的文字：
+
+{$z="(1+1)*4"}↑
+单纯演算代入 ?
+这是简化的写法，对使用过某些程式语言的人或许很熟悉：
+
+{$z++}{$z--}{$z+=n}{$z-=n}{$z*=n}{$z/=n}从上往下，依序是$z的值加一，$z的值减一，把$z的值加上n，把$z的值减掉n，把$z的值乘上n，以及把$z的值除以n。 评价(取值)
+
+要取变数的值，可以使用下面的语法。
+
+{$z}可以在任何时候使用，也可以“巢状”取值。例如：
+
+{$z=({$a}+1)*{$b}}有一些实用的系统函数可以用来操作变数。请参考〔系统函数〕的部分。 单纯变数的值在结束时会被自动保存，并且在下次启动时回复。
+
+↑
+阵列变数 ?
+阵列变数也是可以自由定义的。除了内含有多个元素以外，基本上跟单纯变数没有太大差别。 在宣告阶段，单纯变数跟阵列变数的表示法没有什么不同。例如：
+
+{$list=""}是指定空的$list阵列变数。 要增加阵列变数的元素，可以使用append这个函数。
+
+{$append($list,"あいうえお")}{$append($list,"かきくけこ")}当我们呼叫阵列变数的时候，如果不作任何指定，则传回的值会从阵列中随机选取。例如，经过上面两行处理后，如果我们用{$list}取值的话，传回的可能会是“あいうえお”，也可能会是“かきくけこ”。
+
+如果要取用阵列中特定的元素，则必须使用[]符号。
+
+{$list[1]}这样就一定会传回“かきくけこ”了。请注意，阵列元素是从0开始的。
+
+阵列的最大元素个数不限。有一些实用的系统函数可以用来使用阵列变数。请参考〔系统函数〕的部分。
+
+阵列变数同样会在结束时自动保存，再启动时重新读入。
+
+↑
+辞书变数 ?
+辞书变数会在启动时自动被读入。辞书变数的构造类似阵列变数，不过增加了一些特殊性质：
+
+  1. 唯读。  2. 可以有“采用条件式”。 其余的部分大致跟阵列变数相同。 辞书变数也可以使用系统函数来控制。不过，此时辞书变数会被当成普通的阵列变数看待，暂时失去部分的特性。 辞书变数的采用条件式中，可以包含的设定引数
+
+辞书变数可以包含多个设定引数。这是和一般变数不同的地方。
+
+↑
+逻辑运算式 ?
+含有逻辑运算式的辞书变数，就像是“符合条件才能使用的变数”一样。这可以让频繁发生事件，有更多样化的反应。写法像以下这样：
+
+$OnBoot; {$if ({$hour}==12)}; ?起动、12时。$OnBoot ?それ以外。像这样，当时间是12点的时候，就会采用上面的辞书变数；其他情况，则采用下面的。利用这种特性，就可以简单地让同一个事件，在不同情况下，产生各式各样的反应。
+
+先被定义的辞书变数，会先被判断。（距离档案开头比较近的；如果在不同档案中的话，则以misaka.ini所引入的顺序判定。）当结果为真，就直 接取值传回，不再继续往下判断。利用这种特性，就可以轻易的写出出if-elseif-else的架构了。（因此，没有条件式的辞书变数，必须摆在同类变 数的最后一个。否则在它之下的同类辞书变数将永远不会被呼叫到。）
+
+当判断引数是逻辑运算式的时候，不一定要使用$if结构。像下面的写法也是正确的：
+
+$Dummy; {$stringexists({$array},{$s})}; ?既にある。$Dummy ?ない。↑
+nonoverlap ?
+被指定nonoverlap的辞书变数，就不会重复传回已经使用过的值。直到其中所有的元素都已经使用过一轮之后，才会再重复出现。这个性质通常使用于RandomTalk之中，防止重复的话题一直出现。例如：
+
+$_OnTalkCore; nonoverlap;ABCDEF$_OnTalkCore在使用的时候和一般的辞书变数没有什么不同。不过当我们连续呼叫它的时候，得到的结果可能会像是“A”“D”“B”“F”“E”“C”，或是“C”“F”“A”“D”“E”“B”，总之，在全部都使用过之前，它绝对不会重复出现。
+
+↑
+sequential ?
+被指定sqeuential的辞书变数，值会从第零个元素开始依序传回。等全部的元素都传回过之后，又回到第0个元素。例如
+
+$_alphabet; sequential;ABCDEF则连续呼叫$_alphabet得到的值会是A,B,C,D,E,F,A,B,C,D,E,F......。
+
+所有的引数都可以重复使用。逻辑运算式跟nonoverlap等等也可以同时指定。举一个重复指定的例子：
+
+$OnBoot; {$if ({$hour}==12)}; nonoverlap;不过，有些引数、逻辑运算式的组合会造成无效的情形。像是nonoverlap跟sequential两个引数，因为动作内容重复，无法同时使用。
+
+↑
+前置处理符号 ?
+↑
+#_Common ?
+#_Common里面所宣告的逻辑运算式，会和该档案内所有的Symbol，以逻辑运算子&&连接起来。也就是说，只有在#_Common中设定的条件成立时，该辞书档内的Symbol才会生效。通常对于含有多种模式的Ghost很有用。所以，我们不需要在档案中写好几次的模式判定，只要把档案分开就可以做到了。例如：
+
+#_Common{#if ({$mode}==0)}则该档案内的所有Symbol都会被加上逻辑运算式{$if ({$mode}==0)}。
+
+↑
+系统Symbol ?
+一般以On开头的事件处理Symbol会自动成为系统Symbol。像是$OnBoot，$OnGhostChange等等。为了方便使用，省略事件名称以外的部分。
+
+↑
+$OnNotify_* ?
+当NOTIFY request产生的时候，美坂首先会将 Reference 参数适当的转成系统变数，经由核心作最低限度的处理之后，会变成持有 $OnNotify_id Symbol的原始码来执行。Reference参数在接受NOTIFY的情况下是会持续存在的。另外就NOTIFY request的性质而言，它并不会传回任何的 Script ，而会直接被废弃掉。
+
+↑
+$_Variable ?
+$_OnVariable会在美坂起动之后、使用者变数自动还原之前被呼叫。主要是用于设定全部变数的初值。不 过这只在初次启动时才有效。我们可以把它看待成全域变数的宣告区。虽然在美坂中，所有的变数都是不需要经过宣告的Variant(变异数)型态，不过我们 可以像这样先把变数订出来，以增加整个辞书档的可读性。当然，这是选择性的。
+
+↑
+$_Constant ?
+$_OnConstant会在美坂起动之后、使用者变数自动还原之后被呼叫。换句话说，它会无视于自动还原，强制设定变数的初值。可以当成全域的常数宣告区来看待。
+
+↑
+$_OnGhostCommunicateReceive ?
+接收到其他Ghost送来的对话时，就会被呼叫。要知道送来的讯息来自谁，或是有没有说了哪些话的话，可以参考系统变数{$sender}和系统函数{$insentence}，{$inlastsentence}。
+
+↑
+$_OnRandomTalk ?
+每经过一段时间，它会被定时呼叫。间隔时间是系统变数$_talkinterval指定的0.5到1.5倍。一般被称为"Random Talk"。
+
+↑
+系统变数(Passive) ?
+下面的系统变数是由系统预先定义好的，并且一直保持自动更新。使用者不能再定义同名的环境变数。
+
+↑
+$year / $month / $day / $hour / $minute / $second / $dayofweek ?
+现在的年/月/日/时/分/秒/星期，星期从0到6依序代表星期日到星期六。
+
+↑
+$elapsedhour / $elapsedminute / $elapsedsecond ?
+Ghost的连续启动时间。依序是时/分/秒。
+
+↑
+$elapsedhouros / $elapsedminuteos / $elapsedsecondos ?
+作业系统的连续启动时间。依序是时/分/秒。
+
+↑
+$elapsedhourtotal / $elapsedminutetotal / $elapsedsecondtotal ?
+Ghost的总共启动时间。依序是时/分/秒。
+
+↑
+$os.version ?
+作业系统版本。“5.0.2195”等等。
+
+↑
+$os.name ?
+作业系统一般的名称。“Windows 2000”等等。
+
+↑
+$os.phisicalmemorysize ?
+实体记忆体总容量。单位byte。
+
+↑
+$os.freememorysize ?
+空的实体记忆体容量。单位byte。
+
+↑
+$os.totalmemorysize ?
+含虚拟记忆体的总记忆体容量。单位byte。
+
+↑
+$cpu.vendorname ?
+目前使用中的CPU厂牌名称。“Intel”等等。
+
+↑
+$cpu.name ?
+目前使用中CPU一般的名称。“Athlon”“PentiumIII”等等。
+
+↑
+$cpu.clockcycle ?
+目前使用中CPU的时脉。单位MHz。
+
+↑
+$daysfromlastupdate ?
+距离上一次线上更新的日数。单位为天。例如：
+
+$_OnBoot; {$if (7<={$daysfromlastupdate})}; ?そろそろネットワーク更新して欲しい。$_OnBoot ?通常。像这样，就可以用来催促使用者经过七天就更新。
+
+↑
+$daysfromfirstboot ?
+第一此启动后经过的日数。单位为天。
+
+↑
+$lastsentence ?
+最近一次COMMUNICATE时，由对方传来的Script。也是$inlastsentence函式要比较的对象。
+
+↑
+$otherghostlist ?
+阵列变数。同一个桌面上存在的其他Ghost的列表。在只有自己的情况下是空值(NULL)。
+
+↑
+$hwnd.sakura / $hwnd.kero / $hwnd.sakuraballoon / $hwnd.keroballoon ?
+各自的HWnd值。
+
+↑
+系统变数(Active) ?
+下面的系统变数是由系统预先定义好的，作为某些特殊用途。使用者不能再定义同名的环境变数。
+
+↑
+$to ?
+Ghost间COMMUNICATE时，要传送到的Ghost名称。设定这个变数后，发言就会传送到所指定的Ghost身上。例如
+
+{$to=花ちゃん}s0こんにちは。e$to在每次说话之后都会重新设定。
+
+↑
+$_talkinterval ?
+系统Symbol $_OnRandomTalk 的呼叫间隔。单位秒。
+
+↑
+系统函数 ?
+下面的系统函数名称是由系统预先定义好的，它们永远会被判断为函数。使用者不能再定义同名的变数。
+
+↑
+评价函数 ?
+↑
+{$if [ifelement] { [true] } else {false}} ?
+if 结构。在判断逻辑算式[ifelement]的bool值后，传回{true}或{false}大括弧中的内容。例如：
+
+ ?{$if (({$month}==12) && (({$day}==24) || ({$day}==25))) { クリスマス } else { ただの日 }}如果现在时间是12月24日或25日的话，就会得到“圣诞节”；否则得到“其他”。
+
+关系运算子可以使用 == <= >= < > != 逻辑运算子可以使用 && ||
+
+处理true值跟处理false值的两个部分都是可以省略的。当我们只省略else {false}的部分的时候，如果[ifelement]的值为false，则什么东西都不会传回，就像完全消失了一样。不过，当{true}的部分也跟 着一起省略的时候，$if会传回[ifelement]的bool值。下面的例子全部都是正确的：
+
+{$if (({$hour}==9) || ({$minute}==59))}にょーん。e{$if (({$hour}==9) || ({$minute}==59)) { 不细工{$hour} } else { 不细工じゃない }}にょーん。e{$if (({$hour}==9) || ({$minute}==59)) { 不细工{$hour} }}にょーん。e{$if (({$hour}==9) || ({$minute}==59)) { 不细工{$if ({$hour}==9)} }}にょーん。e下面有几个注意事项：
+
+每个式子必须以完全独立的括弧括起来。
+
+{$if ({$month}==12 && ({$day}==24 || {$day}==25))}虽然在C语言中，这样写是可以被编译器接受的，不过美坂不接受这种写法。应该改成：
+
+{$if (({$month}==12) && (({$day}==24) || ({$day}==25)))}不过，当使用相同的关系运算子的时候，还是可以把多个逻辑算式分配在同一个括号里面。像下面这样：
+
+{$if ({$month}==12 && {$day}==24 && {$hour}==0)}空格只能增加不能省略。当空格不够的时候，可能会造成美坂失控暴走。下面是错误示范：
+
+{$if(({$month}==12) && (({$day}==24) || ({$day}==25))) {圣诞节} else {其他}}↑
+基本函数 ?
+↑
+{$reference(n)} ?
+传回目前编号n的reference内容。
+
+↑
+{$random(n)} ?
+传回0～n-1之间的乱数（值为整数）。
+
+↑
+{$calc(expression)} ?
+传回expression表示的四则运算式的结果。算式可以有很多项，也可以使用括弧。例如：
+
+{$calc(1+1)}{$calc(1+1*2)}{$calc((1+1)*2)}{$a=1}{$b=2}{$c={$calc({$a}*5+{$b}*10)}}{$c}点。可以使用的运算子
+
++ 加法- 减法* 乘法/ 除法% 取余数^ 次方同样不能计算小数点。除法的结果小数点以下无条件舍去。
+
+↑
+字串函数 ?
+↑
+{$extractfilename(s)} ?
+字串s会被当成档案名称，传回去除路径后的档名。例如：
+
+C:hogehoge.txt → hoge.txt↑
+{$index(n,s)} ?
+在字串s里面寻找跟字串n完全符合的部分，并且传回找到的开头位置。单位byte。例如：
+
+{$index("hum","human")}{$index("hux","human")}{$index("n","human")}↑
+{$insentence(s,n,n,n,n....)} ?
+比对字串s跟后面所有的n是否都有相符合的部分，传回其bool值。引数个数不限。
+
+因为引数的顺序跟index函数相反，使用时请注意。
+
+{$insentence("human","hum")}{$insentence("human","hux")}{$insentence("human","hum","uma","u")}{$insentence("human","hum","hua")}↑
+{$inlastsentence(n,n,n,n....)} ?
+类似insentence的函数。比对lastsentence跟所有的n是否都有相符合的部分，传回其bool值。
+
+↑
+{$length(s)} ?
+传回字串s的长度(byte数)。
+
+↑
+{$substring(s,offset,count)} ?
+↑
+{$substringl(s,count)} ?
+↑
+{$substringr(s,count)} ?
+传回字串s的一部分：
+substring从字串s的第offset个字元，取count个字元。substringl从s的左端，取count个字元。
+substringr从s的右端，取count个字元。单位皆为byte。
+
+↑
+{$substringw(s,m,n)} ?
+↑
+{$substringwl(s,n)} ?
+↑
+{$substringwr(s,n)} ?
+宽字元版的substring。字元数是由实际的文字数计算，而非byte。其余皆和substring相同。
+
+{$temp="あaいbうcえdお"}{$substringl({$temp},3)}{$temp="あaいbうcえdお"}{$substringlw({$temp},3)}上式的结果是“あa”、下式的结果是“あaい”。
+
+↑
+{$substringfirst(s)} ?
+↑
+{$substringlast(s)} ?
+类似substringw的函数。substringfirst是取s的前面一个字，而substringlast是取s的最后一个字。函数考虑MBCS（由实际的文字数计算，而非byte)。
+
+↑
+{$hiraganacase(s)} ?
+日语专用的函式。将字串s中所有的平假名转成片假名。汉字等不能转换的部分会被保留。当然这无法适用于big5日文..(汗)
+
+↑
+{$isequallastandfirst(s0,s1)} ?
+从 ?的末端和s1的开头，各取一个字出来比较，传回两者是否相同的bool值。函数考虑MBCS（由实际的文字数计算，而非byte)。
+
+↑
+{$getvalue(n,m)} ?
+依照字串n中的逗号，将n分割成数个元素，并传回其中的第n个。例如：
+
+{$_ref="a,b,c,d,e,f"}{$getvalue("{$_ref}",3)}这个式子的值是d。
+
+↑
+{$getvalueex(n,m)} ?
+依照字串n中单位元的字，将n分割成数个元素，并传回其中的第n个。
+
+↑
+阵列函数 ?
+↑
+{$append(a,s)} ?
+新增一个元素s到阵列变数a里面。当a只是单纯变数的时候，会被自动转换成阵列变数。
+此时a原先的值被保留在a[0]中，s则新增到a[1]里面。
+
+↑
+{$copy(a0,a1)} ?
+把阵列变数a0的值复制到a1中。a0也可以是辞书变数，不过复制时，采用条件式会被忽略。且先找到的辞书变数先采用。
+
+↑
+{$count(a)} ?
+传回阵列 a的元素个数。当a是单纯变数时，传回值恒为1。当a为阵列中的元素，或是其值为NULL时，则传回-1。
+
+↑
+{$pop(a)} ?
+随机传回阵列变数a中的一个元素，并且将该元素从阵列中删除。阵列为空时则传回空字串。
+
+↑
+{$popmatchl(a,s)} ?
+随机传回阵列变数a中，其左方和s相同的元素。并且将该元素从阵列中删除。没有相同元素时则传回空字串。
+
+↑
+{$stringexists(a,s)} ?
+寻找阵列变数a中，是否有跟s完全相同的字串元素。传回其bool值。
+
+↑
+SAORI函数 ?
+↑
+$loadsaori(filename) ?
+读入filename所指定的SAORI DLL并锁定。
+
+↑
+$unloadsaori(filename) ?
+关闭filename所指定的SAORI DLL，并且解除锁定。
+
+↑
+$saori(filename,arg0,arg1,arg2....) ?
+执行filename所指定的SAORI，并且以arg为argument header传入。直到SAORI传回response之前，都不会继续往下动作。读取不到指定的DLL时，或者SAORI内部发生错误时中止。例如：
+
+{$loadsaori("substr.dll")}{$temp={$saori("substr.dll","あいうえお",2,3)}}{$temp}{$unloadsaori("substr.dll")}假设这是里々内附的substr.dll。$temp的值会被设为“いうえ”。
+
+上面的例子是在读取完后立刻执行，执行完就立刻关闭。不过，并没有特别限制一定要这样做。 在美坂起动的同时读取（例如$_Constant等），一直存放在记忆体中，随时呼叫也是可以的。 存活期由使用者自由决定。
+
+一般来说，在美坂启动的同时，读入全部要用到的SAORI，也不会有什么问题。这样做有时可以省去一些麻烦。 另外，在美坂结束的时候，也会自动关闭所有的SAORI。所以不需要太担心。 其他的函数
+
+↑
+$choice(n,n,n,n,n,n....) ?
+随机传回一个引数。可以使用的引数个数不限。例如：
+
+{$choice("あいうえお",{$b},256)}↑
+$isghostexists(n) ?
+判断字串n指定的Ghost是否在同一个桌面上。传回bool值。
+
+↑
+$search(n,n,n,n....) ?
+寻找n所指定的元件名称，并随机选取一个，取其值传回。例如：
+
+$_OnTest{$search("human","japan")}$_OnTest2{$search("male")}$human-male-japanA$human-female-japanB$human-male-koreaC$human-female-koreaD则$_OnTest会传回A或B，$_OnTest2会传回A或C。
+
+↑
+$backup() ?
+没有引数。用来备分美坂在记忆体里全部的资料。动作内容相同于美坂结束时的自动变数保存。
+
+↑
+$getmousemovecount(n,m) ?
+传回角色n(0=Sakura，1=Unyu)的m部位的OnMouseMove次数。通常用来控制“抚摸反应”的敏感度。例如：
+
+$OnMouseMove,{$if (64<={$getmousemovecount(0,"Bust")})}{$resetmovecount(0,"Bust")} ?被摸胸部的反应。$OnMouseMove,{$if (32<={$getmousemovecount(0,"Bust")})} ?怀疑被摸胸部的反应。附注：部位的名称是由Shell指定的。请参考制作Shell的相关文件。
+
+↑
+resetmousemovecount(n,m) ?
+重设角色n(0=Sakura，1=Unyu)的m部位的OnMouseMove次数。
+
+↑
+注解 ?
+在一行的开头加上//，则整行的内容会被视为注解，内容完全忽略。
+不过，不能在一行的中间或末尾使用。
+执行时，注解不会占去多余的记忆体或是拖慢处理速度。
+
+
+↑
+暗号化(编码) ?
+执行misakac.exe可以把同一个目录下的 *.txt 档案全部暗号化，输出成 *.__1。 .__1不再像一般的文字档案，能轻易观看到其原始内容，不过它还是可以当成普通的辞书档，在misaka.ini中引入。
+
+这个功能，通常是用来保密辞书档的原始内容。当然，也无法完全保证不会被别人看到。
+
+因为misakac.exe会对同目录下所有 .txt的档案动作，所以可能会一并把readme.txt等等无关的档案暗号化。虽然原始档案会被保留，不过操作时请稍微留意一下。 SAORI
+
+请参考系统函数的SAORI函数部分。
+
+关于SAORI的详细资料，这里暂时省略。 全体的倾向，注意事项，小常识等 要区分大小写
+
+例如，$z和$Z会被视为不同的变数来处理。 资料必须全部为Shift_JIS
+
+所有的双位元文字必须使用Shift_JIS码。 不过目前使用Big5码来撰写还没有发现严重的问题。 从0开始计数
+
+大部分的序数资料由0开始计数。 字串必须以双括号括住
+
+例如：
+
+{$_ref="a,b,c,d,e,f"}不可以这样写：
+
+{$_ref=a,b,c,d,e,f}写法错误的时候会关闭
+
+错误发生时通常会出现错误讯息，然后直接关闭。期间无法做任何其他动作。 大括弧{}有“评价(取值)”的意思
+
+例如我们写$hour，它就只会单单印出$hour这一串字而已。只有写成{$hour}的时候，它才会取 $hour 的值并且传回。
+
+{$lasthour="$hour"}{$lasthour={$hour}}在上面那一行，$lasthour只会变成字串；而在下面那一行，$lasthour会变成$hour的值。
+
+也有些函数要传递变数本身才能运作，此时就不需要用大括号取值。例如使用$append增加阵列元素的时候：
+
+{$append($z,"あいうえお")}就不能写成下面这样：
+
+{$append({$z},"あいうえお")}因为这个时候需要用变数本身来处理，而不是它的值。 用来指示区块开始／结束的大括弧必须自成一行。
+
+例如，这是错误的写法：
+
+$_OnTest {? 0 0?ねえ。w8w8 0ん？w8w8?nn¨¨w8w8いや、いい。w8w8nn¨¨w8w8何だよ。}应该改成这样：
+
+$_OnTest{? 0 0?ねえ。w8w8 0ん？w8w8?nn¨¨w8w8いや、いい。w8w8nn¨¨w8w8何だよ。}
+  
