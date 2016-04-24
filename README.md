@@ -3,12 +3,16 @@
 
 yaya-shiori ： </br>
 https://github.com/ponapalt/yaya-shiori </br>
+SSP官网 ： </br>
+http://ssp.shillest.net </br>
+（部分汉化文档见本repository）
 
 ##Usages
 运行SSP.exe </br>
 
 ##Screen shots
 ![0](https://github.com/CsterKuroi/yukariMini-SSP/raw/master/pht/0.jpg "")
+
 ![1](https://github.com/CsterKuroi/yukariMini-SSP/raw/master/pht/1.jpg "")
 
 ![2](https://github.com/CsterKuroi/yukariMini-SSP/raw/master/pht/2.jpg "")
