@@ -1,6 +1,7 @@
 charset,Shift_JIS
 type,balloon
 name,emily¸Ä
+craftmanw,emily4
 
 craftmanurl,http://ssp.shillest.net/
 craftman,[SSP-BT] Emily Development Team
