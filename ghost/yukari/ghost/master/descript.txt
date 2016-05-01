@@ -5,7 +5,6 @@ craftman,Cster
 craftmanw,Cster
 craftmanurl,http://www.cster.icoc.cc/
 sakura.name,小缘喵
-kero.name,兔子
 
 
 sstp.allowunspecifiedsend,1

@@ -85,8 +85,8 @@ KikkaMenu
 	if showkikka {
 		"\_l[0,210]" + ColorText("\__q[OnKikkaMenu,0]\f[cursorstyle,none]\f[cursorfontcolor,65,203,214]─────────小缘喵养成系统↓────────\f[cursorstyle,default]\f[cursorfontcolor,default]\__q\n","color=160,160,200");
 		--
-		"\_l[176,347]\q[Reset,OnKikkaReset]"
-		--
+		//"\_l[176,347]\q[Reset,OnKikkaReset]"
+		//--
                 infomode=0
 		KikkaStatus;
               
@@ -215,7 +215,7 @@ KikkaStatus
 	KikkaVar;
 	_txt ="";
 	_txt += "\_l[0,226]";
-	_txt += ColorText("等级：%(kikkalvl)","bold,color=%(ColorIdx(6))") + "     \![*]\q[购买物品,OnKikkaItemList,0]  \![*]\q[日程安排,OnKikkaClass,%(weekday)]  \![*]\q[攻略进度,Ongiftbox]";	
+	_txt += ColorText("等级：%(kikkalvl)","bold,color=%(ColorIdx(6))") + "     \![*]\q[购买物品,OnKikkaItemList,0]  \![*]\q[日程安排,OnKikkaClass,%(weekday)]  ";	
 	_txt += ColorText("\n[140]\_l[80,-]经验：\_l[0,-]萌度：%(萌度)","bold,color=%(ColorIdx(3))") + ColorBar(3,42,kikkaexp,kikkaexpmax,,"colortxt=134");
 	_txt += ColorText("\n\_l[80,-]身手：\_l[0,-]腹黑度：%(腹黑度)","bold,color=%(ColorIdx(9))") + ColorBar(9,42,kikkapow,kikkapowmax,,"colortxt=135");
 	_txt += ColorText("\n\_l[80,-]学识：\_l[0,-]依赖度：%(依赖度)","bold,color=%(ColorIdx(4))") + ColorBar(4,42,kikkawiz,kikkawizmax,,"colortxt=134");
@@ -299,7 +299,7 @@ OnKikkaReset
 	kasanariswitch = "1"
 	initializecryptogram; 
 
-KikkaItemNum=0;
+	KikkaItemNum=0;
 	kikkalvl =1;
 	kikkaexp = 0;
 	kikkapow = 0;
@@ -308,7 +308,7 @@ KikkaItemNum=0;
 	kikkastm = 240;
 	kikkamoney = 1000000;
 	kikkatick = 0;
-//	intimacy = 0;
+//	intimacy	= 0;
 	kikkaclass = ("休息","休息","休息","休息","休息","休息","休息");
 //	OpenMenu(0);
 

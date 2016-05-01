@@ -1,6 +1,6 @@
 Charset,UTF-8
 DeveloperPalette.pos.iscenter,0
-SelfUpdate.LastExec,514813253
+SelfUpdate.LastExec,515389165
 SurfaceTest.pos.iscenter,0
 path.headline.status,1
 path.balloon.0,.\balloon\
@@ -16,7 +16,7 @@ path.balloon.Num,1
 ScriptLog.pos.iscenter,0
 DeveloperPalette.pos,1033.48.1176.304
 Ghost.0,.\ghost\yukari\
-ScriptLog.pos,-86.28.1292.293
+ScriptLog.pos,-35.139.1343.404
 path.ghost.0,.\ghost\
 path.ghost.Num,1
 sntp.lastexec,492424205
