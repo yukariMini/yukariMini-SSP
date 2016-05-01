@@ -2,6 +2,9 @@ kuro1.com
 问题及反馈信息请邮件至kuro1@kuro1.com
 ===========
 更新日志
+2016.05.01 relaese 1.02
+解决MD5验证问题！（github的crlf）
+
 2016.05.01 relaese 1.01
 craftman更新
 
