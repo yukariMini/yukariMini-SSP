@@ -1,9 +1,9 @@
 ﻿charset,UTF-8
 name,小缘喵
 type,ghost
-craftman,Cster
-craftmanw,Cster
-craftmanurl,http://www.cster.icoc.cc/
+craftman,Kuro1
+craftmanw,Kuro1
+
 sakura.name,小缘喵
 
 

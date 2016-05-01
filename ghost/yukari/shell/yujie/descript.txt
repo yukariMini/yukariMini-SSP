@@ -5,7 +5,7 @@ id,master
 type,shell
 name,master
 mode,material
-craftmanurl,http://weibo.com/u/1912012023
+
 seriko.use_self_alpha,1
 
 sakura.balloon.offsetx,0
